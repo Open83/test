@@ -1,638 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sayed Asif - QA Engineer & Payment Systems Expert. Specializing in manual/automation testing for FinTech and Non-Profits.">
-    <title>Sayed Asif | QA Engineer & Payment Specialist</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Sayed Asif Personal Portfolio Website</title>
 
-    <style>
-        /* --- CLEARTAX THEME VARIABLES (2025/26) --- */
-        :root {
-            /* Brand Colors */
-            --brand-blue: #00baf2;
-            --brand-blue-hover: #0099cc;
-            --brand-dark: #0f172a; /* Darker navy for better contrast */
-            --text-main: #334155;
-            --text-light: #64748b;
-            
-            /* Backgrounds */
-            --bg-white: #ffffff;
-            --bg-off-white: #f8fafc; /* Common section bg */
-            --bg-card: #ffffff;
-            --bg-input: #f1f5f9;
-            
-            /* UI Elements */
-            --radius-card: 16px;
-            --radius-btn: 8px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-            --border-light: 1px solid #e2e8f0;
-            
-            /* Layout */
-            --container-width: 1200px;
-            --header-height: 70px;
-        }
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-        /* --- RESET & BASE --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; font-size: 16px; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-white);
-            color: var(--text-main);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        a { text-decoration: none; color: inherit; transition: 0.2s; }
-        ul { list-style: none; }
-        img { max-width: 100%; display: block; }
-
-        /* --- UTILITIES --- */
-        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 24px; }
-        .section { padding: 80px 0; }
-        .bg-gray { background-color: var(--bg-off-white); }
-        .text-blue { color: var(--brand-blue); }
-        .text-center { text-align: center; }
-        
-        /* Typography */
-        h1, h2, h3, h4 { color: var(--brand-dark); font-weight: 700; letter-spacing: -0.02em; }
-        h1 { font-size: 3rem; line-height: 1.1; margin-bottom: 24px; }
-        h2 { font-size: 2.25rem; margin-bottom: 16px; }
-        p { color: var(--text-light); font-size: 1.05rem; margin-bottom: 24px; }
-        
-        .section-header { max-width: 700px; margin: 0 auto 60px; text-align: center; }
-
-        /* --- BUTTONS (ClearTax Style) --- */
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            padding: 12px 28px; font-weight: 600; font-size: 1rem;
-            border-radius: var(--radius-btn); transition: all 0.2s ease;
-            cursor: pointer; gap: 8px;
-        }
-        .btn-primary {
-            background-color: var(--brand-dark); /* Modern aesthetic: Dark CTA */
-            color: white; border: 1px solid transparent;
-        }
-        .btn-primary:hover {
-            background-color: var(--brand-blue);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 186, 242, 0.3);
-        }
-        .btn-secondary {
-            background-color: white; color: var(--brand-dark);
-            border: 1px solid #cbd5e1;
-        }
-        .btn-secondary:hover {
-            border-color: var(--brand-dark); background-color: #f8fafc;
-        }
-        .btn-link {
-            padding: 0; background: none; color: var(--brand-blue);
-            font-weight: 600; font-size: 0.95rem;
-        }
-        .btn-link:hover { text-decoration: underline; }
-
-        /* --- HEADER / NAVBAR --- */
-        header {
-            position: fixed; top: 0; width: 100%; height: var(--header-height);
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px);
-            border-bottom: var(--border-light); z-index: 1000;
-        }
-        .nav-container {
-            height: 100%; display: flex; justify-content: space-between; align-items: center;
-        }
-        .logo {
-            font-size: 1.5rem; font-weight: 800; color: var(--brand-dark);
-            display: flex; align-items: center; gap: 5px;
-        }
-        .logo span { color: var(--brand-blue); }
-        
-        .nav-menu { display: flex; gap: 32px; align-items: center; }
-        .nav-link { font-size: 0.95rem; font-weight: 500; color: var(--text-main); }
-        .nav-link:hover, .nav-link.active { color: var(--brand-blue); }
-        
-        .mobile-toggle { display: none; font-size: 1.5rem; color: var(--brand-dark); cursor: pointer; }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            padding-top: calc(var(--header-height) + 60px);
-            padding-bottom: 80px;
-            background: radial-gradient(circle at 50% 0%, #f0f9ff 0%, #ffffff 60%);
-            position: relative; overflow: hidden;
-        }
-        .hero-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
-        }
-        .hero-tag {
-            display: inline-block; padding: 6px 12px; background: #e0f2fe;
-            color: var(--brand-blue); font-size: 0.85rem; font-weight: 600;
-            border-radius: 100px; margin-bottom: 20px;
-        }
-        .hero-visual {
-            position: relative;
-        }
-        /* A "ClearTax" style floating card effect */
-        .float-card {
-            background: white; padding: 20px; border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            position: absolute; bottom: -20px; left: -20px;
-            display: flex; gap: 15px; align-items: center;
-            max-width: 260px; border: 1px solid #f1f5f9;
-            animation: float 4s ease-in-out infinite;
-        }
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
-        
-        .hero-img { border-radius: 20px; width: 100%; box-shadow: var(--shadow-hover); }
-
-        /* --- STATS STRIP --- */
-        .stats-strip {
-            border-top: var(--border-light); border-bottom: var(--border-light);
-            padding: 30px 0; background: white;
-        }
-        .stats-grid { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; }
-        .stat-item { text-align: center; }
-        .stat-val { font-size: 2rem; font-weight: 800; color: var(--brand-blue); display: block; }
-        .stat-lbl { font-size: 0.85rem; color: var(--text-light); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        /* --- CARDS (Skills & Projects) --- */
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
-
-        .feature-card {
-            background: white; padding: 32px; border-radius: var(--radius-card);
-            border: 1px solid #f1f5f9; box-shadow: var(--shadow-card);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative; overflow: hidden;
-        }
-        .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-hover);
-            border-color: #bfdbfe;
-        }
-        /* Top accent line like ClearTax products */
-        .feature-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
-            background: var(--brand-blue); opacity: 0; transition: 0.3s;
-        }
-        .feature-card:hover::before { opacity: 1; }
-
-        .icon-box {
-            width: 50px; height: 50px; background: #eff6ff;
-            color: var(--brand-blue); border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.25rem; margin-bottom: 20px;
-        }
-        .card-title { font-size: 1.25rem; margin-bottom: 12px; color: var(--brand-dark); font-weight: 700; }
-        .card-text { font-size: 0.95rem; margin-bottom: 20px; }
-
-        /* --- PROJECT SPECIFIC CARD --- */
-        .project-card {
-            background: white; border-radius: var(--radius-card); overflow: hidden;
-            border: var(--border-light); box-shadow: var(--shadow-card);
-            display: flex; flex-direction: column; transition: 0.3s;
-        }
-        .project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
-        .project-img { height: 180px; width: 100%; object-fit: cover; border-bottom: 1px solid #f1f5f9; }
-        .project-body { padding: 24px; flex-grow: 1; display: flex; flex-direction: column; }
-        .project-cat { font-size: 0.75rem; font-weight: 700; color: var(--brand-blue); text-transform: uppercase; margin-bottom: 8px; }
-        .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 16px; }
-        .tag { background: #f1f5f9; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
-
-        /* --- CASE STUDY (Feature List) --- */
-        .feature-list-item {
-            display: flex; gap: 20px; padding: 20px; border-radius: 12px;
-            transition: 0.2s;
-        }
-        .feature-list-item:hover { background: white; box-shadow: var(--shadow-card); }
-        .feature-list-icon {
-            flex-shrink: 0; width: 40px; height: 40px; background: #ecfccb; 
-            color: #65a30d; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-        }
-        .icon-blue { background: #dbeafe; color: #2563eb; }
-        .icon-purple { background: #f3e8ff; color: #9333ea; }
-        
-        /* --- TIMELINE (Experience) --- */
-        .timeline-item {
-            position: relative; padding-left: 40px; border-left: 2px solid #e2e8f0;
-            padding-bottom: 40px;
-        }
-        .timeline-item:last-child { border-left-color: transparent; }
-        .timeline-dot {
-            position: absolute; left: -9px; top: 0; width: 16px; height: 16px;
-            background: white; border: 4px solid var(--brand-blue); border-radius: 50%;
-        }
-        .timeline-date { font-size: 0.85rem; color: var(--brand-blue); font-weight: 700; margin-bottom: 5px; display: block; }
-
-        /* --- FAQ ACCORDION --- */
-        .faq-item { background: white; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
-        .faq-header {
-            padding: 20px; cursor: pointer; display: flex; justify-content: space-between;
-            align-items: center; font-weight: 600; color: var(--brand-dark);
-        }
-        .faq-body {
-            max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
-            background: #f8fafc; padding: 0 20px;
-        }
-        .faq-body p { margin: 20px 0; font-size: 0.95rem; }
-        .faq-item.active .faq-body { max-height: 300px; }
-        .faq-item.active .faq-header { color: var(--brand-blue); }
-        .faq-icon { transition: 0.3s; }
-        .faq-item.active .faq-icon { transform: rotate(180deg); }
-
-        /* --- FOOTER --- */
-        footer { background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 60px 0 30px; margin-top: 80px; }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
-        .footer-logo { font-size: 1.5rem; font-weight: 800; color: var(--brand-dark); margin-bottom: 15px; display: inline-block;}
-        .footer-links h4 { font-size: 1rem; margin-bottom: 20px; }
-        .footer-links a { display: block; color: var(--text-light); margin-bottom: 10px; font-size: 0.9rem; }
-        .footer-links a:hover { color: var(--brand-blue); }
-        .social-row { display: flex; gap: 15px; margin-top: 20px; }
-        .social-btn {
-            width: 36px; height: 36px; border-radius: 50%; background: white;
-            border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center;
-            color: var(--text-light); transition: 0.2s;
-        }
-        .social-btn:hover { border-color: var(--brand-blue); color: var(--brand-blue); }
-
-        /* --- MOBILE RESPONSIVE --- */
-        @media (max-width: 992px) {
-            h1 { font-size: 2.5rem; }
-            .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; }
-            .hero-visual { display: flex; justify-content: center; }
-            .float-card { left: 50%; transform: translateX(-50%); bottom: -30px; width: 90%; }
-            @keyframes float { 0% { transform: translateX(-50%) translateY(0px); } 50% { transform: translateX(-50%) translateY(-10px); } 100% { transform: translateX(-50%) translateY(0px); } }
-            
-            .mobile-toggle { display: block; }
-            .nav-menu {
-                position: absolute; top: 100%; left: 0; width: 100%;
-                background: white; flex-direction: column; padding: 20px;
-                border-bottom: 1px solid #e2e8f0; gap: 20px;
-                transform: translateY(-20px); opacity: 0; pointer-events: none;
-                transition: 0.3s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            }
-            .nav-menu.active { transform: translateY(0); opacity: 1; pointer-events: all; }
-            
-            .footer-grid { grid-template-columns: 1fr; text-align: center; }
-            .social-row { justify-content: center; }
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-    <header>
-        <div class="container nav-container">
-            <a href="index.html" class="logo">Sayed<span>Asif</span></a>
-            <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
-            <nav class="nav-menu">
-                <a href="#home" class="nav-link active">Home</a>
-                <a href="about.html" class="nav-link">About</a>
-                <a href="#skills" class="nav-link">Capabilities</a>
-                <a href="#projects" class="nav-link">Portfolio</a>
-                <a href="mailto:sayedasif83838@gmail.com" class="btn btn-primary">Hire Me</a>
-            </nav>
-        </div>
+    <header class="header">
+        <a href="#" class="logo">Portfolio</a>
+
+        <i class='bx bx-menu' id="menu-icon"></i>
+
+        <nav class="navbar">
+            <a href="#home" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#contact">Contact</a>
+        </nav>
     </header>
 
-    <section id="home" class="hero">
-        <div class="container hero-grid">
-            <div class="hero-text">
-                <span class="hero-tag"><i class="fas fa-check-circle"></i> QA & Payment Systems Expert</span>
-                <h1>Delivering Precision <span class="text-blue">in Every Release</span></h1>
-                <p>Ensuring the reliability of digital platforms for logistics and non-profits. Expert in validating complex payment gateways (Stripe, Lloyds, WorldPay), tax compliance, and defect lifecycles.</p>
-                <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; lg:justify-content: flex-start;">
-                    <a href="#projects" class="btn btn-primary">View Portfolio</a>
-                    <a href="about.html" class="btn btn-secondary">My Philosophy</a>
+    <section class="home" id="home">
+        <div class="home-content">
+            <h3>Hello, It's Me</h3>
+            <h1>Sayed Asif</h1>
+            <h3>And I'm a <span class="multiple-text"></span></h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn asdnaknsd asdkansdk asdna
+                asdnaknsd.</p>
+            <div class="social-media">
+                <a href="#"><i class='bx bxl-facebook'></i></a>
+                <a href="#"><i class='bx bxl-twitter'></i></a>
+                <a href="#"><i class='bx bxl-instagram-alt'></i></a>
+                <a href="#"><i class='bx bxl-linkedin'></i></a>
+            </div>
+            <a href="#" class="btn">Download CV</a>
+        </div>
+
+        <div class="home-img">
+            <img src="images/home.png" alt="">
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="about-img">
+            <img src="images/about.png" alt="">
+        </div>
+
+        <div class="about-content">
+            <h2 class="heading">About <span>Me</span></h2>
+            <h3>Frontend Developer!</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn asdnaknsd asdkansdk asdna
+                asdnaknsd. Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn asdnaknsd
+                asdkansdk asdna asdnaknsd. Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn
+                asdnaknsd asdkansdk asdna asdnaknsd.</p>
+            <a href="#" class="btn">Read More</a>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2 class="heading">Our <span>Services</span></h2>
+
+        <div class="services-container">
+            <div class="services-box">
+                <i class='bx bx-code-alt'></i>
+                <h3>Web Development</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn asdnaknsd asdkansdk asdna
+                    asdnaknsd.</p>
+                <a href="#" class="btn">Read More</a>
+            </div>
+
+            <div class="services-box">
+                <i class='bx bxs-paint'></i>
+                <h3>Graphic Design</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn asdnaknsd asdkansdk asdna
+                    asdnaknsd.</p>
+                <a href="#" class="btn">Read More</a>
+            </div>
+
+            <div class="services-box">
+                <i class='bx bx-bar-chart-alt'></i>
+                <h3>Digital Marketing</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn asdnaknsd asdkansdk asdna
+                    asdnaknsd.</p>
+                <a href="#" class="btn">Read More</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio" id="portfolio">
+        <h2 class="heading">Latest <span>Project</span></h2>
+
+        <div class="portfolio-container">
+            <div class="portfolio-box">
+                <img src="images/portfolio1.jpg" alt="">
+                <div class="portfolio-layer">
+                    <h4>Web Design</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn asdnaknsd asdkansdk
+                        asdna asdnaknsd.</p>
+                    <a href="#"><i class='bx bx-link-external'></i></a>
                 </div>
             </div>
-            <div class="hero-visual">
-                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800" alt="QA Dashboard" class="hero-img">
-                
-                <div class="float-card">
-                    <div style="width: 40px; height: 40px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #16a34a;">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div>
-                        <div style="font-weight: 700; color: var(--brand-dark);">100% Secure</div>
-                        <div style="font-size: 0.8rem; color: var(--text-light);">Zero Defect Delivery</div>
-                    </div>
+
+            <div class="portfolio-box">
+                <img src="images/portfolio2.jpg" alt="">
+                <div class="portfolio-layer">
+                    <h4>Web Design</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn asdnaknsd asdkansdk
+                        asdna asdnaknsd.</p>
+                    <a href="#"><i class='bx bx-link-external'></i></a>
+                </div>
+            </div>
+
+            <div class="portfolio-box">
+                <img src="images/portfolio3.jpg" alt="">
+                <div class="portfolio-layer">
+                    <h4>Web Design</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn asdnaknsd asdkansdk
+                        asdna asdnaknsd.</p>
+                    <a href="#"><i class='bx bx-link-external'></i></a>
+                </div>
+            </div>
+
+            <div class="portfolio-box">
+                <img src="images/portfolio4.jpg" alt="">
+                <div class="portfolio-layer">
+                    <h4>Web Design</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn asdnaknsd asdkansdk
+                        asdna asdnaknsd.</p>
+                    <a href="#"><i class='bx bx-link-external'></i></a>
+                </div>
+            </div>
+
+            <div class="portfolio-box">
+                <img src="images/portfolio5.jpg" alt="">
+                <div class="portfolio-layer">
+                    <h4>Web Design</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn asdnaknsd asdkansdk
+                        asdna asdnaknsd.</p>
+                    <a href="#"><i class='bx bx-link-external'></i></a>
+                </div>
+            </div>
+
+            <div class="portfolio-box">
+                <img src="images/portfolio6.jpg" alt="">
+                <div class="portfolio-layer">
+                    <h4>Web Design</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Akjsdnnak asdnakn asdnaknsd asdkansdk
+                        asdna asdnaknsd.</p>
+                    <a href="#"><i class='bx bx-link-external'></i></a>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="stats-strip">
-        <div class="container stats-grid">
-            <div class="stat-item">
-                <span class="stat-val">2+</span>
-                <span class="stat-lbl">Years Exp.</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-val">7+</span>
-                <span class="stat-lbl">Enterprise Projects</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-val">99%</span>
-                <span class="stat-lbl">Bug Detection</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-val">100%</span>
-                <span class="stat-lbl">Compliance</span>
-            </div>
-        </div>
-    </div>
+    <section class="contact" id="contact">
+        <h2 class="heading">Contact <span>Me!</span></h2>
 
-    <section id="skills" class="section bg-gray">
-        <div class="container">
-            <div class="section-header">
-                <h2>Technical Arsenal</h2>
-                <p>Comprehensive testing capabilities designed to ensure your software is robust, secure, and user-ready.</p>
+        <form action="#">
+            <div class="input-box">
+                <input type="text" placeholder="Full Name">
+                <input type="email" placeholder="Email Address">
             </div>
-            <div class="grid-3">
-                <div class="feature-card">
-                    <div class="icon-box"><i class="fas fa-credit-card"></i></div>
-                    <h3 class="card-title">Payment Gateways</h3>
-                    <p class="card-text">Deep expertise in validating Lloyds, WorldPay, GlobalPay, and Stripe recurring logic.</p>
-                    <a href="#projects" class="btn-link">View Examples &rarr;</a>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box icon-purple"><i class="fas fa-file-invoice-dollar"></i></div>
-                    <h3 class="card-title">Compliance Logic</h3>
-                    <p class="card-text">HMRC Gift Aid declaration logic, Tax reclamation workflows, and financial reporting.</p>
-                    <a href="#case-study" class="btn-link">Read Case Study &rarr;</a>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box icon-blue"><i class="fas fa-bug"></i></div>
-                    <h3 class="card-title">Defect Management</h3>
-                    <p class="card-text">End-to-End Bug Life Cycle ownership using Jira. Root cause analysis and triage.</p>
-                    <span class="text-light" style="font-size: 0.85rem;">Tool: Jira / Trello</span>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box"><i class="fas fa-network-wired"></i></div>
-                    <h3 class="card-title">API Validation</h3>
-                    <p class="card-text">Postman automation for payment endpoints, payload validation, and response checks.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box icon-purple"><i class="fas fa-database"></i></div>
-                    <h3 class="card-title">Database Integrity</h3>
-                    <p class="card-text">SQL injection testing, data consistency verification, and complex query validation.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-box icon-blue"><i class="fas fa-mobile-alt"></i></div>
-                    <h3 class="card-title">Cross-Platform</h3>
-                    <p class="card-text">Responsive validation across Mobile/Web to ensure seamless UI/UX on all devices.</p>
-                </div>
+            <div class="input-box">
+                <input type="number" placeholder="Mobile Number">
+                <input type="text" placeholder="Email Subject">
             </div>
-        </div>
+            <textarea name="" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
+            <input type="submit" value="Send Message" class="btn">
+        </form>
     </section>
 
-    <section id="projects" class="section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Featured Projects</h2>
-                <p>Real-world applications where quality assurance made the difference between success and failure.</p>
-            </div>
-            <div class="grid-3">
-                <article class="project-card">
-                    <img src="/image/1.png" alt="LIA Relief Trust" class="project-img">
-                    <div class="project-body">
-                        <span class="project-cat">Non-Profit Ecosystem</span>
-                        <h3 class="card-title">LIA Relief Trust</h3>
-                        <p class="card-text">Engineered test strategy for a donation ecosystem. Validated Stripe & Global Pay recurring failures.</p>
-                        <div class="tech-tags">
-                            <span class="tag">Stripe</span>
-                            <span class="tag">Global Pay</span>
-                        </div>
-                        <a href="https://liarelieftrust.org/" target="_blank" class="btn-link" style="margin-top: 20px;">Visit Site &rarr;</a>
-                    </div>
-                </article>
-
-                <article class="project-card" style="border-color: var(--brand-blue);">
-                    <img src="/image/3.png" alt="iCHARMS" class="project-img">
-                    <div class="project-body">
-                        <span class="project-cat">Enterprise CRM</span>
-                        <h3 class="card-title">iCHARMS System</h3>
-                        <p class="card-text">End-to-End QA for Charity Management. Validated CRM, Gift Aid, and Tax Reclamation features.</p>
-                        <div class="tech-tags">
-                            <span class="tag">Tax Logic</span>
-                            <span class="tag">CRM</span>
-                        </div>
-                        <a href="#case-study" class="btn-link" style="margin-top: 20px;">View Case Study &rarr;</a>
-                    </div>
-                </article>
-
-                <article class="project-card">
-                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=600" alt="Logibuddy" class="project-img">
-                    <div class="project-body">
-                        <span class="project-cat">Logistics</span>
-                        <h3 class="card-title">Logibuddy</h3>
-                        <p class="card-text">Rigorous functional testing for shipment tracking. Verified real-time status updates and route optimization.</p>
-                        <div class="tech-tags">
-                            <span class="tag">SQL</span>
-                            <span class="tag">Real-time Data</span>
-                        </div>
-                    </div>
-                </article>
-                
-                 <article class="project-card">
-                    <img src="/image/2.png" alt="Edhi UK" class="project-img">
-                    <div class="project-body">
-                        <span class="project-cat">Finance</span>
-                        <h3 class="card-title">Edhi International</h3>
-                        <p class="card-text">Security testing for high-traffic donation portal. Maintained GDPR data protection standards.</p>
-                        <div class="tech-tags">
-                            <span class="tag">Multi-Currency</span>
-                            <span class="tag">Load Testing</span>
-                        </div>
-                        <a href="https://edhiuk.org/" target="_blank" class="btn-link" style="margin-top: 20px;">Visit Site &rarr;</a>
-                    </div>
-                </article>
-            </div>
+    <footer class="footer">
+        <div class="footer-text">
+            <p>Copyright &copy; 2023 by Sayed Asif | All Rights Reserved.</p>
         </div>
-    </section>
 
-    <section id="case-study" class="section bg-gray">
-        <div class="container">
-            <div class="grid-3" style="align-items: center;">
-                <div style="grid-column: span 1;">
-                    <span class="hero-tag">Enterprise Case Study</span>
-                    <h2>iCHARMS Ecosystem</h2>
-                    <p>A deep dive into the End-to-End QA of the iCHARMS platform. I executed comprehensive validation across critical business modules.</p>
-                    <a href="https://i-charms.com/" target="_blank" class="btn btn-primary">Visit Platform</a>
-                </div>
-                <div style="grid-column: span 2; display: grid; gap: 15px;">
-                    <div class="feature-list-item">
-                        <div class="feature-list-icon"><i class="fas fa-hand-holding-usd"></i></div>
-                        <div>
-                            <h4>Finance & Gift Aid Logic</h4>
-                            <p class="card-text" style="margin:0;">Verified HMRC Tax Reclamation algorithms and multi-currency reporting accuracy.</p>
-                        </div>
-                    </div>
-                    <div class="feature-list-item">
-                        <div class="feature-list-icon icon-blue"><i class="fas fa-users-cog"></i></div>
-                        <div>
-                            <h4>CRM & Donor Profiling</h4>
-                            <p class="card-text" style="margin:0;">Validated workflows for interaction history and GDPR compliance for sensitive user data.</p>
-                        </div>
-                    </div>
-                    <div class="feature-list-item">
-                        <div class="feature-list-icon icon-purple"><i class="fas fa-user-shield"></i></div>
-                        <div>
-                            <h4>RBAC & Security</h4>
-                            <p class="card-text" style="margin:0;">Strictly enforced permission testing for Admins, Managers, and Volunteers.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="container" style="max-width: 800px;">
-            <div class="section-header">
-                <h2>Career Trajectory</h2>
-            </div>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <span class="timeline-date">2023 - Present</span>
-                    <h3>Software QA Engineer</h3>
-                    <h4 class="text-blue">Techno Serve Software Solutions</h4>
-                    <p style="margin-top: 10px;">Leading QA for multiple clients. Successfully validated 3 major payment gateways (Lloyds, WorldPay, Stripe) with 0 post-production critical defects.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <span class="timeline-date">2023</span>
-                    <h3>Certified QA Professional</h3>
-                    <h4 class="text-blue">SQUAD Infotech Pvt.Ltd</h4>
-                    <p style="margin-top: 10px;">Completed rigorous training in Manual Testing, Automation basics, and SQL Database management.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <span class="timeline-date">2020 - 2022</span>
-                    <h3>Bachelor of Commerce</h3>
-                    <h4 class="text-blue">MVM College</h4>
-                    <p style="margin-top: 10px;">Built a strong foundation in financial accounting, aiding in FinTech application testing.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section bg-gray">
-        <div class="container" style="max-width: 800px;">
-            <h2 class="text-center" style="margin-bottom: 40px;">Common Questions</h2>
-            
-            <div class="faq-item">
-                <div class="faq-header">
-                    What testing services do you offer?
-                    <i class="fas fa-chevron-down faq-icon"></i>
-                </div>
-                <div class="faq-body">
-                    <p>I specialize in manual and automation testing, specifically for payment gateways, compliance logic, API workflows, and end-to-end defect management.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-header">
-                    Do you have experience with UK Tax/Finance?
-                    <i class="fas fa-chevron-down faq-icon"></i>
-                </div>
-                <div class="faq-body">
-                    <p>Yes. My portfolio includes extensive work with HMRC Gift Aid declaration logic, Tax reclamation workflows, and GDPR compliance for UK-based non-profits.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-header">
-                    Can you test Payment Gateways securely?
-                    <i class="fas fa-chevron-down faq-icon"></i>
-                </div>
-                <div class="faq-body">
-                    <p>Absolutely. I have validated integrations for Stripe, Lloyds, WorldPay, and PayPal, focusing on recurring payments, failure handling, and security.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-grid">
-                <div>
-                    <a href="#" class="footer-logo">Sayed<span>Asif</span></a>
-                    <p style="font-size: 0.9rem; max-width: 300px;">
-                        Engineered for Quality. I am currently open to full-time opportunities where I can apply my expertise in payment validation.
-                    </p>
-                    <div class="social-row">
-                        <a href="https://www.linkedin.com/in/asifsayed83/" target="_blank" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://wa.me/919867574386" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
-                        <a href="mailto:sayedasif83838@gmail.com" class="social-btn"><i class="fas fa-envelope"></i></a>
-                    </div>
-                </div>
-                <div>
-                    <h4>Navigation</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="about.html">About Profile</a></li>
-                        <li><a href="#skills">Capabilities</a></li>
-                        <li><a href="#projects">Portfolio</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Contact Info</h4>
-                    <ul>
-                        <li><a href="#">Andheri (W), Mumbai-58</a></li>
-                        <li><a href="tel:+919867574386">+91 9867574386</a></li>
-                        <li><a href="mailto:sayedasif83838@gmail.com">sayedasif83838@gmail.com</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div style="border-top: 1px solid #e2e8f0; padding-top: 30px; text-align: center; font-size: 0.85rem; color: var(--text-light);">
-                &copy; 2026 Sayed Asif. All rights reserved.
-            </div>
+        <div class="footer-iconTop">
+            <a href="#home"><i class='bx bx-up-arrow-alt'></i></a>
         </div>
     </footer>
 
-    <script>
-        // Mobile Navigation Logic
-        const toggle = document.querySelector('.mobile-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        const navLinks = document.querySelectorAll('.nav-link');
 
-        toggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            const icon = toggle.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-times');
-        });
+    <script src="https://unpkg.com/scrollreveal"></script>
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                toggle.querySelector('i').classList.add('fa-bars');
-                toggle.querySelector('i').classList.remove('fa-times');
-            });
-        });
+    <script src="https://unpkg.com/typed.js@2.0.15/dist/typed.umd.js"></script>
 
-        // FAQ Accordion Logic
-        const faqItems = document.querySelectorAll('.faq-item');
-        faqItems.forEach(item => {
-            const header = item.querySelector('.faq-header');
-            header.addEventListener('click', () => {
-                // Optional: Close others
-                faqItems.forEach(other => {
-                    if (other !== item) other.classList.remove('active');
-                });
-                item.classList.toggle('active');
-            });
-        });
-    </script>
+    <script src="js/script.js"></script>
 </body>
+
 </html>
