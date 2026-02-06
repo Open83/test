@@ -2,595 +2,405 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Duty Slip</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Duty Slip</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --text-dark: #1f2937;
-            --text-light: #6b7280;
-            --border-color: #e5e7eb;
-            --bg-color: #f3f4f6;
-            --paper-width: 1600px;
-            --paper-height: 990px;
+            --primary: #1e3a8a;
+            --accent: #2563eb;
+            --border: #d1d5db;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            /* PDF Dimensions */
+            --pdf-width: 1600px;
+            --pdf-height: 990px;
         }
 
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { background: var(--bg); margin: 0; padding: 20px; color: var(--text); }
 
-        body {
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 0;
-            padding-bottom: 160px;
+        /* Container designed for 1600x990 Aspect Ratio */
+        .duty-slip-card {
+            width: var(--pdf-width);
+            height: var(--pdf-height);
+            background: white;
+            margin: 0 auto;
             display: flex;
-            justify-content: center;
-        }
-
-        .page-container {
-            width: 100%;
-            max-width: var(--paper-width);
-            background: #ffffff;
-            min-height: var(--paper-height);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             position: relative;
+            overflow: hidden;
         }
 
-        .doc-header {
+        /* Header Styling */
+        .header {
             background: var(--primary);
             color: white;
-            padding: 10px 20px;
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .doc-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin: 0;
-        }
+        .header h1 { margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; }
+        .meta-info { text-align: right; font-size: 14px; }
 
-        .doc-meta {
-            text-align: right;
-            font-size: 0.7rem;
-            opacity: 0.95;
-        }
-
-        .meta-row { margin-bottom: 2px; }
-        
-        .id-badge {
-            background: rgba(255,255,255,0.2);
-            padding: 1px 6px;
-            border-radius: 4px;
-            font-weight: 600;
-            margin-left: 5px;
-        }
-
-        .doc-body {
-            padding: 10px 20px;
-            display: flex;
-            gap: 20px;
-        }
-
-        .left-column, .right-column {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .section {
-            margin-bottom: 10px;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            border-bottom: 1.5px solid var(--border-color);
-            padding-bottom: 4px;
-            margin-bottom: 8px;
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-        }
-        
-        .section-header i { margin-right: 8px; }
-
-        .grid-2 {
+        /* Two-Column Body */
+        .content-body {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 40px;
+            padding: 30px 40px;
+            flex-grow: 1;
         }
 
-        .input-group {
-            margin-bottom: 2px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.55rem;
-            color: var(--text-light);
+        .section { margin-bottom: 20px; }
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent);
             text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 1px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        input, select, textarea {
-            width: 100%;
-            border: 1px solid transparent;
-            border-bottom: 1px solid #d1d5db;
-            background: transparent;
-            font-size: 0.75rem;
-            color: var(--text-dark);
-            font-weight: 500;
-            padding: 2px 0;
-            border-radius: 0;
-            outline: none;
-            transition: border-color 0.3s;
+        /* Input Styling - Smaller Fields */
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 12px;
         }
 
-        input:focus, textarea:focus {
-            border-bottom-color: var(--primary);
-        }
+        .input-group { display: flex; flex-direction: column; }
+        label { font-size: 10px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
         
-        input::placeholder { color: #ccc; font-weight: 400; }
-
-        .signature-area {
-            margin-top: 15px;
-            page-break-inside: avoid; 
-            break-inside: avoid;
-            -webkit-column-break-inside: avoid;
+        input, textarea {
+            border: none;
+            border-bottom: 1px solid var(--border);
+            padding: 4px 0;
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            background: transparent;
+            transition: border-color 0.2s;
         }
 
-        .canvas-wrapper {
-            border: 2px dashed #e5e7eb;
+        input:focus { border-bottom-color: var(--accent); }
+
+        /* Signature Area */
+        .signature-container {
+            margin-top: 20px;
+            border: 2px dashed #cbd5e1;
             border-radius: 8px;
-            background: #fff;
-            height: 70px;
             position: relative;
-            overflow: hidden;
+            background: #fff;
         }
 
-        canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-            cursor: crosshair;
-        }
+        canvas { width: 100%; height: 120px; cursor: crosshair; }
 
-        .clear-sig-btn {
-            display: block;
-            width: 100%;
-            text-align: right;
-            font-size: 0.7rem;
-            color: #ef4444;
+        .btn-clear {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
             background: none;
             border: none;
+            color: #ef4444;
+            font-size: 11px;
             text-decoration: underline;
             cursor: pointer;
-            padding: 8px 0;
-            margin-top: 2px;
-            position: relative;
-            z-index: 10;
         }
 
-        .floating-actions {
+        /* Floating Actions */
+        .controls {
             position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 999;
+            bottom: 30px;
+            right: 30px;
             display: flex;
             gap: 10px;
         }
 
-        .hidden-in-pdf { display: inline-flex !important; }
-        
-        button.hidden-in-pdf { display: block !important; }
-
-        .btn-download {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white; border: none; padding: 12px 24px; border-radius: 50px;
-            font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-            display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .btn-new-booking {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white; border: none; padding: 12px 24px; border-radius: 50px;
-            font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-            display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
-        }
+        .btn-new { background: #f59e0b; color: white; }
+        .btn-pdf { background: #10b981; color: white; }
 
-        .btn-download:active, .btn-new-booking:active { transform: scale(0.98); }
-
-        .status-badge {
-            position: absolute; top: 10px; right: 10px; background: #10b981; color: white;
-            padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 600; display: none;
-        }
-        .status-badge.active { display: block; }
-
-        @media (max-width: 600px) {
-            .page-container { width: 100%; box-shadow: none; }
-            .doc-header { padding: 10px; flex-direction: column; align-items: flex-start; gap: 5px; }
-            .doc-meta { text-align: left; }
-            .doc-body { padding: 10px; flex-direction: column; gap: 10px; }
-            .grid-2 { grid-template-columns: 1fr; gap: 10px; }
-            .floating-actions { flex-direction: column; width: 90%; }
-        }
+        @media print { .controls { display: none; } }
     </style>
 </head>
 <body>
 
-    <div class="page-container" id="printable-area">
-        
-        <div class="status-badge" id="statusBadge">
-            <i class="fas fa-check-circle"></i> Restored
-        </div>
-
-        <div class="doc-header">
-            <h1 class="doc-title">Duty Slip</h1>
-            <div class="doc-meta">
-                <div class="meta-row">Date: <span id="displayDate" style="font-weight:600"></span></div>
-                <div class="meta-row">ID: <span id="bookingId" class="id-badge">...</span></div>
+    <div class="duty-slip-card" id="slip-content">
+        <div class="header">
+            <div>
+                <h1>Duty Slip</h1>
+                <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;">Official Transport Record</div>
+            </div>
+            <div class="meta-info">
+                <div>Date: <b id="currentDate">--</b></div>
+                <div style="margin-top: 5px;">Slip ID: <span id="slipId" style="background:rgba(255,255,255,0.2); padding: 2px 8px; border-radius:4px;">...</span></div>
             </div>
         </div>
 
-        <div class="doc-body">
-            <div class="left-column">
+        <div class="content-body">
+            <div class="column">
                 <div class="section">
-                    <div class="section-header"><i class="fas fa-user"></i> Customer Details</div>
-                    <div class="grid-2">
+                    <div class="section-title"><i class="fas fa-user"></i> Customer Details</div>
+                    <div class="input-row">
                         <div class="input-group">
-                            <label>Customer Name</label>
-                            <input type="text" id="custName" placeholder="Enter full name">
+                            <label>Client Name</label>
+                            <input type="text" id="custName" placeholder="John Doe">
                         </div>
                         <div class="input-group">
-                            <label>Phone Number</label>
-                            <input type="tel" id="custPhone" placeholder="Enter phone number">
+                            <label>Contact Number</label>
+                            <input type="text" id="custPhone" placeholder="+91 ...">
                         </div>
                     </div>
-                    <div class="input-group" style="margin-top: 5px;">
-                        <label>Address</label>
+                    <div class="input-group">
+                        <label>Pickup/Drop Address</label>
                         <input type="text" id="custAddress" placeholder="Enter full address">
                     </div>
                 </div>
 
                 <div class="section">
-                    <div class="section-header"><i class="fas fa-route"></i> Journey Details</div>
-                    <div class="grid-2">
+                    <div class="section-title"><i class="fas fa-route"></i> Trip Schedule</div>
+                    <div class="input-row">
                         <div class="input-group">
-                            <label>Start Time</label>
+                            <label>Start (Date/Time)</label>
                             <input type="datetime-local" id="startTime">
                         </div>
                         <div class="input-group">
-                            <label>End Time</label>
+                            <label>End (Date/Time)</label>
                             <input type="datetime-local" id="endTime">
                         </div>
                     </div>
-                    <div class="grid-2" style="margin-top: 5px;">
+                    <div class="input-row">
                         <div class="input-group">
                             <label>Start KM Reading</label>
-                            <input type="number" id="startKm" placeholder="0">
+                            <input type="number" id="startKm">
                         </div>
                         <div class="input-group">
                             <label>End KM Reading</label>
-                            <input type="number" id="endKm" placeholder="0">
+                            <input type="number" id="endKm">
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="section">
-                    <div class="section-header"><i class="fas fa-comment-alt"></i> Remarks</div>
-                    <textarea id="remarks" rows="1" placeholder="Notes..."></textarea>
+                    <div class="section-title"><i class="fas fa-pen"></i> Remarks</div>
+                    <textarea id="remarks" rows="2" placeholder="Toll, parking, or route notes..."></textarea>
                 </div>
             </div>
 
-            <div class="right-column">
+            <div class="column">
                 <div class="section">
-                    <div class="section-header"><i class="fas fa-id-card"></i> Driver Details</div>
-                    <div class="grid-2">
+                    <div class="section-title"><i class="fas fa-id-card"></i> Driver & Vehicle</div>
+                    <div class="input-row">
                         <div class="input-group">
                             <label>Driver Name</label>
-                            <input type="text" id="driverName" placeholder="Enter driver name">
+                            <input type="text" id="driverName">
                         </div>
                         <div class="input-group">
-                            <label>Driver Number</label>
-                            <input type="tel" id="driverPhone" placeholder="Enter driver number">
+                            <label>Driver Contact</label>
+                            <input type="text" id="driverPhone">
                         </div>
                     </div>
-                    <div class="grid-2" style="margin-top: 5px;">
+                    <div class="input-row">
                         <div class="input-group">
-                            <label>Car Type</label>
-                            <input type="text" id="carType" placeholder="e.g. Sedan">
+                            <label>Vehicle Model</label>
+                            <input type="text" id="carType">
                         </div>
                         <div class="input-group">
-                            <label>Car Number</label>
-                            <input type="text" id="carNumber" placeholder="e.g. MH-01-AB-1234">
+                            <label>Vehicle Number</label>
+                            <input type="text" id="carNumber">
                         </div>
                     </div>
                 </div>
 
                 <div class="section">
-                    <div class="section-header"><i class="fas fa-clipboard-list"></i> Customer Uses</div>
-                    <div class="grid-2">
+                    <div class="section-title"><i class="fas fa-check-double"></i> Billing Summary</div>
+                    <div class="input-row">
                         <div class="input-group">
-                            <label>Reading Km</label>
-                            <input type="number" id="useReadingKm" placeholder="0">
+                            <label>Total KM Used</label>
+                            <input type="number" id="useReadingKm">
                         </div>
                         <div class="input-group">
-                            <label>Closing Time</label>
+                            <label>Duty Closed Time</label>
                             <input type="time" id="useClosingTime">
                         </div>
                     </div>
                 </div>
 
-                <div class="signature-area">
-                    <label style="margin-bottom: 4px; display:block;">Driver / Customer Signature</label>
-                    <div class="canvas-wrapper">
+                <div class="section">
+                    <div class="section-title"><i class="fas fa-signature"></i> Authentication</div>
+                    <label>Customer / Driver Signature</label>
+                    <div class="signature-container">
                         <canvas id="sig-canvas"></canvas>
+                        <button class="btn-clear" id="clear-sig">Clear</button>
                     </div>
-                    <button class="clear-sig-btn hidden-in-pdf" id="clear-sig" data-html2canvas-ignore="true">
-                        Clear Signature
-                    </button>
                 </div>
             </div>
         </div>
-        
-        <div style="text-align: center; font-size: 0.65rem; color: #9ca3af; padding-bottom: 10px; margin-top: 5px;">
-            System Generated Invoice • Valid without physical seal
-        </div>
 
+        <div style="text-align: center; color: #94a3b8; font-size: 11px; padding-bottom: 20px;">
+            This is a computer-generated document and requires no physical seal.
+        </div>
     </div>
 
-    <div class="floating-actions">
-        <button class="btn-new-booking" onclick="startNewBooking()">
-            <i class="fas fa-plus"></i> New
+    <div class="controls">
+        <button class="btn btn-new" onclick="resetForm()">
+            <i class="fas fa-plus"></i> New Slip
         </button>
-        <button class="btn-download" onclick="generatePDF()">
-            <i class="fas fa-file-pdf"></i> Download PDF
+        <button class="btn btn-pdf" onclick="generatePDF()">
+            <i class="fas fa-download"></i> Download PDF
         </button>
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlipData_v5'; 
-        let canvas, ctx, writingMode = false;
-        let autoSaveTimeout;
+        const STORAGE_KEY = 'duty_slip_v2_data';
+        let canvas, ctx, isDrawing = false;
 
-        window.onload = function() {
-            setupCanvas();
-            const savedData = loadBookingData();
-            if (savedData) {
-                restoreBookingData(savedData);
-                showRestoreNotification();
-            } else {
-                createNewBooking();
-            }
+        window.onload = () => {
+            initCanvas();
+            loadSavedData();
             setupAutoSave();
         };
 
-        function createNewBooking() {
-            const today = new Date().toLocaleDateString('en-IN', { 
-                day: 'numeric', month: 'short', year: 'numeric' 
-            });
-            document.getElementById('displayDate').textContent = today;
-            const randomId = Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('bookingId').textContent = `AST-${randomId}`;
-            saveBookingData();
-        }
+        function initCanvas() {
+            canvas = document.getElementById('sig-canvas');
+            ctx = canvas.getContext('2d');
+            
+            // Set canvas resolution for the box size
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            ctx.lineWidth = 2;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#1e3a8a';
 
-        function startNewBooking() {
-            if (confirm('Start new booking? Current data will be cleared.')) {
-                localStorage.removeItem(STORAGE_KEY);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                document.querySelectorAll('input, textarea').forEach(el => el.value = '');
-                createNewBooking();
-            }
-        }
-
-        function saveBookingData() {
-            const data = {
-                bookingId: document.getElementById('bookingId').textContent,
-                date: document.getElementById('displayDate').textContent,
-                custName: document.getElementById('custName').value,
-                custPhone: document.getElementById('custPhone').value,
-                custAddress: document.getElementById('custAddress').value,
-                driverName: document.getElementById('driverName').value,
-                driverPhone: document.getElementById('driverPhone').value,
-                carType: document.getElementById('carType').value,
-                carNumber: document.getElementById('carNumber').value,
-                startTime: document.getElementById('startTime').value,
-                endTime: document.getElementById('endTime').value,
-                startKm: document.getElementById('startKm').value,
-                endKm: document.getElementById('endKm').value,
-                useReadingKm: document.getElementById('useReadingKm').value,
-                useClosingTime: document.getElementById('useClosingTime').value,
-                remarks: document.getElementById('remarks').value,
-                signature: canvas.toDataURL(),
-                timestamp: new Date().toISOString()
+            const getPos = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                return {
+                    x: (e.clientX || e.touches[0].clientX) - rect.left,
+                    y: (e.clientY || e.touches[0].clientY) - rect.top
+                };
             };
+
+            const start = (e) => { isDrawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
+            const draw = (e) => { if(!isDrawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); };
+            const stop = () => { if(isDrawing) { isDrawing = false; saveAll(); } };
+
+            canvas.addEventListener('mousedown', start);
+            canvas.addEventListener('mousemove', draw);
+            window.addEventListener('mouseup', stop);
+
+            canvas.addEventListener('touchstart', start);
+            canvas.addEventListener('touchmove', draw);
+            canvas.addEventListener('touchend', stop);
+
+            document.getElementById('clear-sig').onclick = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                saveAll();
+            };
+        }
+
+        function saveAll() {
+            const data = {
+                meta: {
+                    id: document.getElementById('slipId').textContent,
+                    date: document.getElementById('currentDate').textContent
+                },
+                fields: {},
+                sig: canvas.toDataURL()
+            };
+            document.querySelectorAll('input, textarea').forEach(el => {
+                data.fields[el.id] = el.value;
+            });
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         }
 
-        function loadBookingData() {
+        function loadSavedData() {
             const saved = localStorage.getItem(STORAGE_KEY);
-            return saved ? JSON.parse(saved) : null;
-        }
-
-        function restoreBookingData(data) {
-            document.getElementById('bookingId').textContent = data.bookingId;
-            document.getElementById('displayDate').textContent = data.date;
-            document.getElementById('custName').value = data.custName || '';
-            document.getElementById('custPhone').value = data.custPhone || '';
-            document.getElementById('custAddress').value = data.custAddress || '';
-            document.getElementById('driverName').value = data.driverName || '';
-            document.getElementById('driverPhone').value = data.driverPhone || '';
-            document.getElementById('carType').value = data.carType || '';
-            document.getElementById('carNumber').value = data.carNumber || '';
-            document.getElementById('startTime').value = data.startTime || '';
-            document.getElementById('endTime').value = data.endTime || '';
-            document.getElementById('startKm').value = data.startKm || '';
-            document.getElementById('endKm').value = data.endKm || '';
-            document.getElementById('useReadingKm').value = data.useReadingKm || '';
-            document.getElementById('useClosingTime').value = data.useClosingTime || '';
-            document.getElementById('remarks').value = data.remarks || '';
-            
-            if (data.signature) {
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('slipId').textContent = data.meta.id;
+                document.getElementById('currentDate').textContent = data.meta.date;
+                Object.keys(data.fields).forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) el.value = data.fields[id];
+                });
                 const img = new Image();
-                img.onload = function() { ctx.drawImage(img, 0, 0); };
-                img.src = data.signature;
+                img.onload = () => ctx.drawImage(img, 0, 0);
+                img.src = data.sig;
+            } else {
+                generateNewId();
             }
         }
 
+        function generateNewId() {
+            const date = new Date();
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('en-GB');
+            document.getElementById('slipId').textContent = 'DS-' + Math.floor(100000 + Math.random() * 900000);
+        }
+
         function setupAutoSave() {
-            document.querySelectorAll('input, textarea').forEach(input => {
-                input.addEventListener('input', () => {
-                    clearTimeout(autoSaveTimeout);
-                    autoSaveTimeout = setTimeout(saveBookingData, 1000);
-                });
+            document.querySelectorAll('input, textarea').forEach(el => {
+                el.addEventListener('input', saveAll);
             });
         }
 
-        function showRestoreNotification() {
-            const badge = document.getElementById('statusBadge');
-            badge.classList.add('active');
-            setTimeout(() => badge.classList.remove('active'), 3000);
+        function resetForm() {
+            if(confirm("Clear all data and start a new slip?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
         }
 
-        function setupCanvas() {
-            canvas = document.getElementById("sig-canvas");
-            ctx = canvas.getContext("2d");
+        async function generatePDF() {
+            const element = document.getElementById('slip-content');
+            const slipId = document.getElementById('slipId').textContent;
             
-            new ResizeObserver(() => {
-                const rect = canvas.getBoundingClientRect();
-                if (canvas.width !== rect.width || canvas.height !== rect.height) {
-                    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    canvas.width = rect.width;
-                    canvas.height = rect.height;
-                    ctx.putImageData(imgData, 0, 0);
-                    ctx.lineWidth = 2;
-                    ctx.lineJoin = 'round';
-                    ctx.lineCap = 'round';
-                    ctx.strokeStyle = '#2563eb';
-                }
-            }).observe(canvas.parentElement);
-
-            ['mousedown', 'touchstart'].forEach(e => canvas.addEventListener(e, startDraw, {passive: false}));
-            ['mouseup', 'touchend'].forEach(e => canvas.addEventListener(e, endDraw, {passive: false}));
-            ['mousemove', 'touchmove'].forEach(e => canvas.addEventListener(e, draw, {passive: false}));
-        }
-
-        function startDraw(e) {
-            writingMode = true;
-            ctx.beginPath();
-            const pos = getPos(e);
-            ctx.moveTo(pos.x, pos.y);
-            e.preventDefault();
-        }
-        function endDraw() { writingMode = false; saveBookingData(); }
-        function draw(e) {
-            if (!writingMode) return;
-            const pos = getPos(e);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
-            e.preventDefault();
-        }
-        function getPos(e) {
-            const rect = canvas.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return { x: clientX - rect.left, y: clientY - rect.top };
-        }
-        document.getElementById('clear-sig').addEventListener('click', () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            saveBookingData();
-        });
-
-        function generatePDF() {
-            const element = document.getElementById('printable-area');
-            const bookingId = document.getElementById('bookingId').textContent;
-
-            const inputsToFormat = [
-                { id: 'startTime', type: 'datetime' },
-                { id: 'endTime', type: 'datetime' },
-                { id: 'useClosingTime', type: 'time' }
-            ];
-
-            const originalDisplayStates = [];
-
-            inputsToFormat.forEach(item => {
-                const input = document.getElementById(item.id);
-                if(input) {
-                    originalDisplayStates.push({ el: input, display: input.style.display });
-                    const span = document.createElement('div');
-                    span.style.fontSize = '0.75rem';
-                    span.style.fontWeight = '500';
-                    span.style.color = '#1f2937';
-                    span.style.padding = '2px 0';
-                    span.style.borderBottom = '1px solid #d1d5db';
-                    
-                    if (input.value) {
-                        if (item.type === 'datetime') {
-                            const dateObj = new Date(input.value);
-                            span.textContent = dateObj.toLocaleString('en-IN', {
-                                day: 'numeric', month: 'short', year: 'numeric',
-                                hour: 'numeric', minute: 'numeric', hour12: true
-                            }).toUpperCase();
-                        } else if (item.type === 'time') {
-                            const [h, m] = input.value.split(':');
-                            const dateObj = new Date();
-                            dateObj.setHours(h);
-                            dateObj.setMinutes(m);
-                            span.textContent = dateObj.toLocaleTimeString('en-IN', {
-                                hour: 'numeric', minute: 'numeric', hour12: true
-                            }).toUpperCase();
-                        }
-                    } else {
-                        span.textContent = '';
-                        span.style.height = '20px';
-                    }
-
-                    input.style.display = 'none';
-                    input.parentNode.insertBefore(span, input.nextSibling);
-                    item.span = span;
-                }
-            });
-
             const opt = {
-                margin:       0,
-                filename:     `DutySlip_${bookingId}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
-                pagebreak:    { mode: 'css' }, 
-                jsPDF:        { unit: 'px', format: [1600, 990], orientation: 'landscape' }
+                margin: 0,
+                filename: `DutySlip-${slipId}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 1, useCORS: true },
+                jsPDF: { 
+                    unit: 'px', 
+                    format: [1600, 990], 
+                    orientation: 'landscape' 
+                }
             };
 
-            const originalStyle = element.style.cssText;
-            element.style.width = "1600px";
-            element.style.height = "990px"; 
-            element.style.margin = "0 auto";
-            element.style.boxShadow = "none";
-
-            html2pdf().set(opt).from(element).save().then(() => {
-                element.style.cssText = originalStyle;
-                inputsToFormat.forEach((item, index) => {
-                    const input = document.getElementById(item.id);
-                    if(input) {
-                        input.style.display = originalDisplayStates[index].display;
-                        if (item.span) item.span.remove();
-                    }
-                });
-            });
+            // Temporary UI clean up for PDF
+            document.getElementById('clear-sig').style.display = 'none';
+            
+            try {
+                await html2pdf().set(opt).from(element).save();
+            } finally {
+                document.getElementById('clear-sig').style.display = 'block';
+            }
         }
     </script>
 </body>
