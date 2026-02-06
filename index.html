@@ -160,19 +160,35 @@
         .btn-new { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .btn-pdf { background: linear-gradient(135deg, #10b981, #059669); }
 
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.95); z-index: 20000;
+            display: none; align-items: center; justify-content: center;
+            flex-direction: column; color: var(--primary);
+        }
+        .spinner {
+            border: 4px solid #f3f3f3; border-top: 4px solid var(--primary);
+            border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
 
         /* --- PDF GENERATION CLONE STYLES --- */
-        /* These styles apply ONLY to the invisible clone used for generating the PDF */
+        /* Forces the clone to be visible on top so the browser paints it */
         .pdf-clone-container {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
             width: 1600px !important;
             height: 990px !important;
-            z-index: -9999; /* Hide behind everything */
-            background: white;
-            margin: 0; padding: 0;
-            border-radius: 0;
-            box-shadow: none;
+            z-index: 10000 !important; /* Visible on top */
+            background: white !important;
+            margin: 0 !important; padding: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            pointer-events: none; /* User can't click it */
         }
 
         .pdf-clone-container .header {
@@ -188,7 +204,7 @@
             grid-template-columns: 1fr 1fr !important;
             gap: 60px !important;
             padding: 40px 60px !important;
-            height: calc(990px - 160px); /* Fill remaining height */
+            height: calc(990px - 160px); 
         }
 
         .pdf-clone-container .form-row {
@@ -196,24 +212,12 @@
             gap: 30px !important;
         }
 
-        /* Transform Inputs to Text for PDF */
+        /* Hide actual inputs in PDF, show clean text */
         .pdf-clone-container input, 
         .pdf-clone-container textarea {
-            border: none !important;
-            border-bottom: 1px solid #cbd5e1 !important;
-            background: transparent !important;
-            border-radius: 0 !important;
-            padding: 5px 0 !important;
-            font-size: 1.2rem !important;
-            font-weight: 600 !important;
-            color: #000 !important;
-            box-shadow: none !important;
-            margin-bottom: 5px !important;
-            height: auto !important;
-            display: none; /* Hide original inputs, we use divs */
+            display: none !important;
         }
         
-        /* The text replacements */
         .pdf-value-display {
             border-bottom: 1px solid #cbd5e1;
             padding: 5px 0;
@@ -222,6 +226,8 @@
             color: #111;
             min-height: 30px;
             font-family: 'Inter', sans-serif;
+            margin-bottom: 5px;
+            display: block;
         }
 
         .pdf-clone-container label {
@@ -235,6 +241,11 @@
     </style>
 </head>
 <body>
+
+    <div class="loading-overlay" id="loader">
+        <div class="spinner"></div>
+        <div style="font-weight:600">Generating PDF...</div>
+    </div>
 
     <div class="slip-container" id="printable-area">
         <div class="header">
@@ -364,7 +375,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlipData_v8_fixed';
+        const STORAGE_KEY = 'dutySlipData_v9_final';
         let canvas, ctx, writingMode = false;
         let autoSaveTimeout;
 
@@ -374,7 +385,6 @@
             if (savedData) restoreBookingData(JSON.parse(savedData));
             else createNewBooking();
             
-            // Auto-save listener
             document.querySelectorAll('input, textarea').forEach(el => {
                 el.addEventListener('input', () => {
                     clearTimeout(autoSaveTimeout);
@@ -426,7 +436,6 @@
             }
         }
 
-        /* --- Canvas Logic --- */
         function setupCanvas() {
             canvas = document.getElementById("sig-canvas");
             ctx = canvas.getContext("2d");
@@ -460,13 +469,11 @@
             return { x: t.clientX - r.left, y: t.clientY - r.top }; 
         }
 
-        /* --- PDF Generation Logic (Clone Strategy) --- */
+        /* --- PDF Generation: The Fix --- */
         function format12Hour(isoStr) {
             if(!isoStr) return '';
             const date = new Date(isoStr);
-            // check if valid date
             if(isNaN(date.getTime())) {
-                // Try parsing as time string "HH:MM"
                 const [h, m] = isoStr.split(':');
                 if(h && m) {
                     const d = new Date(); d.setHours(h); d.setMinutes(m);
@@ -480,16 +487,21 @@
             });
         }
 
-        function generatePDF() {
-            // 1. Clone the element
+        async function generatePDF() {
+            // Show Loader
+            document.getElementById('loader').style.display = 'flex';
+            
+            // Allow browser to render loader
+            await new Promise(resolve => setTimeout(resolve, 100));
+
             const original = document.getElementById('printable-area');
             const clone = original.cloneNode(true);
             
-            // 2. Setup Clone Styles (Force Desktop 1600x990)
+            // SETUP CLONE: Force it to be visible on top
             clone.id = "pdf-clone";
             clone.classList.add('pdf-clone-container');
             
-            // 3. Process Inputs -> Text for clean PDF
+            // CONVERT INPUTS TO TEXT
             const originalInputs = original.querySelectorAll('input, textarea');
             const cloneInputs = clone.querySelectorAll('input, textarea');
             
@@ -497,22 +509,19 @@
                 const target = cloneInputs[index];
                 const val = orig.value;
                 
-                // Create text element
                 const textDiv = document.createElement('div');
                 textDiv.className = 'pdf-value-display';
                 
-                // Format dates/times
                 if (orig.type === 'datetime-local' || orig.type === 'time') {
                     textDiv.textContent = format12Hour(val);
                 } else {
                     textDiv.textContent = val;
                 }
                 
-                // Replace input with text div in clone
                 target.parentNode.replaceChild(textDiv, target);
             });
 
-            // 4. Handle Canvas (Canvas content does not clone automatically)
+            // HANDLE CANVAS
             const origCanvas = original.querySelector('canvas');
             const cloneCanvas = clone.querySelector('canvas');
             const cloneCtx = cloneCanvas.getContext('2d');
@@ -520,19 +529,24 @@
             cloneCanvas.height = origCanvas.height;
             cloneCtx.drawImage(origCanvas, 0, 0);
 
-            // 5. Append to body (behind z-index) so html2canvas can see it
+            // APPEND TO BODY
             document.body.appendChild(clone);
 
-            // 6. Generate PDF
+            // CRITICAL: WAIT FOR PAINT
+            // This 500ms delay ensures the browser paints the 'clone' completely before capturing
+            await new Promise(resolve => setTimeout(resolve, 500));
+
             const opt = {
                 margin: 0,
                 filename: `DutySlip_${document.getElementById('bookingId').textContent}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { 
-                    scale: 2, // Higher res
+                    scale: 2, 
                     useCORS: true,
                     windowWidth: 1600,
-                    windowHeight: 990
+                    windowHeight: 990,
+                    scrollX: 0,
+                    scrollY: 0
                 },
                 jsPDF: { 
                     unit: 'px', 
@@ -541,9 +555,16 @@
                 }
             };
 
-            html2pdf().set(opt).from(clone).save().then(() => {
-                document.body.removeChild(clone); // Cleanup
-            });
+            try {
+                await html2pdf().set(opt).from(clone).save();
+            } catch (error) {
+                console.error("PDF Generation Error:", error);
+                alert("Error generating PDF. Please try again.");
+            } finally {
+                // CLEANUP
+                document.body.removeChild(clone);
+                document.getElementById('loader').style.display = 'none';
+            }
         }
     </script>
 </body>
