@@ -112,22 +112,22 @@
 
 
         /* --- DESKTOP PDF LAYOUT (Hidden Clone) --- */
-        /* This class is applied to the temporary clone used for PDF generation */
         .pdf-clone-container {
-            position: absolute !important; /* Absolute is safer than Fixed for html2canvas */
-            top: 0 !important;
+            position: fixed !important;
+            top: -10000px !important;
             left: 0 !important;
             width: 1600px !important;
             height: 990px !important;
             z-index: 10000 !important;
-            background-color: #ffffff !important; /* Force white bg */
-            margin: 0 !important; padding: 0 !important;
+            background-color: #ffffff !important;
+            margin: 0 !important;
+            padding: 0 !important;
             border-radius: 0 !important;
             box-shadow: none !important;
             pointer-events: none;
+            overflow: visible !important;
         }
 
-        /* Enforce Grid for PDF */
         .pdf-clone-container .body-content {
             display: grid !important;
             grid-template-columns: 1fr 1fr !important;
@@ -142,7 +142,6 @@
 
         .pdf-clone-container .form-row { grid-template-columns: 1fr 1fr !important; gap: 40px !important; }
         
-        /* Convert inputs to text for PDF */
         .pdf-clone-container input, .pdf-clone-container textarea { display: none !important; }
         
         .pdf-value {
@@ -160,7 +159,6 @@
         .pdf-clone-container .clear-sig { display: none !important; }
         .pdf-clone-container .doc-footer { font-size: 1rem !important; border: none !important; }
 
-        /* Signature Image in PDF */
         .sig-image-display { width: 100%; height: 100%; object-fit: contain; }
     </style>
 </head>
@@ -382,11 +380,10 @@
             return { x: t.clientX - r.left, y: t.clientY - r.top }; 
         }
 
-        // --- ROBUST PDF GENERATION ---
         function format12h(val) {
             if(!val) return '';
             const d = new Date(val);
-            if(isNaN(d.getTime())) { // Is Time String?
+            if(isNaN(d.getTime())) {
                 const [h, m] = val.split(':');
                 if(h && m) {
                     const dt = new Date(); dt.setHours(h); dt.setMinutes(m);
@@ -398,22 +395,19 @@
         }
 
         async function generatePDF() {
-            // 1. Show Loader
             const loader = document.getElementById('loader');
             loader.style.display = 'flex';
             
-            // 2. Scroll to top (CRITICAL for mobile render)
             window.scrollTo(0, 0);
-            await new Promise(r => setTimeout(r, 300));
+            await new Promise(r => setTimeout(r, 200));
 
-            // 3. Clone & Prepare
             const original = document.getElementById('app-interface');
             const clone = original.cloneNode(true);
             
             clone.id = "pdf-render-clone";
             clone.classList.add('pdf-clone-container');
             
-            // 4. Transform Inputs -> Text
+            // Transform inputs to text
             const origInputs = original.querySelectorAll('input, textarea');
             const cloneInputs = clone.querySelectorAll('input, textarea');
             
@@ -423,50 +417,68 @@
                 const div = document.createElement('div');
                 div.className = 'pdf-value';
                 
-                if(orig.type === 'datetime-local' || orig.type === 'time') div.textContent = format12h(val);
-                else div.textContent = val;
+                if(orig.type === 'datetime-local' || orig.type === 'time') {
+                    div.textContent = format12h(val);
+                } else {
+                    div.textContent = val;
+                }
                 
                 target.parentNode.replaceChild(div, target);
             });
 
-            // 5. Transform Canvas -> Image (Fixes blank signature)
+            // Convert signature canvas to image
             const origCanvas = original.querySelector('canvas');
             const cloneCanvasWrapper = clone.querySelector('.signature-box');
+            cloneCanvasWrapper.innerHTML = '';
             
-            // Remove canvas from clone, add image
-            cloneCanvasWrapper.innerHTML = ''; 
             if(origCanvas) {
-                const img = new Image();
+                const img = document.createElement('img');
                 img.src = origCanvas.toDataURL('image/png');
                 img.className = 'sig-image-display';
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'contain';
                 cloneCanvasWrapper.appendChild(img);
+                
+                // Wait for image to load
+                await new Promise(resolve => {
+                    if(img.complete) resolve();
+                    else img.onload = resolve;
+                });
             }
 
-            // 6. Append to Body
             document.body.appendChild(clone);
             
-            // 7. Render
+            // Extra wait for fonts and rendering
+            await new Promise(r => setTimeout(r, 800));
+            
             const opt = {
                 margin: 0,
                 filename: `DutySlip_${document.getElementById('bookingId').textContent}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { 
-                    scale: 1.5, // 1.5 is safer for mobile memory than 2
+                    scale: 2,
                     useCORS: true,
-                    scrollY: 0,
+                    logging: false,
+                    scrollY: -10000,
                     scrollX: 0,
                     windowWidth: 1600,
-                    windowHeight: 990
+                    windowHeight: 990,
+                    backgroundColor: '#ffffff'
                 },
-                jsPDF: { unit: 'px', format: [1600, 990], orientation: 'landscape' }
+                jsPDF: { 
+                    unit: 'px', 
+                    format: [1600, 990], 
+                    orientation: 'landscape',
+                    compress: true
+                }
             };
 
             try {
-                // Wait for DOM paint
-                await new Promise(r => setTimeout(r, 500));
                 await html2pdf().set(opt).from(clone).save();
             } catch (e) {
                 alert('PDF Error: ' + e.message);
+                console.error(e);
             } finally {
                 document.body.removeChild(clone);
                 loader.style.display = 'none';
