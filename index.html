@@ -2,405 +2,563 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Duty Slip</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Digital Duty Slip</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         :root {
-            --primary: #1e3a8a;
-            --accent: #2563eb;
-            --border: #d1d5db;
-            --bg: #f8fafc;
-            --text: #1e293b;
-            /* PDF Dimensions */
+            --primary: #2563eb;       /* Modern Blue */
+            --surface: #ffffff;       /* Card Background */
+            --background: #f1f5f9;    /* Page Background */
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --border: #e2e8f0;
+            
+            /* PDF Specs */
             --pdf-width: 1600px;
             --pdf-height: 990px;
         }
 
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        body { background: var(--bg); margin: 0; padding: 20px; color: var(--text); }
-
-        /* Container designed for 1600x990 Aspect Ratio */
-        .duty-slip-card {
-            width: var(--pdf-width);
-            height: var(--pdf-height);
-            background: white;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            margin: 0;
+            padding: 15px;
+            padding-bottom: 100px; /* Space for floating buttons */
+            color: var(--text-main);
         }
 
-        /* Header Styling */
+        /* --- Mobile-First Card Layout --- */
+        .slip-container {
+            background: var(--surface);
+            width: 100%;
+            max-width: 800px; /* Comfortable max-width for desktop viewing */
+            margin: 0 auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Header */
         .header {
             background: var(--primary);
             color: white;
-            padding: 20px 40px;
+            padding: 15px 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .header-top { display: flex; justify-content: space-between; align-items: center; }
+        .title { font-size: 1.25rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 0; }
+        .meta-data { font-size: 0.85rem; opacity: 0.9; text-align: right; }
+        .id-badge { background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+
+        /* Content Body */
+        .body-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column; /* Default: Stacked (Mobile) */
+            gap: 25px;
         }
 
-        .header h1 { margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; }
-        .meta-info { text-align: right; font-size: 14px; }
-
-        /* Two-Column Body */
-        .content-body {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            padding: 30px 40px;
-            flex-grow: 1;
+        /* Responsive Grid for Large Screens */
+        @media (min-width: 768px) {
+            .slip-container { margin-top: 20px; }
+            .header { flex-direction: row; align-items: center; }
+            
+            .body-content {
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* Two Columns */
+                gap: 40px;
+            }
         }
 
-        .section { margin-bottom: 20px; }
-        .section-title {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--accent);
+        /* Sections */
+        .section { display: flex; flex-direction: column; gap: 15px; }
+        
+        .section-header {
+            font-size: 0.75rem;
             text-transform: uppercase;
-            border-bottom: 2px solid #e2e8f0;
+            color: var(--primary);
+            font-weight: 700;
+            border-bottom: 2px solid var(--border);
             padding-bottom: 5px;
-            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Input Styling - Smaller Fields */
-        .input-row {
+        /* Form Inputs - Mobile Optimized */
+        .form-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr; /* Stacked by default */
             gap: 15px;
-            margin-bottom: 12px;
+        }
+        
+        @media (min-width: 480px) {
+            .form-row { grid-template-columns: 1fr 1fr; } /* Side by side on larger phones/tablets */
         }
 
         .input-group { display: flex; flex-direction: column; }
-        label { font-size: 10px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
         
+        label {
+            font-size: 0.7rem;
+            color: var(--text-sub);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        /* Removed border-bottom only style for a more touch-friendly box style */
         input, textarea {
-            border: none;
-            border-bottom: 1px solid var(--border);
-            padding: 4px 0;
-            font-size: 14px;
-            font-weight: 500;
+            width: 100%;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px; /* Larger hit area for touch */
+            font-size: 0.9rem; /* Readable on mobile */
+            color: var(--text-main);
             outline: none;
-            background: transparent;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input:focus { border-bottom-color: var(--accent); }
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            background: white;
+        }
+        
+        textarea { resize: vertical; min-height: 60px; }
 
-        /* Signature Area */
-        .signature-container {
-            margin-top: 20px;
-            border: 2px dashed #cbd5e1;
+        /* Signature Canvas */
+        .signature-box {
+            border: 2px dashed var(--border);
             border-radius: 8px;
-            position: relative;
             background: #fff;
+            height: 120px;
+            position: relative;
+            touch-action: none; /* Critical for mobile scroll prevention while drawing */
         }
 
-        canvas { width: 100%; height: 120px; cursor: crosshair; }
+        canvas { width: 100%; height: 100%; display: block; cursor: crosshair; }
 
-        .btn-clear {
+        .clear-sig {
             position: absolute;
             bottom: 5px;
-            right: 5px;
-            background: none;
-            border: none;
+            right: 10px;
+            font-size: 0.75rem;
             color: #ef4444;
-            font-size: 11px;
-            text-decoration: underline;
+            background: rgba(255,255,255,0.9);
+            border: 1px solid #ef4444;
+            border-radius: 4px;
+            padding: 2px 8px;
             cursor: pointer;
         }
 
         /* Floating Actions */
-        .controls {
+        .fab-container {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            z-index: 100;
+            width: 90%;
+            max-width: 400px;
         }
 
         .btn {
-            padding: 12px 24px;
-            border-radius: 8px;
+            flex: 1;
+            padding: 14px;
             border: none;
+            border-radius: 50px;
             font-weight: 600;
-            cursor: pointer;
+            font-size: 1rem;
+            color: white;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        
+        .btn:active { transform: scale(0.98) translateX(-50%); } /* maintain centering */
+
+        .btn-new { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .btn-pdf { background: linear-gradient(135deg, #10b981, #059669); }
+
+        /* --- PDF GENERATION SPECIFIC STYLES --- */
+        /* This class is added via JS only during PDF generation */
+        .pdf-mode-active {
+            width: var(--pdf-width) !important;
+            height: var(--pdf-height) !important;
+            max-width: none !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            padding: 0 !important;
         }
 
-        .btn-new { background: #f59e0b; color: white; }
-        .btn-pdf { background: #10b981; color: white; }
+        .pdf-mode-active .body-content {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 30px !important;
+            padding: 30px 40px !important;
+        }
 
-        @media print { .controls { display: none; } }
+        .pdf-mode-active .header { padding: 20px 40px !important; }
+        .pdf-mode-active .form-row { grid-template-columns: 1fr 1fr !important; }
+        
+        /* Hide UI elements during PDF gen */
+        .pdf-mode-active .clear-sig { display: none !important; }
+        .pdf-mode-active input, .pdf-mode-active textarea {
+            border: none !important;
+            border-bottom: 1px solid #ccc !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
     </style>
 </head>
 <body>
 
-    <div class="duty-slip-card" id="slip-content">
+    <div class="slip-container" id="printable-area">
         <div class="header">
-            <div>
-                <h1>Duty Slip</h1>
-                <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;">Official Transport Record</div>
-            </div>
-            <div class="meta-info">
-                <div>Date: <b id="currentDate">--</b></div>
-                <div style="margin-top: 5px;">Slip ID: <span id="slipId" style="background:rgba(255,255,255,0.2); padding: 2px 8px; border-radius:4px;">...</span></div>
+            <div class="header-top" style="flex:1">
+                <h1 class="title">Duty Slip</h1>
+                <div class="meta-data">
+                    <div>Date: <span id="displayDate" style="font-weight:600">--</span></div>
+                    <div style="margin-top:4px">ID: <span id="bookingId" class="id-badge">...</span></div>
+                </div>
             </div>
         </div>
 
-        <div class="content-body">
-            <div class="column">
+        <div class="body-content">
+            <div class="column-left" style="display:flex; flex-direction:column; gap:25px;">
+                
                 <div class="section">
-                    <div class="section-title"><i class="fas fa-user"></i> Customer Details</div>
-                    <div class="input-row">
+                    <div class="section-header"><i class="fas fa-user"></i> Customer Details</div>
+                    <div class="form-row">
                         <div class="input-group">
-                            <label>Client Name</label>
-                            <input type="text" id="custName" placeholder="John Doe">
+                            <label>Customer Name</label>
+                            <input type="text" id="custName" placeholder="Name">
                         </div>
                         <div class="input-group">
-                            <label>Contact Number</label>
-                            <input type="text" id="custPhone" placeholder="+91 ...">
+                            <label>Phone Number</label>
+                            <input type="tel" id="custPhone" placeholder="Phone">
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Pickup/Drop Address</label>
-                        <input type="text" id="custAddress" placeholder="Enter full address">
+                        <label>Address</label>
+                        <input type="text" id="custAddress" placeholder="Pickup address">
                     </div>
                 </div>
 
                 <div class="section">
-                    <div class="section-title"><i class="fas fa-route"></i> Trip Schedule</div>
-                    <div class="input-row">
+                    <div class="section-header"><i class="fas fa-route"></i> Journey Details</div>
+                    <div class="form-row">
                         <div class="input-group">
-                            <label>Start (Date/Time)</label>
+                            <label>Start Time</label>
                             <input type="datetime-local" id="startTime">
                         </div>
                         <div class="input-group">
-                            <label>End (Date/Time)</label>
+                            <label>End Time</label>
                             <input type="datetime-local" id="endTime">
                         </div>
                     </div>
-                    <div class="input-row">
+                    <div class="form-row">
                         <div class="input-group">
-                            <label>Start KM Reading</label>
-                            <input type="number" id="startKm">
+                            <label>Start KM</label>
+                            <input type="number" id="startKm" placeholder="0">
                         </div>
                         <div class="input-group">
-                            <label>End KM Reading</label>
-                            <input type="number" id="endKm">
+                            <label>End KM</label>
+                            <input type="number" id="endKm" placeholder="0">
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="section">
-                    <div class="section-title"><i class="fas fa-pen"></i> Remarks</div>
-                    <textarea id="remarks" rows="2" placeholder="Toll, parking, or route notes..."></textarea>
+                    <div class="section-header"><i class="fas fa-comment-alt"></i> Remarks</div>
+                    <textarea id="remarks" placeholder="Enter additional notes..."></textarea>
                 </div>
             </div>
 
-            <div class="column">
+            <div class="column-right" style="display:flex; flex-direction:column; gap:25px;">
+                
                 <div class="section">
-                    <div class="section-title"><i class="fas fa-id-card"></i> Driver & Vehicle</div>
-                    <div class="input-row">
+                    <div class="section-header"><i class="fas fa-id-card"></i> Driver Details</div>
+                    <div class="form-row">
                         <div class="input-group">
                             <label>Driver Name</label>
-                            <input type="text" id="driverName">
+                            <input type="text" id="driverName" placeholder="Name">
                         </div>
                         <div class="input-group">
-                            <label>Driver Contact</label>
-                            <input type="text" id="driverPhone">
+                            <label>Driver Number</label>
+                            <input type="tel" id="driverPhone" placeholder="Mobile">
                         </div>
                     </div>
-                    <div class="input-row">
+                    <div class="form-row">
                         <div class="input-group">
-                            <label>Vehicle Model</label>
-                            <input type="text" id="carType">
+                            <label>Car Type</label>
+                            <input type="text" id="carType" placeholder="Sedan/SUV">
                         </div>
                         <div class="input-group">
-                            <label>Vehicle Number</label>
-                            <input type="text" id="carNumber">
+                            <label>Car Number</label>
+                            <input type="text" id="carNumber" placeholder="MH-01-XX-1234">
                         </div>
                     </div>
                 </div>
 
                 <div class="section">
-                    <div class="section-title"><i class="fas fa-check-double"></i> Billing Summary</div>
-                    <div class="input-row">
+                    <div class="section-header"><i class="fas fa-clipboard-check"></i> Usage Summary</div>
+                    <div class="form-row">
                         <div class="input-group">
-                            <label>Total KM Used</label>
-                            <input type="number" id="useReadingKm">
+                            <label>Total KM</label>
+                            <input type="number" id="useReadingKm" placeholder="0">
                         </div>
                         <div class="input-group">
-                            <label>Duty Closed Time</label>
+                            <label>Closing Time</label>
                             <input type="time" id="useClosingTime">
                         </div>
                     </div>
                 </div>
 
                 <div class="section">
-                    <div class="section-title"><i class="fas fa-signature"></i> Authentication</div>
-                    <label>Customer / Driver Signature</label>
-                    <div class="signature-container">
+                    <div class="section-header"><i class="fas fa-file-signature"></i> Authorization</div>
+                    <label>Driver / Customer Signature</label>
+                    <div class="signature-box">
                         <canvas id="sig-canvas"></canvas>
-                        <button class="btn-clear" id="clear-sig">Clear</button>
+                        <button class="clear-sig" id="clear-sig">Clear</button>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div style="text-align: center; color: #94a3b8; font-size: 11px; padding-bottom: 20px;">
-            This is a computer-generated document and requires no physical seal.
+        
+        <div style="text-align: center; font-size: 0.65rem; color: #9ca3af; padding: 20px; opacity: 0.7;">
+            System Generated Invoice • Valid without physical seal
         </div>
     </div>
 
-    <div class="controls">
-        <button class="btn btn-new" onclick="resetForm()">
-            <i class="fas fa-plus"></i> New Slip
+    <div class="fab-container">
+        <button class="btn btn-new" onclick="startNewBooking()">
+            <i class="fas fa-plus"></i> New
         </button>
         <button class="btn btn-pdf" onclick="generatePDF()">
-            <i class="fas fa-download"></i> Download PDF
+            <i class="fas fa-file-pdf"></i> PDF
         </button>
     </div>
 
     <script>
-        const STORAGE_KEY = 'duty_slip_v2_data';
-        let canvas, ctx, isDrawing = false;
+        const STORAGE_KEY = 'dutySlipData_v6_mobile'; 
+        let canvas, ctx, writingMode = false;
+        let autoSaveTimeout;
 
-        window.onload = () => {
-            initCanvas();
-            loadSavedData();
+        window.onload = function() {
+            setupCanvas();
+            const savedData = loadBookingData();
+            if (savedData) {
+                restoreBookingData(savedData);
+            } else {
+                createNewBooking();
+            }
             setupAutoSave();
         };
 
-        function initCanvas() {
-            canvas = document.getElementById('sig-canvas');
-            ctx = canvas.getContext('2d');
-            
-            // Set canvas resolution for the box size
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-            
-            ctx.lineWidth = 2;
-            ctx.lineJoin = 'round';
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = '#1e3a8a';
-
-            const getPos = (e) => {
-                const rect = canvas.getBoundingClientRect();
-                return {
-                    x: (e.clientX || e.touches[0].clientX) - rect.left,
-                    y: (e.clientY || e.touches[0].clientY) - rect.top
-                };
-            };
-
-            const start = (e) => { isDrawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
-            const draw = (e) => { if(!isDrawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); };
-            const stop = () => { if(isDrawing) { isDrawing = false; saveAll(); } };
-
-            canvas.addEventListener('mousedown', start);
-            canvas.addEventListener('mousemove', draw);
-            window.addEventListener('mouseup', stop);
-
-            canvas.addEventListener('touchstart', start);
-            canvas.addEventListener('touchmove', draw);
-            canvas.addEventListener('touchend', stop);
-
-            document.getElementById('clear-sig').onclick = () => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                saveAll();
-            };
+        // --- Core Logic (Preserved from previous version) ---
+        function createNewBooking() {
+            const today = new Date().toLocaleDateString('en-IN', { 
+                day: 'numeric', month: 'short', year: 'numeric' 
+            });
+            document.getElementById('displayDate').textContent = today;
+            const randomId = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('bookingId').textContent = `AST-${randomId}`;
+            saveBookingData();
         }
 
-        function saveAll() {
+        function startNewBooking() {
+            if (confirm('Start new booking? Current data will be cleared.')) {
+                localStorage.removeItem(STORAGE_KEY);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+                createNewBooking();
+            }
+        }
+
+        function saveBookingData() {
             const data = {
-                meta: {
-                    id: document.getElementById('slipId').textContent,
-                    date: document.getElementById('currentDate').textContent
-                },
+                bookingId: document.getElementById('bookingId').textContent,
+                date: document.getElementById('displayDate').textContent,
+                // Using generic selector to catch all inputs dynamically
                 fields: {},
-                sig: canvas.toDataURL()
+                signature: canvas.toDataURL(),
+                timestamp: new Date().toISOString()
             };
+            
             document.querySelectorAll('input, textarea').forEach(el => {
                 data.fields[el.id] = el.value;
             });
+
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         }
 
-        function loadSavedData() {
+        function loadBookingData() {
             const saved = localStorage.getItem(STORAGE_KEY);
-            if (saved) {
-                const data = JSON.parse(saved);
-                document.getElementById('slipId').textContent = data.meta.id;
-                document.getElementById('currentDate').textContent = data.meta.date;
-                Object.keys(data.fields).forEach(id => {
-                    const el = document.getElementById(id);
-                    if(el) el.value = data.fields[id];
-                });
-                const img = new Image();
-                img.onload = () => ctx.drawImage(img, 0, 0);
-                img.src = data.sig;
-            } else {
-                generateNewId();
-            }
+            return saved ? JSON.parse(saved) : null;
         }
 
-        function generateNewId() {
-            const date = new Date();
-            document.getElementById('currentDate').textContent = date.toLocaleDateString('en-GB');
-            document.getElementById('slipId').textContent = 'DS-' + Math.floor(100000 + Math.random() * 900000);
+        function restoreBookingData(data) {
+            document.getElementById('bookingId').textContent = data.bookingId;
+            document.getElementById('displayDate').textContent = data.date;
+            
+            if(data.fields) {
+                Object.keys(data.fields).forEach(key => {
+                    const el = document.getElementById(key);
+                    if(el) el.value = data.fields[key];
+                });
+            }
+
+            if (data.signature) {
+                const img = new Image();
+                img.onload = function() { ctx.drawImage(img, 0, 0); };
+                img.src = data.signature;
+            }
         }
 
         function setupAutoSave() {
-            document.querySelectorAll('input, textarea').forEach(el => {
-                el.addEventListener('input', saveAll);
+            document.querySelectorAll('input, textarea').forEach(input => {
+                input.addEventListener('input', () => {
+                    clearTimeout(autoSaveTimeout);
+                    autoSaveTimeout = setTimeout(saveBookingData, 1000);
+                });
             });
         }
 
-        function resetForm() {
-            if(confirm("Clear all data and start a new slip?")) {
-                localStorage.removeItem(STORAGE_KEY);
-                location.reload();
-            }
+        // --- Canvas & Signature Logic (Exact preservation) ---
+        function setupCanvas() {
+            canvas = document.getElementById("sig-canvas");
+            ctx = canvas.getContext("2d");
+            
+            // Handle resizing of canvas resolution to match display size
+            const resizeCanvas = () => {
+                const rect = canvas.getBoundingClientRect();
+                // Only resize if dimensions changed to avoid clearing data on mobile scroll
+                if (canvas.width !== rect.width || canvas.height !== rect.height) {
+                    // Save content
+                    const savedData = canvas.toDataURL();
+                    canvas.width = rect.width;
+                    canvas.height = rect.height;
+                    
+                    // Restore content
+                    const img = new Image();
+                    img.onload = () => ctx.drawImage(img, 0, 0);
+                    img.src = savedData;
+
+                    ctx.lineWidth = 2;
+                    ctx.lineJoin = 'round';
+                    ctx.lineCap = 'round';
+                    ctx.strokeStyle = '#2563eb';
+                }
+            };
+            
+            // Initial sizing
+            resizeCanvas();
+            // Watch for orientation changes or resize
+            window.addEventListener('resize', resizeCanvas);
+
+            // Pointer Events
+            ['mousedown', 'touchstart'].forEach(e => canvas.addEventListener(e, startDraw, {passive: false}));
+            ['mouseup', 'touchend'].forEach(e => canvas.addEventListener(e, endDraw, {passive: false}));
+            ['mousemove', 'touchmove'].forEach(e => canvas.addEventListener(e, draw, {passive: false}));
+            
+            document.getElementById('clear-sig').addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent button focus issues
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                saveBookingData();
+            });
         }
 
-        async function generatePDF() {
-            const element = document.getElementById('slip-content');
-            const slipId = document.getElementById('slipId').textContent;
-            
+        function startDraw(e) {
+            writingMode = true;
+            ctx.beginPath();
+            const pos = getPos(e);
+            ctx.moveTo(pos.x, pos.y);
+            e.preventDefault(); // Stop page scrolling on mobile
+        }
+        function endDraw() { 
+            writingMode = false; 
+            saveBookingData(); 
+        }
+        function draw(e) {
+            if (!writingMode) return;
+            const pos = getPos(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            e.preventDefault();
+        }
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        // --- PDF Generation Logic ---
+        function generatePDF() {
+            const element = document.getElementById('printable-area');
+            const bookingId = document.getElementById('bookingId').textContent;
+
+            // 1. Force Desktop Layout for PDF Generation
+            // We apply a class that forces width to 1600px and grid layout
+            element.classList.add('pdf-mode-active');
+
+            // 2. Prepare visual tweaks (handle date inputs for clean PDF output)
+            const inputs = element.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.setAttribute('data-original-value', input.value);
+                input.setAttribute('value', input.value); // Ensure value is visible in HTML for PDF
+            });
+
+            // 3. Configure html2pdf with exact dimensions
             const opt = {
-                margin: 0,
-                filename: `DutySlip-${slipId}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 1, useCORS: true },
-                jsPDF: { 
+                margin:       0,
+                filename:     `DutySlip_${bookingId}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    scrollY: 0,
+                    windowWidth: 1600, // Force canvas to see desktop width
+                    windowHeight: 990 
+                },
+                jsPDF:        { 
                     unit: 'px', 
                     format: [1600, 990], 
                     orientation: 'landscape' 
                 }
             };
 
-            // Temporary UI clean up for PDF
-            document.getElementById('clear-sig').style.display = 'none';
-            
-            try {
-                await html2pdf().set(opt).from(element).save();
-            } finally {
-                document.getElementById('clear-sig').style.display = 'block';
-            }
+            // 4. Generate and Cleanup
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Remove the forced layout class to return to responsive mobile view
+                element.classList.remove('pdf-mode-active');
+            }).catch(err => {
+                console.error(err);
+                element.classList.remove('pdf-mode-active');
+            });
         }
     </script>
 </body>
