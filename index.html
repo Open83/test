@@ -434,11 +434,9 @@
             loader.style.display = 'flex';
             
             try {
-                // Scroll to top
                 window.scrollTo(0, 0);
                 await new Promise(r => setTimeout(r, 100));
 
-                // Clone the element
                 const original = document.getElementById('app-interface');
                 const clone = original.cloneNode(true);
                 
@@ -477,14 +475,11 @@
                     cloneCanvasWrapper.appendChild(img);
                 }
 
-                // Append clone to body
                 document.body.appendChild(clone);
-                
-                // Wait for rendering
                 await new Promise(r => setTimeout(r, 1000));
                 
-                // Capture with html2canvas
-                const canvas = await html2canvas(clone, {
+                // Capture with html2canvas at exact dimensions
+                const capturedCanvas = await html2canvas(clone, {
                     scale: 2,
                     useCORS: true,
                     allowTaint: true,
@@ -497,23 +492,24 @@
                     y: 0
                 });
                 
-                // Create PDF using jsPDF
+                // Calculate dimensions in mm for A4 landscape equivalent
+                const imgWidth = 297; // A4 landscape width in mm
+                const imgHeight = 210; // A4 landscape height in mm
+                
+                // Create PDF in landscape with proper dimensions
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF({
                     orientation: 'landscape',
-                    unit: 'px',
-                    format: [1600, 990],
-                    compress: true
+                    unit: 'mm',
+                    format: 'a4'
                 });
                 
-                const imgData = canvas.toDataURL('image/jpeg', 0.98);
-                pdf.addImage(imgData, 'JPEG', 0, 0, 1600, 990);
+                const imgData = capturedCanvas.toDataURL('image/jpeg', 1.0);
+                pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, '', 'FAST');
                 
-                // Save PDF
                 const filename = `DutySlip_${document.getElementById('bookingId').textContent}.pdf`;
                 pdf.save(filename);
                 
-                // Cleanup
                 document.body.removeChild(clone);
                 
             } catch (error) {
