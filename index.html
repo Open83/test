@@ -6,36 +6,30 @@
     <title>Digital Duty Slip</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         :root {
-            --primary: #1e40af;       /* Deep Blue */
+            --primary: #1e3a8a;
+            --bg: #f3f4f6;
             --surface: #ffffff;
-            --background: #f1f5f9;
-            --text-main: #0f172a;
-            --text-sub: #64748b;
-            --border: #cbd5e1;
-            
-            /* Exact PDF Specs */
-            --pdf-width: 1600px;
-            --pdf-height: 990px;
+            --text: #1f2937;
+            --border: #e5e7eb;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--background);
+            background-color: var(--bg);
             margin: 0;
             padding: 15px;
             padding-bottom: 100px;
-            color: var(--text-main);
+            color: var(--text);
         }
 
-        /* --- Main Container (Mobile First) --- */
+        /* --- Main Mobile-First Container --- */
         .slip-container {
             background: var(--surface);
             width: 100%;
@@ -43,8 +37,8 @@
             margin: 0 auto;
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            position: relative;
             overflow: hidden;
+            position: relative;
         }
 
         /* Header */
@@ -52,17 +46,14 @@
             background: var(--primary);
             color: white;
             padding: 15px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
         }
         
-        .header-row { display: flex; justify-content: space-between; align-items: center; }
-        .title { font-size: 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin: 0; }
-        .meta-data { font-size: 0.85rem; text-align: right; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; }
+        .title { font-size: 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin: 0; }
+        .meta-data { font-size: 0.85rem; text-align: right; opacity: 0.95; }
         .id-badge { background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 600; font-family: monospace; }
 
-        /* Content Body */
+        /* Body Content */
         .body-content {
             padding: 20px;
             display: flex;
@@ -70,69 +61,65 @@
             gap: 20px;
         }
 
-        /* Desktop/Tablet Grid */
+        /* Tablet/Desktop Tweaks */
         @media (min-width: 768px) {
-            .slip-container { margin-top: 20px; }
-            .header { padding: 20px 30px; }
             .body-content {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 40px;
-                padding: 30px;
             }
         }
 
-        /* Section Styling */
+        /* Sections */
         .section { margin-bottom: 5px; }
-        
         .section-header {
             font-size: 0.75rem;
             text-transform: uppercase;
             color: var(--primary);
             font-weight: 700;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 4px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 6px;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Form Inputs */
+        /* Forms */
         .form-row {
             display: grid;
             grid-template-columns: 1fr;
             gap: 15px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
-        
         @media (min-width: 480px) { .form-row { grid-template-columns: 1fr 1fr; } }
 
         .input-group { display: flex; flex-direction: column; }
         
         label {
             font-size: 0.7rem;
-            color: var(--text-sub);
+            color: #6b7280;
             font-weight: 600;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
 
         input, textarea {
             width: 100%;
-            background: #f8fafc;
+            background: #f9fafb;
             border: 1px solid var(--border);
             border-radius: 6px;
             padding: 10px;
             font-size: 0.95rem;
-            color: var(--text-main);
+            color: var(--text);
             outline: none;
+            transition: all 0.2s;
         }
 
         input:focus, textarea:focus {
             border-color: var(--primary);
             background: white;
-            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
         }
 
         textarea { resize: none; height: 60px; }
@@ -142,159 +129,126 @@
             border: 2px dashed var(--border);
             border-radius: 8px;
             background: #fff;
-            height: 100px;
+            height: 110px;
             position: relative;
         }
-
         canvas { width: 100%; height: 100%; display: block; cursor: crosshair; }
-
         .clear-sig {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            font-size: 0.7rem;
-            color: #ef4444;
-            background: white;
-            border: 1px solid #ef4444;
-            border-radius: 4px;
-            padding: 2px 8px;
+            position: absolute; bottom: 5px; right: 5px;
+            font-size: 0.7rem; color: #ef4444; background: white;
+            border: 1px solid #ef4444; border-radius: 4px; padding: 2px 8px;
             cursor: pointer;
         }
 
         /* Footer */
         .doc-footer {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #94a3b8;
-            padding: 20px;
-            border-top: 1px solid #f1f5f9;
+            text-align: center; font-size: 0.7rem; color: #9ca3af;
+            padding: 20px; border-top: 1px solid var(--border);
         }
 
-        /* Floating Actions */
+        /* Buttons */
         .fab-container {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 100;
-            width: 90%;
-            max-width: 350px;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 12px; z-index: 100; width: 90%; max-width: 400px;
         }
-
         .btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            flex: 1; padding: 14px; border: none; border-radius: 50px;
+            font-weight: 600; color: white; display: flex; align-items: center;
+            justify-content: center; gap: 8px; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-
         .btn-new { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .btn-pdf { background: linear-gradient(135deg, #10b981, #059669); }
 
-        /* --- PDF MODE (Strict 1600x990 Layout) --- */
-        .pdf-mode-active {
-            width: var(--pdf-width) !important;
-            height: var(--pdf-height) !important;
-            max-width: none !important;
-            margin: 0 !important;
-            border-radius: 0 !important;
-            box-shadow: none !important;
-            padding: 0 !important;
-            background: white !important;
-            position: fixed; 
-            top: 0; left: 0; z-index: 9999;
+
+        /* --- PDF GENERATION CLONE STYLES --- */
+        /* These styles apply ONLY to the invisible clone used for generating the PDF */
+        .pdf-clone-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 1600px !important;
+            height: 990px !important;
+            z-index: -9999; /* Hide behind everything */
+            background: white;
+            margin: 0; padding: 0;
+            border-radius: 0;
+            box-shadow: none;
         }
 
-        .pdf-mode-active .header {
-            padding: 25px 50px !important;
-            height: 100px; /* Fixed Header Height */
-            justify-content: center;
+        .pdf-clone-container .header {
+            padding: 25px 50px;
+            height: 110px;
+            display: flex; align-items: center; justify-content: center;
         }
+        .pdf-clone-container .title { font-size: 2.2rem; }
+        .pdf-clone-container .meta-data { font-size: 1.1rem; }
 
-        .pdf-mode-active .title { font-size: 2rem !important; }
-        .pdf-mode-active .meta-data { font-size: 1rem !important; }
-
-        .pdf-mode-active .body-content {
+        .pdf-clone-container .body-content {
             display: grid !important;
             grid-template-columns: 1fr 1fr !important;
-            /* Uniform spacing to fill height without gaps */
-            padding: 40px 50px !important;
-            height: calc(100% - 140px) !important; /* Total height minus header/footer */
             gap: 60px !important;
-            align-content: stretch;
+            padding: 40px 60px !important;
+            height: calc(990px - 160px); /* Fill remaining height */
         }
 
-        /* Distribute vertical space in columns during PDF mode */
-        .pdf-mode-active .column-left,
-        .pdf-mode-active .column-right {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
+        .pdf-clone-container .form-row {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 30px !important;
         }
 
-        /* Clean Look for Inputs in PDF */
-        .pdf-mode-active input, 
-        .pdf-mode-active textarea,
-        .pdf-mode-active .static-value {
+        /* Transform Inputs to Text for PDF */
+        .pdf-clone-container input, 
+        .pdf-clone-container textarea {
             border: none !important;
-            border-bottom: 1px solid #94a3b8 !important;
-            border-radius: 0 !important;
+            border-bottom: 1px solid #cbd5e1 !important;
             background: transparent !important;
+            border-radius: 0 !important;
             padding: 5px 0 !important;
-            font-size: 1.1rem !important;
+            font-size: 1.2rem !important;
             font-weight: 600 !important;
-            color: #0f172a !important;
-            margin-bottom: 0 !important;
+            color: #000 !important;
             box-shadow: none !important;
+            margin-bottom: 5px !important;
+            height: auto !important;
+            display: none; /* Hide original inputs, we use divs */
+        }
+        
+        /* The text replacements */
+        .pdf-value-display {
+            border-bottom: 1px solid #cbd5e1;
+            padding: 5px 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #111;
+            min-height: 30px;
+            font-family: 'Inter', sans-serif;
         }
 
-        .pdf-mode-active label {
-            font-size: 0.85rem !important;
+        .pdf-clone-container label {
+            font-size: 0.9rem !important;
             color: #64748b !important;
             margin-bottom: 8px !important;
         }
 
-        .pdf-mode-active .clear-sig, 
-        .pdf-mode-active input[type="datetime-local"], 
-        .pdf-mode-active input[type="time"] { 
-            display: none !important; /* Hide original date inputs in PDF */
-        }
-        
-        .static-value { display: none; } /* Hidden normally */
-        .pdf-mode-active .static-value { display: block !important; } /* Visible in PDF */
-
-        .pdf-mode-active .doc-footer {
-            position: absolute; bottom: 0; width: 100%; height: 40px;
-            font-size: 0.9rem !important; padding-top: 10px;
-        }
+        .pdf-clone-container .clear-sig { display: none !important; }
+        .pdf-clone-container .doc-footer { font-size: 0.9rem; padding-bottom: 10px; }
     </style>
 </head>
 <body>
 
     <div class="slip-container" id="printable-area">
         <div class="header">
-            <div class="header-row">
+            <div class="header-top">
                 <h1 class="title">Duty Slip</h1>
                 <div class="meta-data">
-                    <div style="font-weight:600" id="displayDate">--</div>
-                    <div style="margin-top:5px">Slip ID: <span id="bookingId" class="id-badge">...</span></div>
+                    <div id="displayDate" style="font-weight:600">--</div>
+                    <div style="margin-top:4px">ID: <span id="bookingId" class="id-badge">...</span></div>
                 </div>
             </div>
         </div>
 
         <div class="body-content">
-            <div class="column-left">
+            <div>
                 <div class="section">
                     <div class="section-header"><i class="fas fa-user"></i> Client Information</div>
                     <div class="form-row">
@@ -303,28 +257,26 @@
                             <input type="text" id="custName" placeholder="Enter name">
                         </div>
                         <div class="input-group">
-                            <label>Contact Number</label>
+                            <label>Phone Number</label>
                             <input type="tel" id="custPhone" placeholder="Enter phone">
                         </div>
                     </div>
                     <div class="input-group">
                         <label>Pickup Address</label>
-                        <input type="text" id="custAddress" placeholder="Full address">
+                        <input type="text" id="custAddress" placeholder="Enter full address">
                     </div>
                 </div>
 
-                <div class="section">
+                <div class="section" style="margin-top:20px;">
                     <div class="section-header"><i class="fas fa-route"></i> Trip Details</div>
                     <div class="form-row">
                         <div class="input-group">
                             <label>Start Time</label>
                             <input type="datetime-local" id="startTime">
-                            <div id="startTime-display" class="static-value"></div>
                         </div>
                         <div class="input-group">
                             <label>End Time</label>
                             <input type="datetime-local" id="endTime">
-                            <div id="endTime-display" class="static-value"></div>
                         </div>
                     </div>
                     <div class="form-row">
@@ -339,53 +291,54 @@
                     </div>
                 </div>
 
-                <div class="section">
-                    <div class="section-header"><i class="fas fa-pen"></i> Notes</div>
-                    <textarea id="remarks" placeholder="Toll, parking, etc."></textarea>
+                <div class="section" style="margin-top:20px;">
+                    <div class="section-header"><i class="fas fa-pen"></i> Remarks</div>
+                    <textarea id="remarks" placeholder="Notes..."></textarea>
                 </div>
             </div>
 
-            <div class="column-right">
-                <div class="section">
-                    <div class="section-header"><i class="fas fa-id-card"></i> Driver & Vehicle</div>
-                    <div class="form-row">
-                        <div class="input-group">
-                            <label>Driver Name</label>
-                            <input type="text" id="driverName" placeholder="Name">
+            <div style="display:flex; flex-direction:column; justify-content:space-between;">
+                <div>
+                    <div class="section">
+                        <div class="section-header"><i class="fas fa-id-card"></i> Driver Details</div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Driver Name</label>
+                                <input type="text" id="driverName" placeholder="Name">
+                            </div>
+                            <div class="input-group">
+                                <label>Driver Contact</label>
+                                <input type="tel" id="driverPhone" placeholder="Mobile">
+                            </div>
                         </div>
-                        <div class="input-group">
-                            <label>Driver Contact</label>
-                            <input type="tel" id="driverPhone" placeholder="Mobile">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Car Model</label>
+                                <input type="text" id="carType" placeholder="Vehicle Model">
+                            </div>
+                            <div class="input-group">
+                                <label>Vehicle Number</label>
+                                <input type="text" id="carNumber" placeholder="Plate Number">
+                            </div>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="input-group">
-                            <label>Vehicle Model</label>
-                            <input type="text" id="carType" placeholder="Model">
-                        </div>
-                        <div class="input-group">
-                            <label>Vehicle Number</label>
-                            <input type="text" id="carNumber" placeholder="Plate No.">
+
+                    <div class="section" style="margin-top:20px;">
+                        <div class="section-header"><i class="fas fa-calculator"></i> Usage Summary</div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Total KM</label>
+                                <input type="text" id="useReadingKm" placeholder="0">
+                            </div>
+                            <div class="input-group">
+                                <label>Closing Time</label>
+                                <input type="time" id="useClosingTime">
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <div class="section-header"><i class="fas fa-calculator"></i> Usage Summary</div>
-                    <div class="form-row">
-                        <div class="input-group">
-                            <label>Total KM</label>
-                            <input type="text" id="useReadingKm" placeholder="0">
-                        </div>
-                        <div class="input-group">
-                            <label>Closing Time</label>
-                            <input type="time" id="useClosingTime">
-                            <div id="useClosingTime-display" class="static-value"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section" style="margin-top:auto">
+                <div class="section" style="margin-top:20px;">
                     <div class="section-header"><i class="fas fa-signature"></i> Authorization</div>
                     <label>Signature</label>
                     <div class="signature-box">
@@ -397,7 +350,7 @@
         </div>
 
         <div class="doc-footer">
-            Computer Generated Document • Valid without physical stamp
+            System Generated Slip • Valid without physical seal
         </div>
     </div>
 
@@ -411,30 +364,34 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlipData_v7_final'; 
+        const STORAGE_KEY = 'dutySlipData_v8_fixed';
         let canvas, ctx, writingMode = false;
         let autoSaveTimeout;
 
         window.onload = function() {
             setupCanvas();
-            const savedData = loadBookingData();
-            if (savedData) restoreBookingData(savedData);
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (savedData) restoreBookingData(JSON.parse(savedData));
             else createNewBooking();
-            setupAutoSave();
+            
+            // Auto-save listener
+            document.querySelectorAll('input, textarea').forEach(el => {
+                el.addEventListener('input', () => {
+                    clearTimeout(autoSaveTimeout);
+                    autoSaveTimeout = setTimeout(saveBookingData, 800);
+                });
+            });
         };
 
-        // --- Data Handling ---
         function createNewBooking() {
-            const today = new Date().toLocaleDateString('en-GB', { 
-                day: 'numeric', month: 'short', year: 'numeric' 
-            });
+            const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
             document.getElementById('displayDate').textContent = today;
             document.getElementById('bookingId').textContent = `DS-${Math.floor(1000 + Math.random() * 9000)}`;
             saveBookingData();
         }
 
         function startNewBooking() {
-            if (confirm('Start new booking? Current data will be lost.')) {
+            if (confirm('Start new booking? Unsaved changes will be lost.')) {
                 localStorage.removeItem(STORAGE_KEY);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 document.querySelectorAll('input, textarea').forEach(el => el.value = '');
@@ -444,95 +401,79 @@
 
         function saveBookingData() {
             const data = {
-                bookingId: document.getElementById('bookingId').textContent,
+                id: document.getElementById('bookingId').textContent,
                 date: document.getElementById('displayDate').textContent,
                 fields: {},
-                signature: canvas.toDataURL(),
+                sig: canvas.toDataURL()
             };
             document.querySelectorAll('input, textarea').forEach(el => data.fields[el.id] = el.value);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         }
 
-        function loadBookingData() {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            return saved ? JSON.parse(saved) : null;
-        }
-
         function restoreBookingData(data) {
-            document.getElementById('bookingId').textContent = data.bookingId;
+            document.getElementById('bookingId').textContent = data.id;
             document.getElementById('displayDate').textContent = data.date;
-            if(data.fields) Object.keys(data.fields).forEach(key => {
-                const el = document.getElementById(key);
-                if(el) el.value = data.fields[key];
-            });
-            if (data.signature) {
+            if (data.fields) {
+                Object.keys(data.fields).forEach(key => {
+                    const el = document.getElementById(key);
+                    if(el) el.value = data.fields[key];
+                });
+            }
+            if (data.sig) {
                 const img = new Image();
                 img.onload = () => ctx.drawImage(img, 0, 0);
-                img.src = data.signature;
+                img.src = data.sig;
             }
         }
 
-        function setupAutoSave() {
-            document.querySelectorAll('input, textarea').forEach(input => {
-                input.addEventListener('input', () => {
-                    clearTimeout(autoSaveTimeout);
-                    autoSaveTimeout = setTimeout(saveBookingData, 1000);
-                });
-            });
-        }
-
-        // --- Signature Logic ---
+        /* --- Canvas Logic --- */
         function setupCanvas() {
             canvas = document.getElementById("sig-canvas");
             ctx = canvas.getContext("2d");
-
-            const resizeCanvas = () => {
+            
+            const resize = () => {
                 const rect = canvas.getBoundingClientRect();
-                if (canvas.width !== rect.width || canvas.height !== rect.height) {
-                    const saved = canvas.toDataURL();
+                if (canvas.width !== rect.width) {
+                    const save = canvas.toDataURL();
                     canvas.width = rect.width;
                     canvas.height = rect.height;
                     const img = new Image();
                     img.onload = () => ctx.drawImage(img, 0, 0);
-                    img.src = saved;
-                    ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.strokeStyle = '#1e40af';
+                    img.src = save;
+                    ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.strokeStyle = '#1e3a8a';
                 }
             };
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-
+            resize();
+            window.addEventListener('resize', resize);
+            
             ['mousedown', 'touchstart'].forEach(e => canvas.addEventListener(e, startDraw, {passive: false}));
             ['mouseup', 'touchend'].forEach(e => canvas.addEventListener(e, endDraw, {passive: false}));
             ['mousemove', 'touchmove'].forEach(e => canvas.addEventListener(e, draw, {passive: false}));
-            
-            document.getElementById('clear-sig').addEventListener('click', () => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                saveBookingData();
-            });
+            document.getElementById('clear-sig').onclick = () => { ctx.clearRect(0,0,canvas.width,canvas.height); saveBookingData(); };
         }
-
-        function startDraw(e) { writingMode = true; ctx.beginPath(); const pos = getPos(e); ctx.moveTo(pos.x, pos.y); e.preventDefault(); }
+        function startDraw(e) { writingMode = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); e.preventDefault(); }
         function endDraw() { writingMode = false; saveBookingData(); }
-        function draw(e) { if (!writingMode) return; const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); e.preventDefault(); }
-        function getPos(e) {
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-            const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-            return { x, y };
+        function draw(e) { if(!writingMode)return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); }
+        function getPos(e) { 
+            const r = canvas.getBoundingClientRect(); 
+            const t = e.touches ? e.touches[0] : e; 
+            return { x: t.clientX - r.left, y: t.clientY - r.top }; 
         }
 
-        // --- PDF Generation with 12h Format & Fixed Layout ---
-        function formatTime12(isoTime) {
-            if (!isoTime) return '';
-            const [h, m] = isoTime.split(':');
-            const date = new Date();
-            date.setHours(h, m);
-            return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-        }
-
-        function formatDateTime12(isoDateTime) {
-            if (!isoDateTime) return '';
-            const date = new Date(isoDateTime);
+        /* --- PDF Generation Logic (Clone Strategy) --- */
+        function format12Hour(isoStr) {
+            if(!isoStr) return '';
+            const date = new Date(isoStr);
+            // check if valid date
+            if(isNaN(date.getTime())) {
+                // Try parsing as time string "HH:MM"
+                const [h, m] = isoStr.split(':');
+                if(h && m) {
+                    const d = new Date(); d.setHours(h); d.setMinutes(m);
+                    return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+                }
+                return isoStr;
+            }
             return date.toLocaleString('en-US', { 
                 day: '2-digit', month: 'short', year: 'numeric',
                 hour: 'numeric', minute: '2-digit', hour12: true 
@@ -540,47 +481,68 @@
         }
 
         function generatePDF() {
-            const element = document.getElementById('printable-area');
-            const bookingId = document.getElementById('bookingId').textContent;
-
-            // 1. Populate Static Display Fields (for 12h format in PDF)
-            const st = document.getElementById('startTime').value;
-            const et = document.getElementById('endTime').value;
-            const ct = document.getElementById('useClosingTime').value;
-
-            document.getElementById('startTime-display').textContent = formatDateTime12(st);
-            document.getElementById('endTime-display').textContent = formatDateTime12(et);
-            document.getElementById('useClosingTime-display').textContent = formatTime12(ct);
-
-            // 2. Add PDF Class (Triggers Layout Change)
-            element.classList.add('pdf-mode-active');
+            // 1. Clone the element
+            const original = document.getElementById('printable-area');
+            const clone = original.cloneNode(true);
             
-            // 3. Bake Input Values into DOM (html2pdf requirement for some browsers)
-            const inputs = element.querySelectorAll('input, textarea');
-            inputs.forEach(input => input.setAttribute('value', input.value));
-            document.getElementById('remarks').textContent = document.getElementById('remarks').value;
+            // 2. Setup Clone Styles (Force Desktop 1600x990)
+            clone.id = "pdf-clone";
+            clone.classList.add('pdf-clone-container');
+            
+            // 3. Process Inputs -> Text for clean PDF
+            const originalInputs = original.querySelectorAll('input, textarea');
+            const cloneInputs = clone.querySelectorAll('input, textarea');
+            
+            originalInputs.forEach((orig, index) => {
+                const target = cloneInputs[index];
+                const val = orig.value;
+                
+                // Create text element
+                const textDiv = document.createElement('div');
+                textDiv.className = 'pdf-value-display';
+                
+                // Format dates/times
+                if (orig.type === 'datetime-local' || orig.type === 'time') {
+                    textDiv.textContent = format12Hour(val);
+                } else {
+                    textDiv.textContent = val;
+                }
+                
+                // Replace input with text div in clone
+                target.parentNode.replaceChild(textDiv, target);
+            });
 
-            // 4. Generate
+            // 4. Handle Canvas (Canvas content does not clone automatically)
+            const origCanvas = original.querySelector('canvas');
+            const cloneCanvas = clone.querySelector('canvas');
+            const cloneCtx = cloneCanvas.getContext('2d');
+            cloneCanvas.width = origCanvas.width;
+            cloneCanvas.height = origCanvas.height;
+            cloneCtx.drawImage(origCanvas, 0, 0);
+
+            // 5. Append to body (behind z-index) so html2canvas can see it
+            document.body.appendChild(clone);
+
+            // 6. Generate PDF
             const opt = {
-                margin:       0,
-                filename:     `DutySlip_${bookingId}.pdf`,
-                image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { 
-                    scale: 2, 
-                    useCORS: true, 
-                    scrollY: 0,
+                margin: 0,
+                filename: `DutySlip_${document.getElementById('bookingId').textContent}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2, // Higher res
+                    useCORS: true,
                     windowWidth: 1600,
                     windowHeight: 990
                 },
-                jsPDF:        { 
+                jsPDF: { 
                     unit: 'px', 
                     format: [1600, 990], 
                     orientation: 'landscape' 
                 }
             };
 
-            html2pdf().set(opt).from(element).save().then(() => {
-                element.classList.remove('pdf-mode-active');
+            html2pdf().set(opt).from(clone).save().then(() => {
+                document.body.removeChild(clone); // Cleanup
             });
         }
     </script>
