@@ -139,27 +139,19 @@
             display: block !important;
         }
 
-        /* PDF HEADER - PERFECTLY ALIGNED */
-        .pdf-header-table {
+        /* PDF HEADER - FIXED OPTIMIZATION (DIV BASED) */
+        .pdf-header-panel {
             width: 100% !important;
-            border-collapse: collapse !important;
             background: #1e3a5f !important;
             color: white !important;
             border-bottom: 5px solid #fbbf24 !important;
-        }
-        
-        .pdf-header-table tr {
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
             padding: 30px 50px !important;
+            box-sizing: border-box !important;
         }
         
-        .pdf-header-table td {
-            border: none !important;
-            padding: 0 !important;
-        }
-
         /* Left side - DUTY SLIP title */
         .title-cell {
             flex: 0 0 auto !important;
@@ -328,7 +320,6 @@
         </div>
 
         <div class="body-content">
-            <!-- Left Section: Driver & Vehicle -->
             <div>
                 <div class="section-header">
                     <i class="fas fa-user-tie"></i> Driver & Vehicle Details
@@ -389,7 +380,6 @@
                 </div>
             </div>
 
-            <!-- Right Section: Timing & Signature -->
             <div>
                 <div class="section-header">
                     <i class="fas fa-clock"></i> Timing Details
@@ -608,29 +598,27 @@
                 clone.id = "pdf-render-clone";
                 clone.classList.add('pdf-clone-container');
                 
-                // --- INSERT FLEXBOX HEADER FOR PDF ---
+                // --- FIXED PDF HEADER: USES DIVS INSTEAD OF TABLE ---
                 const oldHeader = clone.querySelector('.header');
                 const dateText = document.getElementById('displayDate').textContent;
                 const idText = document.getElementById('bookingId').textContent;
                 
-                const tableHeader = document.createElement('table');
-                tableHeader.className = 'pdf-header-table';
-                tableHeader.innerHTML = `
-                    <tr>
-                        <td class="title-cell">
-                            <span class="pdf-title-text">DUTY SLIP</span>
-                        </td>
-                        <td class="meta-cell">
-                            <span class="pdf-date-text">${dateText}</span>
-                            <span class="pdf-id-line">
-                                <span class="pdf-id-label">SLIP #</span>
-                                <span class="pdf-id-text">${idText}</span>
-                            </span>
-                        </td>
-                    </tr>
+                const headerPanel = document.createElement('div');
+                headerPanel.className = 'pdf-header-panel';
+                headerPanel.innerHTML = `
+                    <div class="title-cell">
+                        <span class="pdf-title-text">DUTY SLIP</span>
+                    </div>
+                    <div class="meta-cell">
+                        <span class="pdf-date-text">${dateText}</span>
+                        <div class="pdf-id-line">
+                            <span class="pdf-id-label">SLIP #</span>
+                            <span class="pdf-id-text">${idText}</span>
+                        </div>
+                    </div>
                 `;
                 
-                oldHeader.parentNode.replaceChild(tableHeader, oldHeader);
+                oldHeader.parentNode.replaceChild(headerPanel, oldHeader);
                 // -----------------------------------
 
                 const origInputs = original.querySelectorAll('input, textarea');
