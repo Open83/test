@@ -63,7 +63,6 @@
         .form-row { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 12px; }
         @media (min-width: 480px) { .form-row { grid-template-columns: 1fr 1fr; } }
 
-        /* Single column row for where we removed phone numbers */
         .form-row.single { grid-template-columns: 1fr; }
 
         .input-group { display: flex; flex-direction: column; }
@@ -73,7 +72,15 @@
             width: 100%; background: #f9fafb; border: 1px solid var(--border);
             border-radius: 6px; padding: 10px; font-size: 0.95rem; color: var(--text); outline: none;
         }
-        input[readonly] { background: #eef2ff; color: var(--primary); font-weight: 600; }
+        
+        /* Auto-calc fields style */
+        .auto-field input {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 700;
+        }
+
         textarea { resize: none; height: 60px; }
 
         .signature-box {
@@ -116,13 +123,15 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 
-        /* --- DESKTOP PDF LAYOUT (Hidden Clone) --- */
+        /* --- PDF GENERATION LAYOUT (Hidden Clone) --- */
+        /* A6 Landscape Ratio approx 1.414. We use high-res pixels. */
         .pdf-clone-container {
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
-            width: 1600px !important;
-            height: 990px !important;
+            /* Dimensions set to match A6 Landscape Aspect Ratio exactly */
+            width: 1123px !important;  
+            height: 794px !important;
             z-index: 99999 !important;
             background-color: #ffffff !important;
             margin: 0 !important;
@@ -135,43 +144,50 @@
             opacity: 1 !important;
         }
 
+        /* Adjust layout for the PDF shape */
         .pdf-clone-container .body-content {
             display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 60px !important;
-            padding: 40px 60px !important;
-            height: calc(990px - 150px) !important;
+            grid-template-columns: 1.1fr 0.9fr !important; /* Slight adjust for space */
+            gap: 40px !important;
+            padding: 30px 40px !important;
+            height: auto !important;
         }
 
         .pdf-clone-container .header { 
-            padding: 30px 60px !important; 
-            height: 120px !important; 
+            padding: 20px 40px !important; 
+            height: 90px !important; 
             display: flex !important; 
             align-items: center !important;
             background: #1e3a8a !important;
         }
-        .pdf-clone-container .title { font-size: 2.5rem !important; }
-        .pdf-clone-container .meta-data { font-size: 1.2rem !important; }
+        .pdf-clone-container .title { font-size: 2rem !important; }
+        .pdf-clone-container .meta-data { font-size: 1rem !important; }
 
-        .pdf-clone-container .form-row { grid-template-columns: 1fr 1fr !important; gap: 40px !important; }
+        .pdf-clone-container .form-row { grid-template-columns: 1fr 1fr !important; gap: 30px !important; }
         .pdf-clone-container .form-row.single { grid-template-columns: 1fr !important; }
         
         .pdf-clone-container input, .pdf-clone-container textarea { display: none !important; }
         
         .pdf-value {
             border-bottom: 2px solid #e5e7eb;
-            padding: 8px 0;
-            font-size: 1.3rem;
+            padding: 6px 0;
+            font-size: 1.1rem;
             font-weight: 600;
             color: #000;
             font-family: 'Inter', sans-serif;
-            min-height: 40px;
+            min-height: 30px;
             display: block;
         }
+
+        /* Special style for auto-calc fields in PDF */
+        .pdf-clone-container .auto-field .pdf-value {
+            color: #1e40af;
+            border-bottom: 2px solid #bfdbfe;
+        }
         
-        .pdf-clone-container label { font-size: 1rem !important; color: #64748b !important; margin-bottom: 10px !important; }
+        .pdf-clone-container label { font-size: 0.85rem !important; color: #64748b !important; margin-bottom: 5px !important; }
         .pdf-clone-container .clear-sig { display: none !important; }
-        .pdf-clone-container .doc-footer { font-size: 1rem !important; border: none !important; }
+        .pdf-clone-container .doc-footer { font-size: 0.8rem !important; border: none !important; padding-top: 10px !important; }
 
         .sig-image-display { 
             width: 100% !important; 
@@ -237,11 +253,17 @@
                             <input type="number" id="endKm" placeholder="0">
                         </div>
                     </div>
-                </div>
-                
-                <div class="section" style="margin-top:20px;">
-                    <div class="section-header"><i class="fas fa-pen"></i> Remarks</div>
-                    <textarea id="remarks" placeholder="Notes..."></textarea>
+                    
+                    <div class="form-row">
+                        <div class="input-group auto-field">
+                            <label>Total Time (Auto)</label>
+                            <input type="text" id="totalTime" readonly placeholder="--">
+                        </div>
+                        <div class="input-group auto-field">
+                            <label>Total KM (Auto)</label>
+                            <input type="text" id="totalKm" readonly placeholder="--">
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -266,19 +288,10 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="section" style="margin-top:20px;">
-                        <div class="section-header"><i class="fas fa-calculator"></i> Usage (Auto)</div>
-                        <div class="form-row">
-                            <div class="input-group">
-                                <label>Total KM</label>
-                                <input type="text" id="totalKm" readonly placeholder="Auto-calculated">
-                            </div>
-                            <div class="input-group">
-                                <label>Total Time</label>
-                                <input type="text" id="totalTime" readonly placeholder="Auto-calculated">
-                            </div>
-                        </div>
+                        <div class="section-header"><i class="fas fa-pen"></i> Remarks</div>
+                        <textarea id="remarks" placeholder="Notes..."></textarea>
                     </div>
                 </div>
 
@@ -306,7 +319,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlip_v10_stable';
+        const STORAGE_KEY = 'dutySlip_v11_a6';
         let canvas, ctx, writingMode = false, autoSaveTimeout;
 
         window.onload = function() {
@@ -396,7 +409,7 @@
             if (data.sig) {
                 const img = new Image(); img.onload = () => ctx.drawImage(img,0,0); img.src = data.sig;
             }
-            calculateStats(); // Recalculate on restore
+            calculateStats(); 
         }
 
         function setupCanvas() {
@@ -511,27 +524,19 @@
                 }
 
                 document.body.appendChild(clone);
-                await new Promise(r => setTimeout(r, 1000));
+                await new Promise(r => setTimeout(r, 500));
                 
-                // Capture with html2canvas at exact dimensions
+                // Capture at high resolution matching A6 Aspect Ratio
                 const capturedCanvas = await html2canvas(clone, {
-                    scale: 2,
+                    scale: 2, 
                     useCORS: true,
                     allowTaint: true,
-                    backgroundColor: '#ffffff',
-                    width: 1600,
-                    height: 990,
-                    windowWidth: 1600,
-                    windowHeight: 990,
-                    x: 0,
-                    y: 0
+                    backgroundColor: '#ffffff'
                 });
                 
-                // --- A6 LANDSCAPE CONFIGURATION ---
-                // A6 Landscape width: 148mm
-                // A6 Landscape height: 105mm
-                const imgWidth = 148; 
-                const imgHeight = 105;
+                // A6 Landscape dimensions in mm
+                const pdfWidth = 148; 
+                const pdfHeight = 105;
                 
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF({
@@ -540,8 +545,9 @@
                     format: 'a6'
                 });
                 
+                // Add image to fill the PDF completely
                 const imgData = capturedCanvas.toDataURL('image/jpeg', 1.0);
-                pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, '', 'FAST');
+                pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, '', 'FAST');
                 
                 const filename = `DutySlip_${document.getElementById('bookingId').textContent}.pdf`;
                 pdf.save(filename);
