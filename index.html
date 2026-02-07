@@ -142,13 +142,13 @@
             border: 2px solid #e2e8f0 !important;
         }
 
-        /* PDF Header - UPDATED PLACEMENT */
+        /* PDF Header - UPDATED WITH CORNER ALIGNMENT */
         .pdf-clone-container .header {
             background: #0f172a !important;
-            height: 120px !important; /* Slightly taller for better spacing */
-            padding: 0 50px !important;
+            height: 120px !important;
+            padding: 0 40px !important; /* Standard padding for title */
+            position: relative !important; /* Needed for absolute positioning */
             display: flex !important;
-            justify-content: space-between !important;
             align-items: center !important;
             color: #fff !important;
         }
@@ -159,8 +159,11 @@
             font-weight: 800 !important;
         }
         
-        /* New Optimized Metadata Styling for PDF */
+        /* Absolute Corner Positioning for Meta Data */
         .pdf-clone-container .header .meta-data { 
+            position: absolute !important;
+            top: 25px !important;
+            right: 25px !important;
             text-align: right !important; 
             display: flex !important;
             flex-direction: column !important;
@@ -168,7 +171,6 @@
             align-items: flex-end !important;
         }
 
-        /* Date Styling in PDF */
         .pdf-clone-container .header #displayDate { 
             font-size: 1rem !important; 
             opacity: 0.8 !important; 
@@ -178,26 +180,19 @@
             color: #e2e8f0 !important;
         }
 
-        /* ID Styling in PDF */
         .pdf-clone-container .header .id-badge { 
             font-size: 2rem !important; 
             background: transparent !important; 
             padding: 0 !important; 
             font-weight: 800 !important;
-            color: #fbbf24 !important; /* Golden Amber Color for Professional Look */
+            color: #fbbf24 !important; 
             letter-spacing: 1px !important;
             font-family: 'Inter', sans-serif !important;
         }
         
-        /* Remove "ID:" label text style if needed, or make it blend */
-        .pdf-clone-container .header .meta-data div:last-child {
-            font-size: 0 !important; /* Hide parent text */
-        }
-        .pdf-clone-container .header .meta-data div:last-child span {
-            font-size: 2rem !important; /* Show span text */
-            display: block !important;
-        }
-        /* Add "SLIP #" Label pseudo-element */
+        .pdf-clone-container .header .meta-data div:last-child { font-size: 0 !important; }
+        .pdf-clone-container .header .meta-data div:last-child span { font-size: 2rem !important; display: block !important; }
+        
         .pdf-clone-container .header .meta-data div:last-child::before {
             content: "SLIP # " !important;
             font-size: 1rem !important;
@@ -433,7 +428,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlip_pro_v2_final';
+        const STORAGE_KEY = 'dutySlip_pro_v3_corner';
         let canvas, ctx, writingMode = false, autoSaveTimeout;
 
         window.onload = function() {
