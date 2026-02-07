@@ -63,6 +63,9 @@
         .form-row { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 12px; }
         @media (min-width: 480px) { .form-row { grid-template-columns: 1fr 1fr; } }
 
+        /* Single column row for where we removed phone numbers */
+        .form-row.single { grid-template-columns: 1fr; }
+
         .input-group { display: flex; flex-direction: column; }
         label { font-size: 0.7rem; color: #6b7280; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; }
 
@@ -70,6 +73,7 @@
             width: 100%; background: #f9fafb; border: 1px solid var(--border);
             border-radius: 6px; padding: 10px; font-size: 0.95rem; color: var(--text); outline: none;
         }
+        input[readonly] { background: #eef2ff; color: var(--primary); font-weight: 600; }
         textarea { resize: none; height: 60px; }
 
         .signature-box {
@@ -150,6 +154,7 @@
         .pdf-clone-container .meta-data { font-size: 1.2rem !important; }
 
         .pdf-clone-container .form-row { grid-template-columns: 1fr 1fr !important; gap: 40px !important; }
+        .pdf-clone-container .form-row.single { grid-template-columns: 1fr !important; }
         
         .pdf-clone-container input, .pdf-clone-container textarea { display: none !important; }
         
@@ -198,14 +203,10 @@
             <div>
                 <div class="section">
                     <div class="section-header"><i class="fas fa-user"></i> Customer Info</div>
-                    <div class="form-row">
+                    <div class="form-row single">
                         <div class="input-group">
                             <label>Customer Name</label>
                             <input type="text" id="custName" placeholder="Enter name">
-                        </div>
-                        <div class="input-group">
-                            <label>Phone Number</label>
-                            <input type="tel" id="custPhone" placeholder="Enter phone">
                         </div>
                     </div>
                     <div class="input-group">
@@ -229,11 +230,11 @@
                     <div class="form-row">
                         <div class="input-group">
                             <label>Start KM</label>
-                            <input type="text" id="startKm" placeholder="0">
+                            <input type="number" id="startKm" placeholder="0">
                         </div>
                         <div class="input-group">
                             <label>End KM</label>
-                            <input type="text" id="endKm" placeholder="0">
+                            <input type="number" id="endKm" placeholder="0">
                         </div>
                     </div>
                 </div>
@@ -248,14 +249,10 @@
                 <div>
                     <div class="section">
                         <div class="section-header"><i class="fas fa-id-card"></i> Driver Info</div>
-                        <div class="form-row">
+                        <div class="form-row single">
                             <div class="input-group">
                                 <label>Driver Name</label>
                                 <input type="text" id="driverName" placeholder="Name">
-                            </div>
-                            <div class="input-group">
-                                <label>Driver Contact</label>
-                                <input type="tel" id="driverPhone" placeholder="Mobile">
                             </div>
                         </div>
                         <div class="form-row">
@@ -271,15 +268,15 @@
                     </div>
 
                     <div class="section" style="margin-top:20px;">
-                        <div class="section-header"><i class="fas fa-calculator"></i> Usage</div>
+                        <div class="section-header"><i class="fas fa-calculator"></i> Usage (Auto)</div>
                         <div class="form-row">
                             <div class="input-group">
                                 <label>Total KM</label>
-                                <input type="text" id="useReadingKm" placeholder="0">
+                                <input type="text" id="totalKm" readonly placeholder="Auto-calculated">
                             </div>
                             <div class="input-group">
-                                <label>Closing Time</label>
-                                <input type="time" id="useClosingTime">
+                                <label>Total Time</label>
+                                <input type="text" id="totalTime" readonly placeholder="Auto-calculated">
                             </div>
                         </div>
                     </div>
@@ -320,11 +317,48 @@
             
             document.querySelectorAll('input, textarea').forEach(el => {
                 el.addEventListener('input', () => {
+                    if(el.id === 'startTime' || el.id === 'endTime' || el.id === 'startKm' || el.id === 'endKm') {
+                        calculateStats();
+                    }
                     clearTimeout(autoSaveTimeout);
                     autoSaveTimeout = setTimeout(saveData, 800);
                 });
             });
         };
+
+        function calculateStats() {
+            // Calculate KM
+            const startKm = parseFloat(document.getElementById('startKm').value) || 0;
+            const endKm = parseFloat(document.getElementById('endKm').value) || 0;
+            const totalKmEl = document.getElementById('totalKm');
+            
+            if (endKm >= startKm && endKm > 0) {
+                totalKmEl.value = (endKm - startKm) + ' km';
+            } else {
+                totalKmEl.value = '';
+            }
+
+            // Calculate Time
+            const startTimeStr = document.getElementById('startTime').value;
+            const endTimeStr = document.getElementById('endTime').value;
+            const totalTimeEl = document.getElementById('totalTime');
+
+            if (startTimeStr && endTimeStr) {
+                const sTime = new Date(startTimeStr);
+                const eTime = new Date(endTimeStr);
+                
+                if (eTime > sTime) {
+                    const diffMs = eTime - sTime;
+                    const diffHrs = Math.floor(diffMs / 3600000);
+                    const diffMins = Math.round((diffMs % 3600000) / 60000);
+                    totalTimeEl.value = `${diffHrs}h ${diffMins}m`;
+                } else {
+                    totalTimeEl.value = '';
+                }
+            } else {
+                totalTimeEl.value = '';
+            }
+        }
 
         function createNew() {
             const date = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
@@ -362,6 +396,7 @@
             if (data.sig) {
                 const img = new Image(); img.onload = () => ctx.drawImage(img,0,0); img.src = data.sig;
             }
+            calculateStats(); // Recalculate on restore
         }
 
         function setupCanvas() {
@@ -492,16 +527,17 @@
                     y: 0
                 });
                 
-                // Calculate dimensions in mm for A4 landscape equivalent
-                const imgWidth = 297; // A4 landscape width in mm
-                const imgHeight = 210; // A4 landscape height in mm
+                // --- A6 LANDSCAPE CONFIGURATION ---
+                // A6 Landscape width: 148mm
+                // A6 Landscape height: 105mm
+                const imgWidth = 148; 
+                const imgHeight = 105;
                 
-                // Create PDF in landscape with proper dimensions
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF({
                     orientation: 'landscape',
                     unit: 'mm',
-                    format: 'a4'
+                    format: 'a6'
                 });
                 
                 const imgData = capturedCanvas.toDataURL('image/jpeg', 1.0);
