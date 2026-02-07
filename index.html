@@ -47,7 +47,6 @@
         .header-top { display: flex; justify-content: space-between; align-items: center; }
         .title { font-size: 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin: 0; }
         
-        /* Mobile Metadata */
         .meta-data { text-align: right; }
         .meta-data .date-display { font-size: 0.75rem; opacity: 0.8; margin-bottom: 2px; }
         .meta-data .id-display { font-size: 0.95rem; font-weight: 700; color: #fbbf24; font-family: monospace; }
@@ -137,27 +136,29 @@
             pointer-events: none;
             overflow: hidden !important;
             visibility: visible !important;
-            display: flex !important;
-            flex-direction: column !important;
+            display: block !important; /* Block to allow proper absolute positioning context */
             border: 2px solid #e2e8f0 !important;
         }
 
-        /* HEADER REDESIGN */
+        /* HEADER REDESIGN - FIXED ALIGNMENT */
         .pdf-clone-container .header {
             background: #0f172a !important;
-            height: 130px !important;
-            display: flex !important;
-            justify-content: space-between !important; 
-            align-items: center !important;
-            /* STRICT ALIGNMENT: Padding matches body padding (50px) */
+            height: 140px !important;
+            /* Explicit positioning context */
+            position: relative !important; 
             padding: 0 50px !important; 
             color: #fff !important;
-            border-bottom: 4px solid #fbbf24 !important; /* Gold accent bar */
+            border-bottom: 5px solid #fbbf24 !important; /* Gold accent bar */
+            display: block !important;
         }
         
-        /* Left: Title */
+        /* Left: Title - Absolute positioning for rock solid placement */
         .pdf-clone-container .header .title { 
-            font-size: 3rem !important; 
+            position: absolute !important;
+            top: 50% !important;
+            left: 50px !important;
+            transform: translateY(-50%) !important;
+            font-size: 3.5rem !important; 
             letter-spacing: 2px !important; 
             font-weight: 900 !important;
             text-transform: uppercase !important;
@@ -165,44 +166,47 @@
             line-height: 1 !important;
         }
         
-        /* Right: Metadata Block */
+        /* Right: Metadata Block - Absolute positioning for rock solid placement */
         .pdf-clone-container .header .meta-data { 
+            position: absolute !important;
+            top: 50% !important;
+            right: 50px !important;
+            transform: translateY(-50%) !important;
             text-align: right !important; 
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 5px !important;
+            display: block !important;
         }
 
         /* Date Row */
         .pdf-clone-container .header .meta-data .date-display { 
-            font-size: 1rem !important; 
+            font-size: 1.1rem !important; 
             color: #cbd5e1 !important;
             font-weight: 500 !important;
             text-transform: uppercase !important;
             letter-spacing: 1px !important;
+            margin-bottom: 5px !important;
+            display: block !important;
         }
 
         /* ID Row */
         .pdf-clone-container .header .meta-data .id-display { 
-            font-size: 1.8rem !important; 
+            font-size: 2.2rem !important; 
             font-weight: 800 !important;
             color: #ffffff !important; 
             background: transparent !important;
             padding: 0 !important;
             font-family: 'Inter', sans-serif !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: flex-end !important;
-            gap: 10px !important;
+            display: block !important;
+            line-height: 1 !important;
         }
         
         /* ID Label ("BOOKING ID") */
         .pdf-clone-container .header .meta-data .id-display::before {
-            content: "BOOKING ID" !important;
-            font-size: 0.9rem !important;
+            content: "BOOKING ID: " !important;
+            font-size: 1rem !important;
             color: #fbbf24 !important; /* Amber Label */
             font-weight: 700 !important;
-            transform: translateY(2px) !important; /* Visual optical alignment */
+            vertical-align: middle !important;
+            margin-right: 5px !important;
         }
 
 
@@ -212,7 +216,7 @@
             grid-template-columns: 55% 45% !important;
             padding: 40px 50px !important; /* Matches Header Padding */
             gap: 50px !important;
-            flex-grow: 1 !important;
+            height: calc(794px - 140px) !important;
         }
 
         .pdf-clone-container .section { margin-bottom: 25px !important; }
@@ -282,6 +286,9 @@
             font-size: 0.85rem !important;
             text-transform: uppercase !important;
             letter-spacing: 1px !important;
+            position: absolute !important;
+            bottom: 0 !important;
+            width: 100% !important;
         }
 
         .sig-image-display { 
@@ -425,7 +432,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlip_pro_v6_final';
+        const STORAGE_KEY = 'dutySlip_pro_v7_final_fix';
         let canvas, ctx, writingMode = false, autoSaveTimeout;
 
         window.onload = function() {
