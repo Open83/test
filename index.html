@@ -12,8 +12,8 @@
 
     <style>
         :root {
-            --primary: #0f172a; /* Darker, more corporate blue/black */
-            --accent: #2563eb;  /* Professional Blue */
+            --primary: #0f172a; 
+            --accent: #2563eb;
             --bg: #f3f4f6;
             --surface: #ffffff;
             --text: #1f2937;
@@ -126,7 +126,6 @@
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
-            /* Exact A6 Landscape Ratio at High DPI (148mm x 105mm) */
             width: 1123px !important;  
             height: 794px !important;
             z-index: 99999 !important;
@@ -140,30 +139,81 @@
             visibility: visible !important;
             display: flex !important;
             flex-direction: column !important;
-            border: 2px solid #e2e8f0 !important; /* Outer Border */
+            border: 2px solid #e2e8f0 !important;
         }
 
-        /* PDF Header */
+        /* PDF Header - UPDATED PLACEMENT */
         .pdf-clone-container .header {
             background: #0f172a !important;
-            height: 100px !important;
-            padding: 0 40px !important;
+            height: 120px !important; /* Slightly taller for better spacing */
+            padding: 0 50px !important;
             display: flex !important;
             justify-content: space-between !important;
             align-items: center !important;
             color: #fff !important;
         }
-        .pdf-clone-container .header .title { font-size: 2.2rem !important; letter-spacing: 2px !important; }
-        .pdf-clone-container .header .meta-data { text-align: right !important; }
-        .pdf-clone-container .header .meta-data div:first-child { font-size: 1.1rem !important; opacity: 0.8 !important; }
-        .pdf-clone-container .header .id-badge { font-size: 1.4rem !important; background: transparent !important; padding: 0 !important; }
+        
+        .pdf-clone-container .header .title { 
+            font-size: 2.5rem !important; 
+            letter-spacing: 2px !important; 
+            font-weight: 800 !important;
+        }
+        
+        /* New Optimized Metadata Styling for PDF */
+        .pdf-clone-container .header .meta-data { 
+            text-align: right !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: flex-end !important;
+        }
+
+        /* Date Styling in PDF */
+        .pdf-clone-container .header #displayDate { 
+            font-size: 1rem !important; 
+            opacity: 0.8 !important; 
+            margin-bottom: 5px !important;
+            letter-spacing: 1px !important;
+            font-weight: 500 !important;
+            color: #e2e8f0 !important;
+        }
+
+        /* ID Styling in PDF */
+        .pdf-clone-container .header .id-badge { 
+            font-size: 2rem !important; 
+            background: transparent !important; 
+            padding: 0 !important; 
+            font-weight: 800 !important;
+            color: #fbbf24 !important; /* Golden Amber Color for Professional Look */
+            letter-spacing: 1px !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+        
+        /* Remove "ID:" label text style if needed, or make it blend */
+        .pdf-clone-container .header .meta-data div:last-child {
+            font-size: 0 !important; /* Hide parent text */
+        }
+        .pdf-clone-container .header .meta-data div:last-child span {
+            font-size: 2rem !important; /* Show span text */
+            display: block !important;
+        }
+        /* Add "SLIP #" Label pseudo-element */
+        .pdf-clone-container .header .meta-data div:last-child::before {
+            content: "SLIP # " !important;
+            font-size: 1rem !important;
+            color: #94a3b8 !important;
+            font-weight: 600 !important;
+            vertical-align: middle !important;
+            margin-right: 8px !important;
+        }
+
 
         /* PDF Body Layout */
         .pdf-clone-container .body-content {
             display: grid !important;
-            grid-template-columns: 55% 45% !important; /* Split column width */
-            padding: 30px 40px !important;
-            gap: 40px !important;
+            grid-template-columns: 55% 45% !important;
+            padding: 30px 50px !important;
+            gap: 50px !important;
             flex-grow: 1 !important;
         }
 
@@ -179,7 +229,7 @@
             letter-spacing: 1px !important;
         }
         
-        .pdf-clone-container .section-header i { display: none !important; } /* Hide icons in PDF for cleaner look */
+        .pdf-clone-container .section-header i { display: none !important; }
 
         /* PDF Grid Rows */
         .pdf-clone-container .form-row { 
@@ -213,13 +263,11 @@
             text-overflow: ellipsis !important;
         }
 
-        /* Auto fields standout in PDF */
         .pdf-clone-container .auto-field .pdf-value {
             color: #2563eb !important;
             border-bottom: 1px solid #2563eb !important;
         }
 
-        /* Hide inputs/buttons in PDF */
         .pdf-clone-container input, 
         .pdf-clone-container textarea, 
         .pdf-clone-container button { display: none !important; }
@@ -234,7 +282,7 @@
 
         /* Footer in PDF */
         .pdf-clone-container .doc-footer {
-            border-top: 3px solid #0f172a !important; /* Thick bottom bar */
+            border-top: 3px solid #0f172a !important;
             padding: 15px !important;
             background: #f1f5f9 !important;
             font-weight: 600 !important;
@@ -385,7 +433,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlip_pro_v1';
+        const STORAGE_KEY = 'dutySlip_pro_v2_final';
         let canvas, ctx, writingMode = false, autoSaveTimeout;
 
         window.onload = function() {
