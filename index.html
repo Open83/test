@@ -139,16 +139,15 @@
             display: block !important;
         }
 
-        /* PDF HEADER - FIXED OPTIMIZATION (DIV BASED) */
+        /* PDF HEADER - MATCHING UPLOADED IMAGE */
         .pdf-header-panel {
             width: 100% !important;
-            background: #1e3a5f !important;
+            background: #2563eb !important; /* Bright Blue */
             color: white !important;
-            border-bottom: 5px solid #fbbf24 !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
-            padding: 30px 50px !important;
+            padding: 25px 40px !important;
             box-sizing: border-box !important;
         }
         
@@ -158,10 +157,10 @@
         }
         
         .pdf-title-text {
-            font-size: 60px !important;
-            font-weight: 900 !important;
+            font-size: 32px !important;
+            font-weight: 800 !important;
             text-transform: uppercase !important;
-            letter-spacing: 5px !important;
+            letter-spacing: 1px !important;
             margin: 0 !important;
             line-height: 1 !important;
             color: #ffffff !important;
@@ -174,35 +173,14 @@
             text-align: right !important;
         }
         
-        .pdf-date-text {
-            display: block !important;
-            font-size: 16px !important;
-            color: #e2e8f0 !important;
-            font-weight: 500 !important;
-            margin-bottom: 8px !important;
-            letter-spacing: 0.5px !important;
-        }
-        
-        .pdf-id-line {
-            display: block !important;
-            white-space: nowrap !important;
-        }
-        
-        .pdf-id-label {
-            font-size: 14px !important;
-            color: #cbd5e1 !important;
+        .pdf-meta-row {
+            font-size: 15px !important;
+            color: #ffffff !important;
             font-weight: 600 !important;
-            letter-spacing: 1px !important;
-            text-transform: uppercase !important;
-        }
-        
-        .pdf-id-text {
-            font-size: 32px !important;
-            font-weight: 900 !important;
-            color: #fbbf24 !important;
-            font-family: 'Inter', monospace !important;
-            letter-spacing: 2px !important;
-            margin-left: 0px !important;
+            margin-bottom: 5px !important;
+            letter-spacing: 0.5px !important;
+            display: block !important;
+            font-family: 'Inter', sans-serif !important;
         }
 
         /* PDF Body Grid */
@@ -598,7 +576,7 @@
                 clone.id = "pdf-render-clone";
                 clone.classList.add('pdf-clone-container');
                 
-                // --- FIXED PDF HEADER: USES DIVS INSTEAD OF TABLE ---
+                // --- FIXED PDF HEADER: MATCHING IMAGE DESIGN ---
                 const oldHeader = clone.querySelector('.header');
                 const dateText = document.getElementById('displayDate').textContent;
                 const idText = document.getElementById('bookingId').textContent;
@@ -610,11 +588,8 @@
                         <span class="pdf-title-text">DUTY SLIP</span>
                     </div>
                     <div class="meta-cell">
-                        <span class="pdf-date-text">${dateText}</span>
-                        <div class="pdf-id-line">
-                            <span class="pdf-id-label">SLIP #</span>
-                            <span class="pdf-id-text">${idText}</span>
-                        </div>
+                        <div class="pdf-meta-row">Date: ${dateText}</div>
+                        <div class="pdf-meta-row">ID: ${idText}</div>
                     </div>
                 `;
                 
