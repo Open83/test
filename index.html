@@ -12,7 +12,7 @@
 
     <style>
         :root {
-            --primary: #2563eb; /* Bright Blue from image */
+            --primary: #2563eb; /* Bright Blue */
             --bg: #f8f9fa;
             --surface: #ffffff;
             --text: #334155;
@@ -41,7 +41,7 @@
             overflow: hidden;
         }
 
-        /* --- HEADER MATCHING IMAGE --- */
+        /* --- HEADER --- */
         .header { 
             background: var(--primary); 
             color: white; 
@@ -188,8 +188,8 @@
         }
         
         .btn:active { transform: scale(0.95); }
-        .btn-new { background: linear-gradient(135deg, #f59e0b, #d97706); } /* Orange/Yellow */
-        .btn-pdf { background: linear-gradient(135deg, #10b981, #059669); } /* Green */
+        .btn-new { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .btn-pdf { background: linear-gradient(135deg, #10b981, #059669); }
 
         /* --- LOADING --- */
         .loading-overlay {
@@ -202,12 +202,6 @@
             border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; margin-bottom: 15px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* --- PDF CLONE (Hidden) --- */
-        .pdf-clone {
-            position: absolute; top: -9999px; left: -9999px; width: 800px;
-            background: white; padding: 0; margin: 0;
-        }
     </style>
 </head>
 <body>
@@ -228,13 +222,9 @@
                     <i class="fas fa-user"></i> Customer Details
                 </div>
                 <div class="grid-row">
-                    <div class="input-group">
+                    <div class="input-group full-width">
                         <label>Customer Name</label>
                         <input id="customerName" placeholder="Enter full name" oninput="saveData()">
-                    </div>
-                    <div class="input-group">
-                        <label>Phone Number</label>
-                        <input id="customerPhone" placeholder="Enter phone number" type="tel" oninput="saveData()">
                     </div>
                 </div>
                 <div class="grid-row">
@@ -250,13 +240,9 @@
                     <i class="fas fa-id-card"></i> Driver Details
                 </div>
                 <div class="grid-row">
-                    <div class="input-group">
+                    <div class="input-group full-width">
                         <label>Driver Name</label>
                         <input id="driverName" placeholder="Enter driver name" oninput="saveData()">
-                    </div>
-                    <div class="input-group">
-                        <label>Driver Number</label>
-                        <input id="driverNumber" placeholder="Enter driver number" type="tel" oninput="saveData()">
                     </div>
                 </div>
                 <div class="grid-row">
@@ -348,7 +334,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlipData_v2';
+        const STORAGE_KEY = 'dutySlipData_v3';
         let canvas, ctx, writingMode = false;
 
         window.onload = function() {
@@ -361,7 +347,7 @@
         };
 
         function calculateStats() {
-            // Calculate Distance
+            // Calculate Distance: Journey Details Inputs -> Customer Uses Output
             const sKm = parseFloat(document.getElementById('startKm').value);
             const eKm = parseFloat(document.getElementById('endKm').value);
             
@@ -371,7 +357,7 @@
                 document.getElementById('totalKm').value = '';
             }
             
-            // Calculate Time
+            // Calculate Time: Journey Details Inputs -> Customer Uses Output
             const sTimeVal = document.getElementById('startTime').value;
             const eTimeVal = document.getElementById('endTime').value;
             
@@ -438,7 +424,6 @@
             
             const resize = () => {
                 const rect = canvas.parentElement.getBoundingClientRect();
-                // Only resize if dimensions change significantly to avoid clearing
                 if (canvas.width !== rect.width || canvas.height !== rect.height) {
                     const savedSig = canvas.toDataURL();
                     canvas.width = rect.width;
@@ -450,14 +435,14 @@
                     ctx.lineWidth = 2; 
                     ctx.lineJoin = 'round'; 
                     ctx.lineCap = 'round'; 
-                    ctx.strokeStyle = '#000000'; 
+                    // BLUE SIGNATURE COLOR
+                    ctx.strokeStyle = '#2563eb'; 
                 }
             };
             
             window.addEventListener('resize', resize);
-            resize(); // Initial sizing
+            resize();
             
-            // Pointer events for mobile/desktop
             ['mousedown','touchstart'].forEach(e => canvas.addEventListener(e, startDraw, {passive:false}));
             ['mouseup','touchend'].forEach(e => canvas.addEventListener(e, endDraw, {passive:false}));
             ['mousemove','touchmove'].forEach(e => canvas.addEventListener(e, draw, {passive:false}));
@@ -499,7 +484,6 @@
             loader.style.display = 'flex';
             
             try {
-                // Formatting Date/Time inputs for better PDF readablity
                 const inputs = document.querySelectorAll('input[type="datetime-local"]');
                 inputs.forEach(input => {
                     if(input.value) input.setAttribute('data-original', input.value);
@@ -510,19 +494,17 @@
 
                 const element = document.getElementById('printable-area');
                 
-                // High quality capture
                 const canvasObj = await html2canvas(element, { 
                     scale: 2, 
                     useCORS: true, 
                     backgroundColor: '#ffffff',
-                    ignoreElements: (el) => el.id === 'clear-sig' // Don't print clear button
+                    ignoreElements: (el) => el.id === 'clear-sig' 
                 });
                 
                 const { jsPDF } = window.jspdf;
-                // A4 Portrait
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 
-                const imgWidth = 210; // A4 width
+                const imgWidth = 210; 
                 const pageHeight = 297; 
                 const imgHeight = (canvasObj.height * imgWidth) / canvasObj.width;
                 
