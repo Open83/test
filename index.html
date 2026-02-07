@@ -136,77 +136,61 @@
             pointer-events: none;
             overflow: hidden !important;
             visibility: visible !important;
-            display: block !important; /* Block to allow proper absolute positioning context */
+            display: block !important;
             border: 2px solid #e2e8f0 !important;
         }
 
-        /* HEADER REDESIGN - FIXED ALIGNMENT */
-        .pdf-clone-container .header {
+        /* TABLE HEADER - THE ONLY WAY TO GUARANTEE ALIGNMENT */
+        .pdf-header-table {
+            width: 100% !important;
+            border-collapse: collapse !important;
             background: #0f172a !important;
-            height: 140px !important;
-            /* Explicit positioning context */
-            position: relative !important; 
-            padding: 0 50px !important; 
-            color: #fff !important;
-            border-bottom: 5px solid #fbbf24 !important; /* Gold accent bar */
-            display: block !important;
+            color: white !important;
+            border-bottom: 5px solid #fbbf24 !important;
         }
-        
-        /* Left: Title - Absolute positioning for rock solid placement */
-        .pdf-clone-container .header .title { 
-            position: absolute !important;
-            top: 50% !important;
-            left: 50px !important;
-            transform: translateY(-50%) !important;
-            font-size: 3.5rem !important; 
-            letter-spacing: 2px !important; 
+        .pdf-header-table td {
+            padding: 30px 50px !important; /* Proper padding inside table */
+            vertical-align: middle !important;
+        }
+
+        /* Title Cell */
+        .title-cell {
+            text-align: left !important;
+            width: 60% !important;
+        }
+        .pdf-title-text {
+            font-size: 3rem !important;
             font-weight: 900 !important;
             text-transform: uppercase !important;
+            letter-spacing: 2px !important;
             margin: 0 !important;
             line-height: 1 !important;
-        }
-        
-        /* Right: Metadata Block - Absolute positioning for rock solid placement */
-        .pdf-clone-container .header .meta-data { 
-            position: absolute !important;
-            top: 50% !important;
-            right: 50px !important;
-            transform: translateY(-50%) !important;
-            text-align: right !important; 
             display: block !important;
         }
 
-        /* Date Row */
-        .pdf-clone-container .header .meta-data .date-display { 
-            font-size: 1.1rem !important; 
+        /* ID/Date Cell */
+        .meta-cell {
+            text-align: right !important;
+            width: 40% !important;
+        }
+        .pdf-date-text {
+            font-size: 1.1rem !important;
             color: #cbd5e1 !important;
             font-weight: 500 !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
+            display: block !important;
             margin-bottom: 5px !important;
-            display: block !important;
         }
-
-        /* ID Row */
-        .pdf-clone-container .header .meta-data .id-display { 
-            font-size: 2.2rem !important; 
+        .pdf-id-text {
+            font-size: 2.2rem !important;
             font-weight: 800 !important;
-            color: #ffffff !important; 
-            background: transparent !important;
-            padding: 0 !important;
-            font-family: 'Inter', sans-serif !important;
+            color: #ffffff !important;
             display: block !important;
-            line-height: 1 !important;
         }
-        
-        /* ID Label ("BOOKING ID") */
-        .pdf-clone-container .header .meta-data .id-display::before {
-            content: "BOOKING ID: " !important;
+        .pdf-id-label {
             font-size: 1rem !important;
-            color: #fbbf24 !important; /* Amber Label */
+            color: #fbbf24 !important;
             font-weight: 700 !important;
-            vertical-align: middle !important;
-            margin-right: 5px !important;
+            margin-right: 8px !important;
         }
 
 
@@ -214,9 +198,8 @@
         .pdf-clone-container .body-content {
             display: grid !important;
             grid-template-columns: 55% 45% !important;
-            padding: 40px 50px !important; /* Matches Header Padding */
+            padding: 40px 50px !important; 
             gap: 50px !important;
-            height: calc(794px - 140px) !important;
         }
 
         .pdf-clone-container .section { margin-bottom: 25px !important; }
@@ -289,6 +272,7 @@
             position: absolute !important;
             bottom: 0 !important;
             width: 100% !important;
+            left: 0 !important;
         }
 
         .sig-image-display { 
@@ -432,7 +416,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlip_pro_v7_final_fix';
+        const STORAGE_KEY = 'dutySlip_pro_v8_table_layout';
         let canvas, ctx, writingMode = false, autoSaveTimeout;
 
         window.onload = function() {
@@ -522,7 +506,7 @@
                     ctx.lineWidth = 3; 
                     ctx.lineJoin = 'round'; 
                     ctx.lineCap = 'round'; 
-                    ctx.strokeStyle = '#2563eb'; // Professional Blue
+                    ctx.strokeStyle = '#2563eb'; 
                 }
             };
             resize();
@@ -576,6 +560,29 @@
                 clone.id = "pdf-render-clone";
                 clone.classList.add('pdf-clone-container');
                 
+                // --- INSERT TABLE HEADER FOR PDF ---
+                // We physically replace the header div with a table to force alignment
+                const oldHeader = clone.querySelector('.header');
+                const dateText = document.getElementById('displayDate').textContent;
+                const idText = document.getElementById('bookingId').textContent;
+                
+                const tableHeader = document.createElement('table');
+                tableHeader.className = 'pdf-header-table';
+                tableHeader.innerHTML = `
+                    <tr>
+                        <td class="title-cell">
+                            <span class="pdf-title-text">DUTY SLIP</span>
+                        </td>
+                        <td class="meta-cell">
+                            <span class="pdf-date-text">${dateText}</span>
+                            <span class="pdf-id-text"><span class="pdf-id-label">BOOKING ID:</span>${idText}</span>
+                        </td>
+                    </tr>
+                `;
+                
+                oldHeader.parentNode.replaceChild(tableHeader, oldHeader);
+                // -----------------------------------
+
                 const origInputs = original.querySelectorAll('input, textarea');
                 const cloneInputs = clone.querySelectorAll('input, textarea');
                 
