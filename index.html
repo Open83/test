@@ -142,15 +142,16 @@
             border: 2px solid #e2e8f0 !important;
         }
 
-        /* PDF Header - UPDATED WITH CORNER ALIGNMENT */
+        /* PDF Header */
         .pdf-clone-container .header {
             background: #0f172a !important;
             height: 120px !important;
-            padding: 0 40px !important; /* Standard padding for title */
-            position: relative !important; /* Needed for absolute positioning */
+            padding: 0 50px !important;
+            position: relative !important;
             display: flex !important;
             align-items: center !important;
             color: #fff !important;
+            /* Ensure children can be absolutely positioned relative to this */
         }
         
         .pdf-clone-container .header .title { 
@@ -159,47 +160,58 @@
             font-weight: 800 !important;
         }
         
-        /* Absolute Corner Positioning for Meta Data */
+        /* Absolute Right Corner Positioning */
         .pdf-clone-container .header .meta-data { 
             position: absolute !important;
-            top: 25px !important;
-            right: 25px !important;
+            top: 20px !important;
+            right: 40px !important;
             text-align: right !important; 
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
             align-items: flex-end !important;
+            background: rgba(255,255,255,0.1) !important;
+            padding: 10px 20px !important;
+            border-radius: 8px !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
         }
 
+        /* Date Styling */
         .pdf-clone-container .header #displayDate { 
-            font-size: 1rem !important; 
-            opacity: 0.8 !important; 
-            margin-bottom: 5px !important;
+            font-size: 0.9rem !important; 
+            opacity: 0.9 !important; 
+            margin-bottom: 4px !important;
             letter-spacing: 1px !important;
             font-weight: 500 !important;
             color: #e2e8f0 !important;
+            text-transform: uppercase !important;
         }
 
+        /* ID / Booking ID Styling */
         .pdf-clone-container .header .id-badge { 
-            font-size: 2rem !important; 
+            font-size: 1.8rem !important; 
             background: transparent !important; 
             padding: 0 !important; 
             font-weight: 800 !important;
-            color: #fbbf24 !important; 
+            color: #fbbf24 !important; /* Golden Amber */
             letter-spacing: 1px !important;
             font-family: 'Inter', sans-serif !important;
+            line-height: 1.1 !important;
         }
         
-        .pdf-clone-container .header .meta-data div:last-child { font-size: 0 !important; }
-        .pdf-clone-container .header .meta-data div:last-child span { font-size: 2rem !important; display: block !important; }
+        /* Helper text for ID */
+        .pdf-clone-container .header .meta-data div:last-child { 
+            display: flex !important; 
+            align-items: center !important; 
+            gap: 8px !important;
+        }
         
         .pdf-clone-container .header .meta-data div:last-child::before {
-            content: "SLIP # " !important;
-            font-size: 1rem !important;
+            content: "BOOKING #" !important;
+            font-size: 0.8rem !important;
             color: #94a3b8 !important;
-            font-weight: 600 !important;
-            vertical-align: middle !important;
-            margin-right: 8px !important;
+            font-weight: 700 !important;
+            letter-spacing: 1px !important;
         }
 
 
@@ -212,7 +224,6 @@
             flex-grow: 1 !important;
         }
 
-        /* PDF Sections */
         .pdf-clone-container .section { margin-bottom: 25px !important; }
         
         .pdf-clone-container .section-header {
@@ -223,10 +234,8 @@
             padding-bottom: 5px !important;
             letter-spacing: 1px !important;
         }
-        
         .pdf-clone-container .section-header i { display: none !important; }
 
-        /* PDF Grid Rows */
         .pdf-clone-container .form-row { 
             display: grid !important; 
             grid-template-columns: 1fr 1fr !important; 
@@ -235,7 +244,6 @@
         }
         .pdf-clone-container .form-row.single { grid-template-columns: 1fr !important; }
 
-        /* PDF Typography */
         .pdf-clone-container label {
             font-size: 0.75rem !important;
             color: #64748b !important;
@@ -275,7 +283,6 @@
             margin-top: 10px !important;
         }
 
-        /* Footer in PDF */
         .pdf-clone-container .doc-footer {
             border-top: 3px solid #0f172a !important;
             padding: 15px !important;
@@ -428,7 +435,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlip_pro_v3_corner';
+        const STORAGE_KEY = 'dutySlip_pro_v4_blue_sig';
         let canvas, ctx, writingMode = false, autoSaveTimeout;
 
         window.onload = function() {
@@ -514,7 +521,8 @@
                     const s = canvas.toDataURL();
                     canvas.width = r.width; canvas.height = r.height;
                     const img = new Image(); img.onload = () => ctx.drawImage(img,0,0); img.src = s;
-                    ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.strokeStyle = '#0f172a';
+                    // --- CHANGED TO BLUE SIGNATURE ---
+                    ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.strokeStyle = '#1d4ed8';
                 }
             };
             resize();
@@ -568,7 +576,6 @@
                 clone.id = "pdf-render-clone";
                 clone.classList.add('pdf-clone-container');
                 
-                // Convert inputs to professional text display
                 const origInputs = original.querySelectorAll('input, textarea');
                 const cloneInputs = clone.querySelectorAll('input, textarea');
                 
@@ -581,7 +588,6 @@
                     target.parentNode.replaceChild(div, target);
                 });
 
-                // Signature handling
                 const origCanvas = original.querySelector('canvas');
                 const cloneCanvasWrapper = clone.querySelector('.signature-box');
                 cloneCanvasWrapper.innerHTML = '';
@@ -595,10 +601,8 @@
                 document.body.appendChild(clone);
                 await new Promise(r => setTimeout(r, 500));
                 
-                // Capture high-res image
                 const capturedCanvas = await html2canvas(clone, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
                 
-                // Generate PDF (A6 Landscape)
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a6' });
                 pdf.addImage(capturedCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 148, 105, '', 'FAST');
