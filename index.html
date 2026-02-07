@@ -47,10 +47,10 @@
         .header-top { display: flex; justify-content: space-between; align-items: center; }
         .title { font-size: 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin: 0; }
         
-        /* Mobile Header Metadata */
+        /* Mobile Metadata */
         .meta-data { text-align: right; }
-        .meta-data .date-display { font-size: 0.8rem; opacity: 0.9; margin-bottom: 2px; }
-        .meta-data .id-display { font-size: 0.9rem; font-weight: 700; background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 4px; font-family: monospace; }
+        .meta-data .date-display { font-size: 0.75rem; opacity: 0.8; margin-bottom: 2px; }
+        .meta-data .id-display { font-size: 0.95rem; font-weight: 700; color: #fbbf24; font-family: monospace; }
 
         .body-content { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
         
@@ -142,74 +142,75 @@
             border: 2px solid #e2e8f0 !important;
         }
 
-        /* PDF HEADER - FIXED ALIGNMENT */
+        /* HEADER REDESIGN */
         .pdf-clone-container .header {
             background: #0f172a !important;
-            height: 120px !important;
-            /* Flexbox ensures strict Left/Right positioning */
+            height: 130px !important;
             display: flex !important;
             justify-content: space-between !important; 
             align-items: center !important;
-            padding: 0 50px !important; /* Padding matches body content */
+            /* STRICT ALIGNMENT: Padding matches body padding (50px) */
+            padding: 0 50px !important; 
             color: #fff !important;
-            position: relative !important;
+            border-bottom: 4px solid #fbbf24 !important; /* Gold accent bar */
         }
         
-        /* Left Side: Title */
+        /* Left: Title */
         .pdf-clone-container .header .title { 
-            font-size: 2.8rem !important; 
+            font-size: 3rem !important; 
             letter-spacing: 2px !important; 
-            font-weight: 800 !important;
+            font-weight: 900 !important;
+            text-transform: uppercase !important;
             margin: 0 !important;
+            line-height: 1 !important;
         }
         
-        /* Right Side: Metadata Container */
+        /* Right: Metadata Block */
         .pdf-clone-container .header .meta-data { 
+            text-align: right !important; 
             display: flex !important;
             flex-direction: column !important;
-            align-items: flex-end !important; /* Forces content to Right */
-            justify-content: center !important;
-            text-align: right !important;
+            gap: 5px !important;
         }
 
-        /* Date in PDF */
+        /* Date Row */
         .pdf-clone-container .header .meta-data .date-display { 
             font-size: 1rem !important; 
             color: #cbd5e1 !important;
-            margin-bottom: 5px !important;
             font-weight: 500 !important;
-            letter-spacing: 0.5px !important;
-        }
-
-        /* ID in PDF */
-        .pdf-clone-container .header .meta-data .id-display { 
-            font-size: 2.2rem !important; 
-            font-weight: 800 !important;
-            color: #fbbf24 !important; /* Amber */
-            background: transparent !important;
-            padding: 0 !important;
-            border: none !important;
-            line-height: 1 !important;
-            font-family: 'Inter', sans-serif !important;
-        }
-        
-        /* Adding "SLIP #" Label via CSS for clean layout */
-        .pdf-clone-container .header .meta-data .id-display::before {
-            content: "SLIP # " !important;
-            font-size: 1rem !important;
-            color: #94a3b8 !important;
-            font-weight: 600 !important;
-            vertical-align: middle !important;
-            margin-right: 8px !important;
+            text-transform: uppercase !important;
             letter-spacing: 1px !important;
         }
 
+        /* ID Row */
+        .pdf-clone-container .header .meta-data .id-display { 
+            font-size: 1.8rem !important; 
+            font-weight: 800 !important;
+            color: #ffffff !important; 
+            background: transparent !important;
+            padding: 0 !important;
+            font-family: 'Inter', sans-serif !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            gap: 10px !important;
+        }
+        
+        /* ID Label ("BOOKING ID") */
+        .pdf-clone-container .header .meta-data .id-display::before {
+            content: "BOOKING ID" !important;
+            font-size: 0.9rem !important;
+            color: #fbbf24 !important; /* Amber Label */
+            font-weight: 700 !important;
+            transform: translateY(2px) !important; /* Visual optical alignment */
+        }
 
-        /* PDF Body Layout */
+
+        /* Body Layout */
         .pdf-clone-container .body-content {
             display: grid !important;
             grid-template-columns: 55% 45% !important;
-            padding: 30px 50px !important; /* Matches Header Padding */
+            padding: 40px 50px !important; /* Matches Header Padding */
             gap: 50px !important;
             flex-grow: 1 !important;
         }
@@ -424,7 +425,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlip_pro_v5_fixed_header';
+        const STORAGE_KEY = 'dutySlip_pro_v6_final';
         let canvas, ctx, writingMode = false, autoSaveTimeout;
 
         window.onload = function() {
@@ -510,8 +511,11 @@
                     const s = canvas.toDataURL();
                     canvas.width = r.width; canvas.height = r.height;
                     const img = new Image(); img.onload = () => ctx.drawImage(img,0,0); img.src = s;
-                    // --- BLUE SIGNATURE PEN ---
-                    ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.strokeStyle = '#2563eb';
+                    // --- BLUE SIGNATURE COLOR ---
+                    ctx.lineWidth = 3; 
+                    ctx.lineJoin = 'round'; 
+                    ctx.lineCap = 'round'; 
+                    ctx.strokeStyle = '#2563eb'; // Professional Blue
                 }
             };
             resize();
@@ -565,7 +569,6 @@
                 clone.id = "pdf-render-clone";
                 clone.classList.add('pdf-clone-container');
                 
-                // Transfer Input Values
                 const origInputs = original.querySelectorAll('input, textarea');
                 const cloneInputs = clone.querySelectorAll('input, textarea');
                 
@@ -578,7 +581,6 @@
                     target.parentNode.replaceChild(div, target);
                 });
 
-                // Handle Signature
                 const origCanvas = original.querySelector('canvas');
                 const cloneCanvasWrapper = clone.querySelector('.signature-box');
                 cloneCanvasWrapper.innerHTML = '';
@@ -592,10 +594,8 @@
                 document.body.appendChild(clone);
                 await new Promise(r => setTimeout(r, 500));
                 
-                // Use html2canvas
                 const capturedCanvas = await html2canvas(clone, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
                 
-                // A6 Landscape PDF
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a6' });
                 pdf.addImage(capturedCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 148, 105, '', 'FAST');
