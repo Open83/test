@@ -46,8 +46,11 @@
         .header { background: var(--primary); color: white; padding: 15px 20px; }
         .header-top { display: flex; justify-content: space-between; align-items: center; }
         .title { font-size: 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin: 0; }
-        .meta-data { font-size: 0.85rem; text-align: right; opacity: 0.9; }
-        .id-badge { background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 4px; font-weight: 600; font-family: monospace; }
+        
+        /* Mobile Header Metadata */
+        .meta-data { text-align: right; }
+        .meta-data .date-display { font-size: 0.8rem; opacity: 0.9; margin-bottom: 2px; }
+        .meta-data .id-display { font-size: 0.9rem; font-weight: 700; background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 4px; font-family: monospace; }
 
         .body-content { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
         
@@ -74,7 +77,6 @@
         }
         input:focus, textarea:focus { border-color: var(--accent); background: #fff; }
         
-        /* Highlight auto fields */
         .auto-field input { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; font-weight: 700; }
 
         textarea { resize: none; height: 60px; }
@@ -93,7 +95,6 @@
 
         .doc-footer { text-align: center; font-size: 0.7rem; color: #9ca3af; padding: 20px; border-top: 1px solid var(--border); }
 
-        /* Floating Action Buttons */
         .fab-container {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             display: flex; gap: 12px; z-index: 100; width: 90%; max-width: 400px;
@@ -107,7 +108,6 @@
         .btn-new { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .btn-pdf { background: linear-gradient(135deg, #10b981, #059669); }
 
-        /* Loader */
         .loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.95); z-index: 20000;
@@ -142,75 +142,65 @@
             border: 2px solid #e2e8f0 !important;
         }
 
-        /* PDF Header */
+        /* PDF HEADER - FIXED ALIGNMENT */
         .pdf-clone-container .header {
             background: #0f172a !important;
             height: 120px !important;
-            padding: 0 50px !important;
-            position: relative !important;
+            /* Flexbox ensures strict Left/Right positioning */
             display: flex !important;
+            justify-content: space-between !important; 
             align-items: center !important;
+            padding: 0 50px !important; /* Padding matches body content */
             color: #fff !important;
-            /* Ensure children can be absolutely positioned relative to this */
+            position: relative !important;
         }
         
+        /* Left Side: Title */
         .pdf-clone-container .header .title { 
-            font-size: 2.5rem !important; 
+            font-size: 2.8rem !important; 
             letter-spacing: 2px !important; 
             font-weight: 800 !important;
+            margin: 0 !important;
         }
         
-        /* Absolute Right Corner Positioning */
+        /* Right Side: Metadata Container */
         .pdf-clone-container .header .meta-data { 
-            position: absolute !important;
-            top: 20px !important;
-            right: 40px !important;
-            text-align: right !important; 
             display: flex !important;
             flex-direction: column !important;
+            align-items: flex-end !important; /* Forces content to Right */
             justify-content: center !important;
-            align-items: flex-end !important;
-            background: rgba(255,255,255,0.1) !important;
-            padding: 10px 20px !important;
-            border-radius: 8px !important;
-            border: 1px solid rgba(255,255,255,0.2) !important;
+            text-align: right !important;
         }
 
-        /* Date Styling */
-        .pdf-clone-container .header #displayDate { 
-            font-size: 0.9rem !important; 
-            opacity: 0.9 !important; 
-            margin-bottom: 4px !important;
-            letter-spacing: 1px !important;
+        /* Date in PDF */
+        .pdf-clone-container .header .meta-data .date-display { 
+            font-size: 1rem !important; 
+            color: #cbd5e1 !important;
+            margin-bottom: 5px !important;
             font-weight: 500 !important;
-            color: #e2e8f0 !important;
-            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
         }
 
-        /* ID / Booking ID Styling */
-        .pdf-clone-container .header .id-badge { 
-            font-size: 1.8rem !important; 
-            background: transparent !important; 
-            padding: 0 !important; 
+        /* ID in PDF */
+        .pdf-clone-container .header .meta-data .id-display { 
+            font-size: 2.2rem !important; 
             font-weight: 800 !important;
-            color: #fbbf24 !important; /* Golden Amber */
-            letter-spacing: 1px !important;
+            color: #fbbf24 !important; /* Amber */
+            background: transparent !important;
+            padding: 0 !important;
+            border: none !important;
+            line-height: 1 !important;
             font-family: 'Inter', sans-serif !important;
-            line-height: 1.1 !important;
         }
         
-        /* Helper text for ID */
-        .pdf-clone-container .header .meta-data div:last-child { 
-            display: flex !important; 
-            align-items: center !important; 
-            gap: 8px !important;
-        }
-        
-        .pdf-clone-container .header .meta-data div:last-child::before {
-            content: "BOOKING #" !important;
-            font-size: 0.8rem !important;
+        /* Adding "SLIP #" Label via CSS for clean layout */
+        .pdf-clone-container .header .meta-data .id-display::before {
+            content: "SLIP # " !important;
+            font-size: 1rem !important;
             color: #94a3b8 !important;
-            font-weight: 700 !important;
+            font-weight: 600 !important;
+            vertical-align: middle !important;
+            margin-right: 8px !important;
             letter-spacing: 1px !important;
         }
 
@@ -219,7 +209,7 @@
         .pdf-clone-container .body-content {
             display: grid !important;
             grid-template-columns: 55% 45% !important;
-            padding: 30px 50px !important;
+            padding: 30px 50px !important; /* Matches Header Padding */
             gap: 50px !important;
             flex-grow: 1 !important;
         }
@@ -275,7 +265,6 @@
         .pdf-clone-container textarea, 
         .pdf-clone-container button { display: none !important; }
 
-        /* Signature in PDF */
         .pdf-clone-container .signature-box {
             border: 1px solid #e2e8f0 !important;
             background: #f8fafc !important;
@@ -311,8 +300,8 @@
             <div class="header-top">
                 <h1 class="title">Duty Slip</h1>
                 <div class="meta-data">
-                    <div id="displayDate">--</div>
-                    <div style="margin-top:4px">ID: <span id="bookingId" class="id-badge">...</span></div>
+                    <div class="date-display" id="displayDate">--</div>
+                    <div class="id-display" id="bookingId">...</div>
                 </div>
             </div>
         </div>
@@ -435,7 +424,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlip_pro_v4_blue_sig';
+        const STORAGE_KEY = 'dutySlip_pro_v5_fixed_header';
         let canvas, ctx, writingMode = false, autoSaveTimeout;
 
         window.onload = function() {
@@ -521,8 +510,8 @@
                     const s = canvas.toDataURL();
                     canvas.width = r.width; canvas.height = r.height;
                     const img = new Image(); img.onload = () => ctx.drawImage(img,0,0); img.src = s;
-                    // --- CHANGED TO BLUE SIGNATURE ---
-                    ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.strokeStyle = '#1d4ed8';
+                    // --- BLUE SIGNATURE PEN ---
+                    ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.strokeStyle = '#2563eb';
                 }
             };
             resize();
@@ -576,6 +565,7 @@
                 clone.id = "pdf-render-clone";
                 clone.classList.add('pdf-clone-container');
                 
+                // Transfer Input Values
                 const origInputs = original.querySelectorAll('input, textarea');
                 const cloneInputs = clone.querySelectorAll('input, textarea');
                 
@@ -588,6 +578,7 @@
                     target.parentNode.replaceChild(div, target);
                 });
 
+                // Handle Signature
                 const origCanvas = original.querySelector('canvas');
                 const cloneCanvasWrapper = clone.querySelector('.signature-box');
                 cloneCanvasWrapper.innerHTML = '';
@@ -601,8 +592,10 @@
                 document.body.appendChild(clone);
                 await new Promise(r => setTimeout(r, 500));
                 
+                // Use html2canvas
                 const capturedCanvas = await html2canvas(clone, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
                 
+                // A6 Landscape PDF
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a6' });
                 pdf.addImage(capturedCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 148, 105, '', 'FAST');
