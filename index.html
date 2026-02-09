@@ -13,7 +13,7 @@
     <style>
         :root {
             --primary: #2563eb;
-            --bg: #f1f5f9;
+            --bg: #f8fafc;
             --surface: #ffffff;
             --text: #0f172a;
             --border: #cbd5e1;
@@ -34,7 +34,7 @@
         .slip-container {
             background: var(--surface);
             width: 100%;
-            max-width: 500px; /* Constrained width for better A6 scaling */
+            max-width: 500px; /* A6-friendly width */
             margin: 0 auto;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
@@ -124,7 +124,7 @@
             font-size: 0.9rem;
             color: var(--text);
             outline: none;
-            -webkit-appearance: none; /* Removes iOS shadows */
+            -webkit-appearance: none;
         }
 
         input:focus, textarea:focus { border-color: var(--primary); }
@@ -158,7 +158,7 @@
         
         canvas { 
             width: 100%; height: 100%; display: block; 
-            touch-action: none; /* Critical for mobile scrolling */
+            touch-action: none;
         }
         
         .clear-btn {
@@ -249,7 +249,7 @@
 
             <div class="section">
                 <div class="section-header">
-                    <i class="fas fa-play"></i> Trip Start
+                    <i class="fas fa-route"></i> Trip Start
                 </div>
                 <div class="grid-row">
                     <div class="input-group">
@@ -261,20 +261,14 @@
                         <input id="startKm" type="number" placeholder="0" oninput="saveData(); calculateStats();">
                     </div>
                 </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header">
-                    <i class="fas fa-stop"></i> Customer Usage
-                </div>
                 <div class="grid-row">
                     <div class="input-group">
-                        <label>Closing Time</label>
-                        <input id="endTime" type="datetime-local" oninput="saveData(); calculateStats();">
+                        <label>End Time</label>
+                        <input id="tripEndTime" type="datetime-local" oninput="saveData(); calculateStats();">
                     </div>
                     <div class="input-group">
-                        <label>Reading KM</label>
-                        <input id="endKm" type="number" placeholder="0" oninput="saveData(); calculateStats();">
+                        <label>End KM</label>
+                        <input id="tripEndKm" type="number" placeholder="0" oninput="saveData(); calculateStats();">
                     </div>
                 </div>
             </div>
@@ -291,6 +285,22 @@
                     <div class="input-group auto-field">
                         <label>Total Time</label>
                         <input id="totalTime" readonly placeholder="0h 0m">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <i class="fas fa-stopwatch"></i> Customer Usage
+                </div>
+                <div class="grid-row">
+                    <div class="input-group">
+                        <label>Closing Time</label>
+                        <input id="custClosingTime" type="datetime-local" oninput="saveData()">
+                    </div>
+                    <div class="input-group">
+                        <label>Reading KM</label>
+                        <input id="custReadingKm" type="number" placeholder="0" oninput="saveData()">
                     </div>
                 </div>
             </div>
@@ -330,7 +340,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlipData_v5_Final';
+        const STORAGE_KEY = 'dutySlipData_v6_Fixed';
         let canvas, ctx, writingMode = false;
 
         window.onload = function() {
@@ -342,12 +352,11 @@
             } else { createNew(); }
         };
 
-        // --- Logic: Calculate Totals ---
+        // --- Logic: Calculate Totals (From Trip Start Fields) ---
         function calculateStats() {
-            // Distance Calculation
-            // Inputs: startKm (Trip Start) & endKm (Customer Usage -> Reading KM)
+            // Distance Calculation (End KM - Start KM from Trip Start)
             const sKm = parseFloat(document.getElementById('startKm').value);
-            const eKm = parseFloat(document.getElementById('endKm').value);
+            const eKm = parseFloat(document.getElementById('tripEndKm').value);
             
             if(!isNaN(sKm) && !isNaN(eKm) && eKm >= sKm) {
                 document.getElementById('totalKm').value = (eKm - sKm) + " KM";
@@ -355,10 +364,9 @@
                 document.getElementById('totalKm').value = '';
             }
             
-            // Time Calculation
-            // Inputs: startTime (Trip Start) & endTime (Customer Usage -> Closing Time)
+            // Time Calculation (End Time - Start Time from Trip Start)
             const sTimeVal = document.getElementById('startTime').value;
-            const eTimeVal = document.getElementById('endTime').value;
+            const eTimeVal = document.getElementById('tripEndTime').value;
             
             if(sTimeVal && eTimeVal) {
                 const sTime = new Date(sTimeVal);
@@ -416,7 +424,7 @@
             calculateStats(); 
         }
 
-        // --- Signature Logic (Mobile Optimized) ---
+        // --- Signature Logic ---
         function setupCanvas() {
             canvas = document.getElementById("sig-canvas");
             ctx = canvas.getContext("2d");
@@ -496,7 +504,6 @@
 
                 const element = document.getElementById('printable-area');
                 
-                // Capture at higher scale for clarity
                 const canvasObj = await html2canvas(element, { 
                     scale: 3, 
                     useCORS: true, 
@@ -504,18 +511,14 @@
                     ignoreElements: (el) => el.id === 'clear-sig' 
                 });
                 
-                // Initialize A6 PDF (105mm x 148mm)
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a6');
                 
                 const pdfWidth = 105; 
-                const pdfHeight = 148; 
-                
-                // Calculate height based on A6 width to maintain aspect ratio
+                // Fit width, let height adjust naturally
                 const imgRatio = canvasObj.height / canvasObj.width;
                 const printHeight = pdfWidth * imgRatio;
                 
-                // Add image (stretched to width, auto height)
                 pdf.addImage(canvasObj.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pdfWidth, printHeight);
                 
                 const id = document.getElementById('bookingId').textContent.replace(/[^a-zA-Z0-9]/g, '');
