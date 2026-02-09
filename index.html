@@ -42,7 +42,7 @@
             overflow: hidden;
         }
 
-        /* --- HEADER (UPDATED FOR CENTERED DATE) --- */
+        /* --- HEADER --- */
         .header { 
             background: var(--primary); 
             color: white; 
@@ -57,11 +57,11 @@
             font-weight: 800; 
             text-transform: uppercase; 
             letter-spacing: 0.5px; 
-            flex: 1; /* Takes left 1/3 */
+            flex: 1; 
         }
 
         .header-date {
-            flex: 1; /* Takes center 1/3 */
+            flex: 1; 
             text-align: center;
             font-size: 0.9rem;
             font-weight: 600;
@@ -71,7 +71,7 @@
             text-align: right; 
             font-size: 0.7rem; 
             font-weight: 600;
-            flex: 1; /* Takes right 1/3 */
+            flex: 1;
         }
         
         .meta-id {
@@ -242,9 +242,13 @@
                     <i class="fas fa-car"></i> Driver Details
                 </div>
                 <div class="grid-row">
-                    <div class="input-group">
+                    <div class="input-group full-width">
                         <label>Driver Name</label>
                         <input id="driverName" oninput="saveData()">
+                    </div>
+                    <div class="input-group">
+                        <label>Car Type</label>
+                        <input id="carType" placeholder="e.g. Sedan" oninput="saveData()">
                     </div>
                     <div class="input-group">
                         <label>Car No.</label>
