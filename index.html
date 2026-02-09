@@ -31,10 +31,11 @@
             color: var(--text);
         }
 
+        /* Container optimized for A6 Ratio (approx 1:1.41) */
         .slip-container {
             background: var(--surface);
             width: 100%;
-            max-width: 450px; /* Optimized for A6 width */
+            max-width: 400px; 
             margin: 0 auto;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
@@ -85,7 +86,6 @@
         /* --- FORM BODY --- */
         .body-content { padding: 15px; }
 
-        /* Compact Sections */
         .section { margin-bottom: 12px; }
 
         .section-header {
@@ -125,7 +125,7 @@
             background: #ffffff;
             border: 1px solid var(--border);
             border-radius: 5px;
-            padding: 8px; /* Reduced padding */
+            padding: 8px; 
             font-size: 0.85rem;
             color: var(--text);
             outline: none;
@@ -134,7 +134,6 @@
 
         input:focus, textarea:focus { border-color: var(--primary); }
         
-        /* Auto-calculated fields style */
         .auto-section {
             background-color: #f0fdf4;
             border: 1px solid #bbf7d0;
@@ -157,7 +156,7 @@
         .signature-area {
             border: 2px dashed #cbd5e1;
             border-radius: 6px;
-            height: 80px; /* Reduced height */
+            height: 80px; 
             position: relative;
             background: #f8fafc;
         }
@@ -362,9 +361,7 @@
             } else { createNew(); }
         };
 
-        // --- Logic: Calculate Totals (From Trip Start Fields) ---
         function calculateStats() {
-            // Distance Calculation (End KM - Start KM from Trip Start)
             const sKm = parseFloat(document.getElementById('startKm').value);
             const eKm = parseFloat(document.getElementById('tripEndKm').value);
             
@@ -374,7 +371,6 @@
                 document.getElementById('totalKm').value = '';
             }
             
-            // Time Calculation (End Time - Start Time from Trip Start)
             const sTimeVal = document.getElementById('startTime').value;
             const eTimeVal = document.getElementById('tripEndTime').value;
             
@@ -434,11 +430,9 @@
             calculateStats(); 
         }
 
-        // --- Signature Logic ---
         function setupCanvas() {
             canvas = document.getElementById("sig-canvas");
             ctx = canvas.getContext("2d");
-            
             const resize = () => {
                 const rect = canvas.parentElement.getBoundingClientRect();
                 if (canvas.width !== rect.width || canvas.height !== rect.height) {
@@ -448,27 +442,20 @@
                     const img = new Image();
                     img.onload = () => ctx.drawImage(img, 0, 0);
                     img.src = savedSig;
-                    
                     ctx.lineWidth = 2; 
                     ctx.lineJoin = 'round'; 
                     ctx.lineCap = 'round'; 
                     ctx.strokeStyle = '#2563eb'; 
                 }
             };
-            
             window.addEventListener('resize', resize);
             resize(); 
-            
-            // Touch handling
             canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, {passive: false});
             canvas.addEventListener('touchend', (e) => { e.preventDefault(); endDraw(e); }, {passive: false});
             canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, {passive: false});
-            
-            // Mouse handling
             canvas.addEventListener('mousedown', startDraw);
             canvas.addEventListener('mouseup', endDraw);
             canvas.addEventListener('mousemove', draw);
-            
             document.getElementById('clear-sig').onclick = () => { 
                 ctx.clearRect(0,0,canvas.width,canvas.height); 
                 saveData(); 
@@ -478,7 +465,6 @@
         function getPos(e) { 
             const rect = canvas.getBoundingClientRect(); 
             let clientX, clientY;
-            
             if (e.touches && e.touches.length > 0) {
                 clientX = e.touches[0].clientX;
                 clientY = e.touches[0].clientY;
@@ -493,38 +479,40 @@
             writingMode = true; ctx.beginPath(); 
             const p = getPos(e); ctx.moveTo(p.x, p.y); 
         }
-        
-        function endDraw(e) { 
-            writingMode = false; saveData(); 
-        }
-        
+        function endDraw(e) { writingMode = false; saveData(); }
         function draw(e) { 
             if(!writingMode) return; 
             const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); 
         }
 
-        // --- A6 PDF Generation (Strict Fit Logic) ---
+        // --- UPDATED A6 PDF GENERATION ---
         async function generatePDF() {
             const loader = document.getElementById('loader');
             loader.style.display = 'flex';
             
             try {
                 window.scrollTo(0, 0);
-                await new Promise(r => setTimeout(r, 200));
+                await new Promise(r => setTimeout(r, 250));
 
                 const element = document.getElementById('printable-area');
                 
-                // Capture entire element
+                // High scale for better visibility of details
                 const canvasObj = await html2canvas(element, { 
-                    scale: 3, 
+                    scale: 4, 
                     useCORS: true, 
+                    logging: false,
                     backgroundColor: '#ffffff',
                     ignoreElements: (el) => el.id === 'clear-sig' 
                 });
                 
-                // A6 Dimensions (mm)
                 const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('p', 'mm', 'a6');
+                // Strict A6 Page Initialization (105mm x 148mm)
+                const pdf = new jsPDF({
+                    orientation: 'p',
+                    unit: 'mm',
+                    format: 'a6'
+                });
+
                 const pdfWidth = 105; 
                 const pdfHeight = 148; 
                 
@@ -532,23 +520,33 @@
                 const imgHeightPx = canvasObj.height;
                 const imgRatio = imgHeightPx / imgWidthPx;
                 
-                // Calculate dimensions to fit firmly within A6
-                let printWidth = pdfWidth;
-                let printHeight = pdfWidth * imgRatio;
+                // Fit logic: Expand to width, then check height
+                let finalWidth = pdfWidth;
+                let finalHeight = pdfWidth * imgRatio;
                 
-                // If content is taller than A6 page, scale it down to fit height
-                if (printHeight > pdfHeight) {
-                    printHeight = pdfHeight;
-                    printWidth = printHeight / imgRatio;
+                // If the content is taller than A6, shrink it to fit height
+                if (finalHeight > pdfHeight) {
+                    finalHeight = pdfHeight;
+                    finalWidth = finalHeight / imgRatio;
                 }
                 
-                // Center horizontally
-                const xOffset = (pdfWidth - printWidth) / 2;
+                // Center the image in the A6 page
+                const xOffset = (pdfWidth - finalWidth) / 2;
+                const yOffset = (pdfHeight - finalHeight) / 2;
                 
-                pdf.addImage(canvasObj.toDataURL('image/jpeg', 0.95), 'JPEG', xOffset, 0, printWidth, printHeight);
+                pdf.addImage(
+                    canvasObj.toDataURL('image/jpeg', 1.0), 
+                    'JPEG', 
+                    xOffset, 
+                    yOffset, 
+                    finalWidth, 
+                    finalHeight,
+                    undefined,
+                    'FAST'
+                );
                 
                 const id = document.getElementById('bookingId').textContent.replace(/[^a-zA-Z0-9]/g, '');
-                pdf.save(`DutySlip_${id}.pdf`);
+                pdf.save(`DutySlip_${id}_A6.pdf`);
                 
             } catch (error) {
                 console.error(error);
