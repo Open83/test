@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Duty Slip</title>
+    <title>Duty Slip Generator</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,10 +12,11 @@
 
     <style>
         :root {
-            --primary: #2563eb; /* Bright Blue */
-            --bg: #f8f9fa;
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --bg: #f1f5f9;
             --surface: #ffffff;
-            --text: #334155;
+            --text: #0f172a;
             --border: #e2e8f0;
             --label: #64748b;
         }
@@ -26,7 +27,7 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             padding-bottom: 100px;
             color: var(--text);
         }
@@ -34,57 +35,63 @@
         .slip-container {
             background: var(--surface);
             width: 100%;
-            max-width: 850px;
+            max-width: 600px; /* Constrained for better A6 ratio match */
             margin: 0 auto;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
             overflow: hidden;
+            border: 1px solid var(--border);
         }
 
         /* --- HEADER --- */
         .header { 
             background: var(--primary); 
             color: white; 
-            padding: 20px 30px; 
+            padding: 20px; 
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .header-title { 
-            font-size: 1.5rem; 
+            font-size: 1.25rem; 
             font-weight: 800; 
             text-transform: uppercase; 
-            letter-spacing: 1px; 
+            letter-spacing: 0.5px; 
         }
         
         .header-meta { 
             text-align: right; 
-            font-size: 0.85rem; 
-            font-weight: 600;
-            line-height: 1.4;
+            font-size: 0.75rem; 
+            font-weight: 500;
+            opacity: 0.9;
         }
         
         .meta-id {
             background: rgba(255,255,255,0.2);
-            padding: 2px 6px;
+            padding: 2px 8px;
             border-radius: 4px;
-            margin-top: 2px;
+            margin-top: 4px;
             display: inline-block;
+            font-family: monospace;
+            font-size: 0.85rem;
         }
 
         /* --- FORM BODY --- */
-        .body-content { padding: 30px; }
+        .body-content { padding: 20px; }
 
-        .section { margin-bottom: 25px; }
+        .section { 
+            margin-bottom: 25px; 
+            background: #fff;
+        }
 
         .section-header {
             color: var(--primary);
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #eff6ff;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #e2e8f0;
             padding-bottom: 8px;
             margin-bottom: 15px;
             display: flex;
@@ -95,14 +102,14 @@
         .grid-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
             margin-bottom: 15px;
         }
 
         .full-width { grid-column: span 2; }
 
-        @media (max-width: 600px) {
-            .grid-row { grid-template-columns: 1fr; gap: 15px; }
+        @media (max-width: 480px) {
+            .grid-row { grid-template-columns: 1fr; }
             .full-width { grid-column: span 1; }
         }
 
@@ -111,91 +118,108 @@
         label {
             font-size: 0.7rem;
             color: var(--label);
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         input, textarea {
             width: 100%;
             background: #ffffff;
             border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 12px;
-            font-size: 0.95rem;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.9rem;
             color: var(--text);
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
+            -webkit-appearance: none; /* Removes iOS shadows */
         }
 
-        input:focus, textarea:focus { border-color: var(--primary); }
-        input::placeholder, textarea::placeholder { color: #cbd5e1; }
+        input:focus, textarea:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
         
-        /* Auto-calculated fields style */
+        /* Auto-calculated / Total fields style */
         .auto-field input {
-            background-color: #f0f9ff;
-            border-color: #bae6fd;
-            color: #0369a1;
-            font-weight: 600;
+            background-color: #f0fdf4; /* Light green tint */
+            border-color: #bbf7d0;
+            color: #15803d;
+            font-weight: 700;
+            text-align: center;
         }
 
-        textarea { resize: vertical; min-height: 80px; }
+        textarea { resize: vertical; min-height: 60px; }
 
         /* --- SIGNATURE --- */
         .signature-area {
-            border: 2px dashed #cbd5e1;
+            border: 2px dashed var(--border);
             border-radius: 8px;
             height: 120px;
             position: relative;
-            background: #fafafa;
-            margin-top: 5px;
+            background: #f8fafc;
+            overflow: hidden;
         }
         
-        canvas { width: 100%; height: 100%; display: block; cursor: crosshair; }
+        /* IMPORTANT for mobile signature */
+        canvas { 
+            width: 100%; 
+            height: 100%; 
+            display: block; 
+            cursor: crosshair; 
+            touch-action: none; /* Prevents scrolling while signing */
+        }
         
         .clear-btn {
             position: absolute;
-            bottom: 8px;
-            right: 8px;
-            font-size: 0.75rem;
-            color: #ef4444;
+            bottom: 5px;
+            right: 5px;
+            font-size: 0.7rem;
+            color: #dc2626;
             background: white;
-            border: 1px solid #ef4444;
-            padding: 4px 10px;
+            border: 1px solid #fecaca;
+            padding: 4px 8px;
             border-radius: 4px;
             cursor: pointer;
+            z-index: 10;
         }
 
         /* --- BUTTONS --- */
         .fab-container {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 15px; z-index: 100;
+            display: flex; gap: 12px; z-index: 100;
+            width: 90%; max-width: 400px;
+            justify-content: center;
         }
         
         .btn {
-            padding: 12px 24px;
+            flex: 1;
+            padding: 14px;
             border: none;
-            border-radius: 50px;
+            border-radius: 12px;
             font-weight: 600;
             font-size: 0.9rem;
             color: white;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
             transition: transform 0.1s;
         }
         
-        .btn:active { transform: scale(0.95); }
-        .btn-new { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .btn-pdf { background: linear-gradient(135deg, #10b981, #059669); }
+        .btn:active { transform: scale(0.96); }
+        .btn-new { background: #64748b; }
+        .btn-pdf { background: var(--primary); }
 
         /* --- LOADING --- */
         .loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.95); z-index: 20000;
             display: none; align-items: center; justify-content: center; flex-direction: column;
+            color: var(--primary); font-weight: 600;
         }
         .spinner {
             border: 3px solid #f3f3f3; border-top: 3px solid var(--primary);
@@ -210,8 +234,8 @@
         <div class="header">
             <div class="header-title">DUTY SLIP</div>
             <div class="header-meta">
-                <div id="displayDate">Date: 7 Feb 2026</div>
-                <div class="meta-id" id="bookingId">ID: AST-5235</div>
+                <div id="displayDate"></div>
+                <div class="meta-id" id="bookingId"></div>
             </div>
         </div>
 
@@ -219,7 +243,7 @@
             
             <div class="section">
                 <div class="section-header">
-                    <i class="fas fa-user"></i> Customer Details
+                    <i class="fas fa-user-circle"></i> Customer Details
                 </div>
                 <div class="grid-row">
                     <div class="input-group full-width">
@@ -229,37 +253,37 @@
                 </div>
                 <div class="grid-row">
                     <div class="input-group full-width">
-                        <label>Address</label>
-                        <input id="customerAddress" placeholder="Enter full address" oninput="saveData()">
+                        <label>Pickup / Drop Address</label>
+                        <input id="customerAddress" placeholder="Enter location" oninput="saveData()">
                     </div>
                 </div>
             </div>
 
             <div class="section">
                 <div class="section-header">
-                    <i class="fas fa-id-card"></i> Driver Details
+                    <i class="fas fa-car"></i> Driver Details
                 </div>
                 <div class="grid-row">
-                    <div class="input-group full-width">
+                    <div class="input-group">
                         <label>Driver Name</label>
-                        <input id="driverName" placeholder="Enter driver name" oninput="saveData()">
+                        <input id="driverName" placeholder="Driver Name" oninput="saveData()">
+                    </div>
+                    <div class="input-group">
+                        <label>Car No.</label>
+                        <input id="carNumber" placeholder="MH-04-XX-1234" oninput="saveData()">
                     </div>
                 </div>
                 <div class="grid-row">
-                    <div class="input-group">
-                        <label>Car Type</label>
-                        <input id="carType" placeholder="e.g. Sedan" oninput="saveData()">
-                    </div>
-                    <div class="input-group">
-                        <label>Car Number</label>
-                        <input id="carNumber" placeholder="e.g. MH-01-AB-1234" oninput="saveData()">
+                     <div class="input-group full-width">
+                        <label>Vehicle Type</label>
+                        <input id="carType" placeholder="Sedan, SUV, etc." oninput="saveData()">
                     </div>
                 </div>
             </div>
 
             <div class="section">
                 <div class="section-header">
-                    <i class="fas fa-route"></i> Journey Details
+                    <i class="fas fa-play-circle"></i> Trip Start
                 </div>
                 <div class="grid-row">
                     <div class="input-group">
@@ -267,52 +291,57 @@
                         <input id="startTime" type="datetime-local" oninput="saveData(); calculateStats();">
                     </div>
                     <div class="input-group">
-                        <label>End Time</label>
-                        <input id="endTime" type="datetime-local" oninput="saveData(); calculateStats();">
-                    </div>
-                </div>
-                <div class="grid-row">
-                    <div class="input-group">
-                        <label>Start KM Reading</label>
+                        <label>Start KM</label>
                         <input id="startKm" type="number" placeholder="0" oninput="saveData(); calculateStats();">
                     </div>
+                </div>
+            </div>
+
+            <div class="section" style="background-color: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <div class="section-header" style="border-bottom-color: #cbd5e1;">
+                    <i class="fas fa-stop-circle"></i> Customer Usage
+                </div>
+                
+                <div class="grid-row">
                     <div class="input-group">
-                        <label>End KM Reading</label>
+                        <label>Closing Time</label>
+                        <input id="endTime" type="datetime-local" oninput="saveData(); calculateStats();">
+                    </div>
+                    <div class="input-group">
+                        <label>Reading KM (End)</label>
                         <input id="endKm" type="number" placeholder="0" oninput="saveData(); calculateStats();">
                     </div>
                 </div>
-            </div>
 
-            <div class="section">
-                <div class="section-header">
-                    <i class="fas fa-file-invoice"></i> Customer Uses
-                </div>
-                <div class="grid-row">
-                    <div class="input-group auto-field">
-                        <label>Reading KM (Total)</label>
-                        <input id="totalKm" readonly placeholder="Auto-calculated">
-                    </div>
-                    <div class="input-group auto-field">
-                        <label>Closing Time (Duration)</label>
-                        <input id="totalTime" readonly placeholder="Auto-calculated">
+                <div style="margin-top: 15px; border-top: 1px dashed #cbd5e1; padding-top: 15px;">
+                    <label style="color: #0f172a; margin-bottom: 10px; display:block;">Total Utilization (Auto)</label>
+                    <div class="grid-row">
+                        <div class="input-group auto-field">
+                            <label>Total KM</label>
+                            <input id="totalKm" readonly placeholder="0">
+                        </div>
+                        <div class="input-group auto-field">
+                            <label>Total Time</label>
+                            <input id="totalTime" readonly placeholder="0h 0m">
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="section">
                 <div class="section-header">
-                    <i class="fas fa-comment-alt"></i> Remarks
+                    <i class="fas fa-pen"></i> Remarks
                 </div>
                 <div class="input-group">
-                    <textarea id="remarks" placeholder="Notes..." oninput="saveData()"></textarea>
+                    <textarea id="remarks" placeholder="Toll, parking, or special instructions..." oninput="saveData()"></textarea>
                 </div>
             </div>
 
             <div class="section">
-                <label>Driver / Customer Signature</label>
+                <label>Customer Signature</label>
                 <div class="signature-area">
                     <canvas id="sig-canvas"></canvas>
-                    <button class="clear-btn" id="clear-sig">Clear Signature</button>
+                    <button class="clear-btn" id="clear-sig">Clear</button>
                 </div>
             </div>
 
@@ -321,20 +350,20 @@
 
     <div class="fab-container">
         <button class="btn btn-new" onclick="startNewBooking()">
-            <i class="fas fa-plus"></i> New
+            <i class="fas fa-redo"></i> Reset
         </button>
         <button class="btn btn-pdf" onclick="generatePDF()">
-            <i class="fas fa-file-pdf"></i> Download PDF
+            <i class="fas fa-file-download"></i> Save PDF
         </button>
     </div>
 
     <div class="loading-overlay" id="loader">
         <div class="spinner"></div>
-        <div>Generating PDF...</div>
+        <div>Creating A6 PDF...</div>
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlipData_v3';
+        const STORAGE_KEY = 'dutySlipData_v4_A6';
         let canvas, ctx, writingMode = false;
 
         window.onload = function() {
@@ -346,18 +375,19 @@
             } else { createNew(); }
         };
 
+        // --- Logic: Calculate Totals ---
         function calculateStats() {
-            // Calculate Distance: Journey Details Inputs -> Customer Uses Output
+            // Distance
             const sKm = parseFloat(document.getElementById('startKm').value);
             const eKm = parseFloat(document.getElementById('endKm').value);
             
             if(!isNaN(sKm) && !isNaN(eKm) && eKm >= sKm) {
-                document.getElementById('totalKm').value = (eKm - sKm).toFixed(0);
+                document.getElementById('totalKm').value = (eKm - sKm) + " KM";
             } else {
                 document.getElementById('totalKm').value = '';
             }
             
-            // Calculate Time: Journey Details Inputs -> Customer Uses Output
+            // Time
             const sTimeVal = document.getElementById('startTime').value;
             const eTimeVal = document.getElementById('endTime').value;
             
@@ -380,13 +410,13 @@
 
         function createNew() {
             const dateStr = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
-            document.getElementById('displayDate').textContent = `Date: ${dateStr}`;
-            document.getElementById('bookingId').textContent = `ID: AST-${Math.floor(1000 + Math.random()*9000)}`;
+            document.getElementById('displayDate').textContent = dateStr;
+            document.getElementById('bookingId').textContent = `ID: #${Math.floor(1000 + Math.random()*9000)}`;
             saveData();
         }
 
         function startNewBooking() {
-            if (confirm('Create new slip? Unsaved data will be lost.')) {
+            if (confirm('Start a new duty slip? Current data will be cleared.')) {
                 localStorage.removeItem(STORAGE_KEY);
                 ctx.clearRect(0,0,canvas.width,canvas.height);
                 document.querySelectorAll('input, textarea').forEach(el => el.value = '');
@@ -417,7 +447,7 @@
             calculateStats(); 
         }
 
-        // --- Signature Logic ---
+        // --- Signature Logic (Mobile Optimized) ---
         function setupCanvas() {
             canvas = document.getElementById("sig-canvas");
             ctx = canvas.getContext("2d");
@@ -435,17 +465,33 @@
                     ctx.lineWidth = 2; 
                     ctx.lineJoin = 'round'; 
                     ctx.lineCap = 'round'; 
-                    // BLUE SIGNATURE COLOR
                     ctx.strokeStyle = '#2563eb'; 
                 }
             };
             
             window.addEventListener('resize', resize);
-            resize();
+            resize(); // Initial sizing
             
-            ['mousedown','touchstart'].forEach(e => canvas.addEventListener(e, startDraw, {passive:false}));
-            ['mouseup','touchend'].forEach(e => canvas.addEventListener(e, endDraw, {passive:false}));
-            ['mousemove','touchmove'].forEach(e => canvas.addEventListener(e, draw, {passive:false}));
+            // Touch Events
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Stop scrolling
+                startDraw(e);
+            }, {passive: false});
+            
+            canvas.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                endDraw(e);
+            }, {passive: false});
+            
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                draw(e);
+            }, {passive: false});
+
+            // Mouse Events
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mouseup', endDraw);
+            canvas.addEventListener('mousemove', draw);
             
             document.getElementById('clear-sig').onclick = () => { 
                 ctx.clearRect(0,0,canvas.width,canvas.height); 
@@ -453,10 +499,25 @@
             };
         }
         
+        function getPos(e) { 
+            const rect = canvas.getBoundingClientRect(); 
+            let clientX, clientY;
+            
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            return { x: clientX - rect.left, y: clientY - rect.top }; 
+        }
+
         function startDraw(e) { 
-            writingMode = true; ctx.beginPath(); 
-            const p = getPos(e); ctx.moveTo(p.x, p.y); 
-            e.preventDefault(); 
+            writingMode = true; 
+            ctx.beginPath(); 
+            const p = getPos(e); 
+            ctx.moveTo(p.x, p.y); 
         }
         
         function endDraw(e) { 
@@ -469,31 +530,20 @@
             const p = getPos(e); 
             ctx.lineTo(p.x, p.y); 
             ctx.stroke(); 
-            e.preventDefault(); 
-        }
-        
-        function getPos(e) { 
-            const rect = canvas.getBoundingClientRect(); 
-            const t = e.touches ? e.touches[0] : e; 
-            return { x: t.clientX - rect.left, y: t.clientY - rect.top }; 
         }
 
-        // --- PDF Generation ---
+        // --- A6 PDF Generation ---
         async function generatePDF() {
             const loader = document.getElementById('loader');
             loader.style.display = 'flex';
             
             try {
-                const inputs = document.querySelectorAll('input[type="datetime-local"]');
-                inputs.forEach(input => {
-                    if(input.value) input.setAttribute('data-original', input.value);
-                });
-
                 window.scrollTo(0, 0);
-                await new Promise(r => setTimeout(r, 200));
+                await new Promise(r => setTimeout(r, 200)); // Wait for render
 
                 const element = document.getElementById('printable-area');
                 
+                // 1. Capture High Quality Canvas
                 const canvasObj = await html2canvas(element, { 
                     scale: 2, 
                     useCORS: true, 
@@ -501,21 +551,26 @@
                     ignoreElements: (el) => el.id === 'clear-sig' 
                 });
                 
+                // 2. Setup A6 PDF (105mm x 148mm)
                 const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pdf = new jsPDF('p', 'mm', 'a6');
                 
-                const imgWidth = 210; 
-                const pageHeight = 297; 
-                const imgHeight = (canvasObj.height * imgWidth) / canvasObj.width;
+                const pdfWidth = 105; 
+                const pdfHeight = 148; 
                 
-                pdf.addImage(canvasObj.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, imgWidth, imgHeight);
+                // 3. Calculate Ratio to Fit
+                const imgRatio = canvasObj.height / canvasObj.width;
+                const printHeight = pdfWidth * imgRatio;
                 
-                const id = document.getElementById('bookingId').textContent.replace(/[^a-zA-Z0-9-]/g, '');
+                // 4. Add Image (Fit to width)
+                pdf.addImage(canvasObj.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pdfWidth, printHeight);
+                
+                const id = document.getElementById('bookingId').textContent.replace(/[^a-zA-Z0-9]/g, '');
                 pdf.save(`DutySlip_${id}.pdf`);
                 
             } catch (error) {
                 console.error(error);
-                alert('Error generating PDF. Please try again.');
+                alert('Error generating PDF.');
             } finally {
                 loader.style.display = 'none';
             }
