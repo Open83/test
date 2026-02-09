@@ -26,15 +26,15 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             margin: 0;
-            padding: 15px;
-            padding-bottom: 120px; /* Space for FAB */
+            padding: 10px;
+            padding-bottom: 100px; /* Space for FAB */
             color: var(--text);
         }
 
         .slip-container {
             background: var(--surface);
             width: 100%;
-            max-width: 500px; /* A6-friendly width */
+            max-width: 450px; /* Optimized for A6 width */
             margin: 0 auto;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
@@ -46,82 +46,78 @@
         .header { 
             background: var(--primary); 
             color: white; 
-            padding: 15px 20px; 
+            padding: 12px 15px; 
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .header-title { 
-            font-size: 1.1rem; 
+            font-size: 1rem; 
             font-weight: 800; 
             text-transform: uppercase; 
-            letter-spacing: 1px; 
+            letter-spacing: 0.5px; 
         }
         
         .header-meta { 
             text-align: right; 
-            font-size: 0.75rem; 
+            font-size: 0.7rem; 
             font-weight: 600;
         }
         
         .meta-id {
             background: rgba(255,255,255,0.2);
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-top: 3px;
+            padding: 1px 5px;
+            border-radius: 3px;
+            margin-top: 2px;
             display: inline-block;
         }
 
         /* --- FORM BODY --- */
-        .body-content { padding: 20px; }
+        .body-content { padding: 15px; }
 
-        .section { margin-bottom: 20px; }
+        /* Compact Sections */
+        .section { margin-bottom: 12px; }
 
         .section-header {
             color: var(--primary);
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 5px;
-            margin-bottom: 12px;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .grid-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 10px;
+            margin-bottom: 8px;
         }
 
         .full-width { grid-column: span 2; }
 
-        @media (max-width: 450px) {
-            .grid-row { grid-template-columns: 1fr; }
-            .full-width { grid-column: span 1; }
-        }
-
         .input-group { display: flex; flex-direction: column; }
 
         label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--label);
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         input, textarea {
             width: 100%;
             background: #ffffff;
             border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 10px;
-            font-size: 0.9rem;
+            border-radius: 5px;
+            padding: 8px; /* Reduced padding */
+            font-size: 0.85rem;
             color: var(--text);
             outline: none;
             -webkit-appearance: none;
@@ -133,8 +129,9 @@
         .auto-section {
             background-color: #f0fdf4;
             border: 1px solid #bbf7d0;
-            border-radius: 8px;
-            padding: 15px;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 12px;
         }
         
         .auto-field input {
@@ -145,13 +142,13 @@
             text-align: center;
         }
 
-        textarea { resize: vertical; min-height: 50px; }
+        textarea { resize: vertical; min-height: 40px; }
 
         /* --- SIGNATURE --- */
         .signature-area {
             border: 2px dashed #cbd5e1;
-            border-radius: 8px;
-            height: 100px;
+            border-radius: 6px;
+            height: 80px; /* Reduced height */
             position: relative;
             background: #f8fafc;
         }
@@ -162,10 +159,10 @@
         }
         
         .clear-btn {
-            position: absolute; bottom: 5px; right: 5px;
-            font-size: 0.65rem; color: #dc2626;
+            position: absolute; bottom: 4px; right: 4px;
+            font-size: 0.6rem; color: #dc2626;
             background: white; border: 1px solid #fecaca;
-            padding: 3px 8px; border-radius: 4px;
+            padding: 2px 6px; border-radius: 4px;
             z-index: 10;
         }
 
@@ -195,7 +192,7 @@
         }
         .spinner {
             border: 3px solid #f3f3f3; border-top: 3px solid var(--primary);
-            border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; margin-bottom: 10px;
+            border-radius: 50%; width: 30px; height: 30px; animation: spin 0.8s linear infinite; margin-bottom: 10px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
@@ -273,7 +270,7 @@
                 </div>
             </div>
 
-            <div class="section auto-section">
+            <div class="auto-section">
                 <div class="section-header" style="color:#166534; border-bottom-color:#bbf7d0;">
                     <i class="fas fa-calculator"></i> Total Utilization (Auto)
                 </div>
@@ -314,7 +311,7 @@
                 </div>
             </div>
 
-            <div class="section">
+            <div class="section" style="margin-bottom: 0;">
                 <label>Signature</label>
                 <div class="signature-area">
                     <canvas id="sig-canvas"></canvas>
@@ -340,7 +337,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlipData_v6_Fixed';
+        const STORAGE_KEY = 'dutySlipData_v7_Fit';
         let canvas, ctx, writingMode = false;
 
         window.onload = function() {
@@ -493,7 +490,7 @@
             const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); 
         }
 
-        // --- A6 PDF Generation ---
+        // --- A6 PDF Generation (Strict Fit Logic) ---
         async function generatePDF() {
             const loader = document.getElementById('loader');
             loader.style.display = 'flex';
@@ -504,6 +501,7 @@
 
                 const element = document.getElementById('printable-area');
                 
+                // Capture entire element
                 const canvasObj = await html2canvas(element, { 
                     scale: 3, 
                     useCORS: true, 
@@ -511,15 +509,30 @@
                     ignoreElements: (el) => el.id === 'clear-sig' 
                 });
                 
+                // A6 Dimensions (mm)
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a6');
-                
                 const pdfWidth = 105; 
-                // Fit width, let height adjust naturally
-                const imgRatio = canvasObj.height / canvasObj.width;
-                const printHeight = pdfWidth * imgRatio;
+                const pdfHeight = 148; 
                 
-                pdf.addImage(canvasObj.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pdfWidth, printHeight);
+                const imgWidthPx = canvasObj.width;
+                const imgHeightPx = canvasObj.height;
+                const imgRatio = imgHeightPx / imgWidthPx;
+                
+                // Calculate dimensions to fit firmly within A6
+                let printWidth = pdfWidth;
+                let printHeight = pdfWidth * imgRatio;
+                
+                // If content is taller than A6 page, scale it down to fit height
+                if (printHeight > pdfHeight) {
+                    printHeight = pdfHeight;
+                    printWidth = printHeight / imgRatio;
+                }
+                
+                // Center horizontally
+                const xOffset = (pdfWidth - printWidth) / 2;
+                
+                pdf.addImage(canvasObj.toDataURL('image/jpeg', 0.95), 'JPEG', xOffset, 0, printWidth, printHeight);
                 
                 const id = document.getElementById('bookingId').textContent.replace(/[^a-zA-Z0-9]/g, '');
                 pdf.save(`DutySlip_${id}.pdf`);
