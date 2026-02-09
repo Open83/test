@@ -13,12 +13,11 @@
     <style>
         :root {
             --primary: #2563eb;
-            --primary-dark: #1e40af;
             --bg: #f1f5f9;
             --surface: #ffffff;
             --text: #0f172a;
-            --border: #e2e8f0;
-            --label: #64748b;
+            --border: #cbd5e1;
+            --label: #475569;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -28,72 +27,65 @@
             background-color: var(--bg);
             margin: 0;
             padding: 15px;
-            padding-bottom: 100px;
+            padding-bottom: 120px; /* Space for FAB */
             color: var(--text);
         }
 
         .slip-container {
             background: var(--surface);
             width: 100%;
-            max-width: 600px; /* Constrained for better A6 ratio match */
+            max-width: 500px; /* Constrained width for better A6 scaling */
             margin: 0 auto;
-            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
             border: 1px solid var(--border);
+            overflow: hidden;
         }
 
         /* --- HEADER --- */
         .header { 
             background: var(--primary); 
             color: white; 
-            padding: 20px; 
+            padding: 15px 20px; 
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .header-title { 
-            font-size: 1.25rem; 
+            font-size: 1.1rem; 
             font-weight: 800; 
             text-transform: uppercase; 
-            letter-spacing: 0.5px; 
+            letter-spacing: 1px; 
         }
         
         .header-meta { 
             text-align: right; 
             font-size: 0.75rem; 
-            font-weight: 500;
-            opacity: 0.9;
+            font-weight: 600;
         }
         
         .meta-id {
             background: rgba(255,255,255,0.2);
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 4px;
-            margin-top: 4px;
+            margin-top: 3px;
             display: inline-block;
-            font-family: monospace;
-            font-size: 0.85rem;
         }
 
         /* --- FORM BODY --- */
         .body-content { padding: 20px; }
 
-        .section { 
-            margin-bottom: 25px; 
-            background: #fff;
-        }
+        .section { margin-bottom: 20px; }
 
         .section-header {
             color: var(--primary);
             font-weight: 700;
             font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
             border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 8px;
-            margin-bottom: 15px;
+            padding-bottom: 5px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -102,13 +94,13 @@
         .grid-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 12px;
         }
 
         .full-width { grid-column: span 2; }
 
-        @media (max-width: 480px) {
+        @media (max-width: 450px) {
             .grid-row { grid-template-columns: 1fr; }
             .full-width { grid-column: span 1; }
         }
@@ -118,99 +110,80 @@
         label {
             font-size: 0.7rem;
             color: var(--label);
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         input, textarea {
             width: 100%;
             background: #ffffff;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 10px;
             font-size: 0.9rem;
             color: var(--text);
             outline: none;
-            transition: all 0.2s;
             -webkit-appearance: none; /* Removes iOS shadows */
         }
 
-        input:focus, textarea:focus { 
-            border-color: var(--primary); 
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        input:focus, textarea:focus { border-color: var(--primary); }
+        
+        /* Auto-calculated fields style */
+        .auto-section {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 15px;
         }
         
-        /* Auto-calculated / Total fields style */
         .auto-field input {
-            background-color: #f0fdf4; /* Light green tint */
-            border-color: #bbf7d0;
-            color: #15803d;
+            background-color: white;
+            border-color: #86efac;
+            color: #166534;
             font-weight: 700;
             text-align: center;
         }
 
-        textarea { resize: vertical; min-height: 60px; }
+        textarea { resize: vertical; min-height: 50px; }
 
         /* --- SIGNATURE --- */
         .signature-area {
-            border: 2px dashed var(--border);
+            border: 2px dashed #cbd5e1;
             border-radius: 8px;
-            height: 120px;
+            height: 100px;
             position: relative;
             background: #f8fafc;
-            overflow: hidden;
         }
         
-        /* IMPORTANT for mobile signature */
         canvas { 
-            width: 100%; 
-            height: 100%; 
-            display: block; 
-            cursor: crosshair; 
-            touch-action: none; /* Prevents scrolling while signing */
+            width: 100%; height: 100%; display: block; 
+            touch-action: none; /* Critical for mobile scrolling */
         }
         
         .clear-btn {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            font-size: 0.7rem;
-            color: #dc2626;
-            background: white;
-            border: 1px solid #fecaca;
-            padding: 4px 8px;
-            border-radius: 4px;
-            cursor: pointer;
+            position: absolute; bottom: 5px; right: 5px;
+            font-size: 0.65rem; color: #dc2626;
+            background: white; border: 1px solid #fecaca;
+            padding: 3px 8px; border-radius: 4px;
             z-index: 10;
         }
 
         /* --- BUTTONS --- */
         .fab-container {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 12px; z-index: 100;
+            display: flex; gap: 10px; z-index: 100;
             width: 90%; max-width: 400px;
-            justify-content: center;
         }
         
         .btn {
-            flex: 1;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            flex: 1; padding: 12px; border: none; border-radius: 50px;
+            font-weight: 600; font-size: 0.9rem; color: white;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             cursor: pointer;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-            transition: transform 0.1s;
         }
         
-        .btn:active { transform: scale(0.96); }
         .btn-new { background: #64748b; }
         .btn-pdf { background: var(--primary); }
 
@@ -219,11 +192,10 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.95); z-index: 20000;
             display: none; align-items: center; justify-content: center; flex-direction: column;
-            color: var(--primary); font-weight: 600;
         }
         .spinner {
             border: 3px solid #f3f3f3; border-top: 3px solid var(--primary);
-            border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; margin-bottom: 15px;
+            border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; margin-bottom: 10px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
@@ -232,7 +204,7 @@
 
     <div class="slip-container" id="printable-area">
         <div class="header">
-            <div class="header-title">DUTY SLIP</div>
+            <div class="header-title">Duty Slip</div>
             <div class="header-meta">
                 <div id="displayDate"></div>
                 <div class="meta-id" id="bookingId"></div>
@@ -243,18 +215,18 @@
             
             <div class="section">
                 <div class="section-header">
-                    <i class="fas fa-user-circle"></i> Customer Details
+                     <i class="fas fa-user"></i> Customer Details
                 </div>
                 <div class="grid-row">
                     <div class="input-group full-width">
                         <label>Customer Name</label>
-                        <input id="customerName" placeholder="Enter full name" oninput="saveData()">
+                        <input id="customerName" placeholder="Name" oninput="saveData()">
                     </div>
                 </div>
                 <div class="grid-row">
                     <div class="input-group full-width">
-                        <label>Pickup / Drop Address</label>
-                        <input id="customerAddress" placeholder="Enter location" oninput="saveData()">
+                        <label>Address</label>
+                        <input id="customerAddress" placeholder="Address" oninput="saveData()">
                     </div>
                 </div>
             </div>
@@ -266,24 +238,18 @@
                 <div class="grid-row">
                     <div class="input-group">
                         <label>Driver Name</label>
-                        <input id="driverName" placeholder="Driver Name" oninput="saveData()">
+                        <input id="driverName" oninput="saveData()">
                     </div>
                     <div class="input-group">
                         <label>Car No.</label>
-                        <input id="carNumber" placeholder="MH-04-XX-1234" oninput="saveData()">
-                    </div>
-                </div>
-                <div class="grid-row">
-                     <div class="input-group full-width">
-                        <label>Vehicle Type</label>
-                        <input id="carType" placeholder="Sedan, SUV, etc." oninput="saveData()">
+                        <input id="carNumber" placeholder="MH-01-AB-1234" oninput="saveData()">
                     </div>
                 </div>
             </div>
 
             <div class="section">
                 <div class="section-header">
-                    <i class="fas fa-play-circle"></i> Trip Start
+                    <i class="fas fa-play"></i> Trip Start
                 </div>
                 <div class="grid-row">
                     <div class="input-group">
@@ -297,33 +263,34 @@
                 </div>
             </div>
 
-            <div class="section" style="background-color: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                <div class="section-header" style="border-bottom-color: #cbd5e1;">
-                    <i class="fas fa-stop-circle"></i> Customer Usage
+            <div class="section">
+                <div class="section-header">
+                    <i class="fas fa-stop"></i> Customer Usage
                 </div>
-                
                 <div class="grid-row">
                     <div class="input-group">
                         <label>Closing Time</label>
                         <input id="endTime" type="datetime-local" oninput="saveData(); calculateStats();">
                     </div>
                     <div class="input-group">
-                        <label>Reading KM (End)</label>
+                        <label>Reading KM</label>
                         <input id="endKm" type="number" placeholder="0" oninput="saveData(); calculateStats();">
                     </div>
                 </div>
+            </div>
 
-                <div style="margin-top: 15px; border-top: 1px dashed #cbd5e1; padding-top: 15px;">
-                    <label style="color: #0f172a; margin-bottom: 10px; display:block;">Total Utilization (Auto)</label>
-                    <div class="grid-row">
-                        <div class="input-group auto-field">
-                            <label>Total KM</label>
-                            <input id="totalKm" readonly placeholder="0">
-                        </div>
-                        <div class="input-group auto-field">
-                            <label>Total Time</label>
-                            <input id="totalTime" readonly placeholder="0h 0m">
-                        </div>
+            <div class="section auto-section">
+                <div class="section-header" style="color:#166534; border-bottom-color:#bbf7d0;">
+                    <i class="fas fa-calculator"></i> Total Utilization (Auto)
+                </div>
+                <div class="grid-row">
+                    <div class="input-group auto-field">
+                        <label>Total KM</label>
+                        <input id="totalKm" readonly placeholder="0">
+                    </div>
+                    <div class="input-group auto-field">
+                        <label>Total Time</label>
+                        <input id="totalTime" readonly placeholder="0h 0m">
                     </div>
                 </div>
             </div>
@@ -333,12 +300,12 @@
                     <i class="fas fa-pen"></i> Remarks
                 </div>
                 <div class="input-group">
-                    <textarea id="remarks" placeholder="Toll, parking, or special instructions..." oninput="saveData()"></textarea>
+                    <textarea id="remarks" placeholder="Notes..." oninput="saveData()"></textarea>
                 </div>
             </div>
 
             <div class="section">
-                <label>Customer Signature</label>
+                <label>Signature</label>
                 <div class="signature-area">
                     <canvas id="sig-canvas"></canvas>
                     <button class="clear-btn" id="clear-sig">Clear</button>
@@ -363,7 +330,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'dutySlipData_v4_A6';
+        const STORAGE_KEY = 'dutySlipData_v5_Final';
         let canvas, ctx, writingMode = false;
 
         window.onload = function() {
@@ -377,7 +344,8 @@
 
         // --- Logic: Calculate Totals ---
         function calculateStats() {
-            // Distance
+            // Distance Calculation
+            // Inputs: startKm (Trip Start) & endKm (Customer Usage -> Reading KM)
             const sKm = parseFloat(document.getElementById('startKm').value);
             const eKm = parseFloat(document.getElementById('endKm').value);
             
@@ -387,7 +355,8 @@
                 document.getElementById('totalKm').value = '';
             }
             
-            // Time
+            // Time Calculation
+            // Inputs: startTime (Trip Start) & endTime (Customer Usage -> Closing Time)
             const sTimeVal = document.getElementById('startTime').value;
             const eTimeVal = document.getElementById('endTime').value;
             
@@ -411,7 +380,7 @@
         function createNew() {
             const dateStr = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
             document.getElementById('displayDate').textContent = dateStr;
-            document.getElementById('bookingId').textContent = `ID: #${Math.floor(1000 + Math.random()*9000)}`;
+            document.getElementById('bookingId').textContent = `ID: ${Math.floor(1000 + Math.random()*9000)}`;
             saveData();
         }
 
@@ -470,25 +439,14 @@
             };
             
             window.addEventListener('resize', resize);
-            resize(); // Initial sizing
+            resize(); 
             
-            // Touch Events
-            canvas.addEventListener('touchstart', (e) => {
-                e.preventDefault(); // Stop scrolling
-                startDraw(e);
-            }, {passive: false});
+            // Touch handling
+            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, {passive: false});
+            canvas.addEventListener('touchend', (e) => { e.preventDefault(); endDraw(e); }, {passive: false});
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, {passive: false});
             
-            canvas.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                endDraw(e);
-            }, {passive: false});
-            
-            canvas.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-                draw(e);
-            }, {passive: false});
-
-            // Mouse Events
+            // Mouse handling
             canvas.addEventListener('mousedown', startDraw);
             canvas.addEventListener('mouseup', endDraw);
             canvas.addEventListener('mousemove', draw);
@@ -514,22 +472,17 @@
         }
 
         function startDraw(e) { 
-            writingMode = true; 
-            ctx.beginPath(); 
-            const p = getPos(e); 
-            ctx.moveTo(p.x, p.y); 
+            writingMode = true; ctx.beginPath(); 
+            const p = getPos(e); ctx.moveTo(p.x, p.y); 
         }
         
         function endDraw(e) { 
-            writingMode = false; 
-            saveData(); 
+            writingMode = false; saveData(); 
         }
         
         function draw(e) { 
             if(!writingMode) return; 
-            const p = getPos(e); 
-            ctx.lineTo(p.x, p.y); 
-            ctx.stroke(); 
+            const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); 
         }
 
         // --- A6 PDF Generation ---
@@ -539,30 +492,30 @@
             
             try {
                 window.scrollTo(0, 0);
-                await new Promise(r => setTimeout(r, 200)); // Wait for render
+                await new Promise(r => setTimeout(r, 200));
 
                 const element = document.getElementById('printable-area');
                 
-                // 1. Capture High Quality Canvas
+                // Capture at higher scale for clarity
                 const canvasObj = await html2canvas(element, { 
-                    scale: 2, 
+                    scale: 3, 
                     useCORS: true, 
                     backgroundColor: '#ffffff',
                     ignoreElements: (el) => el.id === 'clear-sig' 
                 });
                 
-                // 2. Setup A6 PDF (105mm x 148mm)
+                // Initialize A6 PDF (105mm x 148mm)
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a6');
                 
                 const pdfWidth = 105; 
                 const pdfHeight = 148; 
                 
-                // 3. Calculate Ratio to Fit
+                // Calculate height based on A6 width to maintain aspect ratio
                 const imgRatio = canvasObj.height / canvasObj.width;
                 const printHeight = pdfWidth * imgRatio;
                 
-                // 4. Add Image (Fit to width)
+                // Add image (stretched to width, auto height)
                 pdf.addImage(canvasObj.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pdfWidth, printHeight);
                 
                 const id = document.getElementById('bookingId').textContent.replace(/[^a-zA-Z0-9]/g, '');
