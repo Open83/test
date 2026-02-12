@@ -401,9 +401,19 @@
                 
                 if (eTime > sTime) {
                     const diffMs = eTime - sTime;
-                    const diffHrs = Math.floor(diffMs / 3600000);
-                    const diffMins = Math.round((diffMs % 3600000) / 60000);
-                    document.getElementById('totalTime').value = `${diffHrs}h ${diffMins}m`;
+                    
+                    // Logic updated to handle Days
+                    const totalMinutes = Math.round(diffMs / 60000);
+                    const days = Math.floor(totalMinutes / (24 * 60));
+                    const remainingMinsAfterDays = totalMinutes % (24 * 60);
+                    const hours = Math.floor(remainingMinsAfterDays / 60);
+                    const minutes = remainingMinsAfterDays % 60;
+
+                    if (days > 0) {
+                        document.getElementById('totalTime').value = `${days}d ${hours}h ${minutes}m`;
+                    } else {
+                        document.getElementById('totalTime').value = `${hours}h ${minutes}m`;
+                    }
                 } else {
                     document.getElementById('totalTime').value = '';
                 }
@@ -414,7 +424,7 @@
 
         function createNew() {
             const dateStr = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
-            document.getElementById('displayDate').value = dateStr; // Changed to .value
+            document.getElementById('displayDate').value = dateStr; 
             document.getElementById('bookingId').textContent = `ID: ${Math.floor(1000 + Math.random()*9000)}`;
             saveData();
         }
@@ -431,7 +441,7 @@
         function saveData() {
             const data = {
                 id: document.getElementById('bookingId').textContent,
-                date: document.getElementById('displayDate').value, // Changed to .value
+                date: document.getElementById('displayDate').value,
                 fields: {},
                 sig: canvas.toDataURL()
             };
@@ -441,7 +451,7 @@
 
         function restoreData(data) {
             document.getElementById('bookingId').textContent = data.id;
-            document.getElementById('displayDate').value = data.date; // Changed to .value
+            document.getElementById('displayDate').value = data.date; 
             if (data.fields) Object.keys(data.fields).forEach(k => {
                 const el = document.getElementById(k); if(el) el.value = data.fields[k];
             });
