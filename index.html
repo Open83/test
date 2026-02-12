@@ -61,13 +61,32 @@
             flex: 1; 
         }
 
+        /* Modified to style the input */
         .header-date {
             flex: 1; 
             text-align: center;
-            font-size: 0.9rem;
-            font-weight: 600;
         }
         
+        /* New style for the date input to override global input styles */
+        input.header-date-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            text-align: center;
+            width: 100%;
+            max-width: 140px;
+            margin: 0 auto;
+            border-radius: 4px;
+        }
+        
+        input.header-date-input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+        }
+
         .header-meta { 
             text-align: right; 
             font-size: 0.7rem; 
@@ -210,7 +229,9 @@
     <div class="slip-container" id="printable-area">
         <div class="header">
             <div class="header-title">Duty Slip</div>
-            <div class="header-date" id="displayDate"></div>
+            <div class="header-date">
+                <input class="header-date-input" id="displayDate" placeholder="Date" oninput="saveData()">
+            </div>
             <div class="header-meta">
                 <div class="meta-id" id="bookingId"></div>
             </div>
@@ -393,7 +414,7 @@
 
         function createNew() {
             const dateStr = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
-            document.getElementById('displayDate').textContent = dateStr;
+            document.getElementById('displayDate').value = dateStr; // Changed to .value
             document.getElementById('bookingId').textContent = `ID: ${Math.floor(1000 + Math.random()*9000)}`;
             saveData();
         }
@@ -410,7 +431,7 @@
         function saveData() {
             const data = {
                 id: document.getElementById('bookingId').textContent,
-                date: document.getElementById('displayDate').textContent,
+                date: document.getElementById('displayDate').value, // Changed to .value
                 fields: {},
                 sig: canvas.toDataURL()
             };
@@ -420,7 +441,7 @@
 
         function restoreData(data) {
             document.getElementById('bookingId').textContent = data.id;
-            document.getElementById('displayDate').textContent = data.date;
+            document.getElementById('displayDate').value = data.date; // Changed to .value
             if (data.fields) Object.keys(data.fields).forEach(k => {
                 const el = document.getElementById(k); if(el) el.value = data.fields[k];
             });
