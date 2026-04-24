@@ -115,16 +115,6 @@
       font-size: 12.5px;
       margin-top: 2px;
     }
-    .panel-head .inv-badge {
-      margin-left: auto;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 8px;
-      padding: 8px 16px;
-      text-align: right;
-    }
-    .panel-head .inv-badge .lbl { font-size: 10px; color: rgba(255,255,255,0.7); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-    .panel-head .inv-badge .val { font-size: 16px; color: #fff; font-weight: 900; font-family: 'Raleway', sans-serif; letter-spacing: 1px; }
 
     .panel-body { padding: 28px 30px 26px; }
 
@@ -192,6 +182,25 @@
       box-shadow: 0 0 0 3.5px rgba(192,0,12,0.07);
     }
     .field input::placeholder { color: #bbb; }
+
+    /* Invoice number field highlight */
+    .field.inv-no-field input {
+      border-color: var(--gold);
+      background: var(--gold-light);
+      font-family: 'Raleway', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: var(--red-dark);
+    }
+    .field.inv-no-field input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3.5px rgba(201,146,42,0.15);
+      background: #fff8ee;
+    }
+    .field.inv-no-field label {
+      color: var(--gold);
+    }
 
     /* ── SIGNATURE PAD ── */
     .sig-section { margin-top: 4px; }
@@ -662,23 +671,6 @@
 
     .inv-spacer { flex: 1; min-height: 8px; }
 
-    /* ── PERIOD BADGE ── */
-    .period-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--gold) 0%, #b07a1a 100%);
-      color: #fff;
-      font-family: 'Raleway', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 5px 16px;
-      border-radius: 20px;
-      letter-spacing: 1.5px;
-      line-height: 1;
-      box-shadow: 0 2px 8px rgba(201,146,42,0.4);
-    }
-
     /* ── FOOTER ── */
     .inv-footer {
       display: flex;
@@ -759,7 +751,6 @@
       .sig-controls { justify-content: space-between; }
       .sig-hint { margin-left: 0; width: 100%; text-align: center; margin-top: 5px; }
       .panel-head { padding: 16px 18px; }
-      .panel-head .inv-badge { display: none; }
     }
   </style>
 </head>
@@ -789,16 +780,20 @@
       <h2>New Invoice</h2>
       <p>Fill in the details to generate a professional A4 PDF invoice</p>
     </div>
-    <div class="inv-badge">
-      <div class="lbl">Next Invoice</div>
-      <div class="val" id="invNoDisplay">INV001</div>
-    </div>
   </div>
 
   <div class="panel-body">
 
     <div class="section-label">Invoice Info</div>
-    <div class="grid grid-2">
+    <div class="grid grid-3">
+      <!-- MANUAL INVOICE NUMBER FIELD -->
+      <div class="field inv-no-field">
+        <label>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Invoice Number
+        </label>
+        <input id="invoiceNo" placeholder="e.g. INV001" maxlength="30">
+      </div>
       <div class="field">
         <label>Invoice Date</label>
         <input id="date" type="date">
@@ -1019,17 +1014,7 @@
 </div>
 
 <script>
-  // ── INVOICE NUMBER ──
-  function getNextInvoiceNo() {
-    let c = parseInt(localStorage.getItem('asad_inv_counter') || '0', 10) + 1;
-    localStorage.setItem('asad_inv_counter', c);
-    return 'INV' + String(c).padStart(3, '0');
-  }
-  function peekInvoiceNo() {
-    let c = parseInt(localStorage.getItem('asad_inv_counter') || '0', 10);
-    return 'INV' + String(c + 1).padStart(3, '0');
-  }
-  document.getElementById('invNoDisplay').textContent = peekInvoiceNo();
+  // ── SET DEFAULT DATE ──
   document.getElementById('date').valueAsDate = new Date();
 
   // ── SIGNATURE PAD ──
@@ -1040,7 +1025,6 @@
   function resizeCanvas() {
     const w = canvas.parentElement.offsetWidth;
     const ratio = window.devicePixelRatio || 1;
-    const imgData = hasSig ? ctx.getImageData(0, 0, canvas.width, canvas.height) : null;
     canvas.width = w * ratio;
     canvas.height = 130 * ratio;
     canvas.style.width = w + 'px';
@@ -1052,7 +1036,7 @@
     ctx.lineJoin = 'round';
   }
   resizeCanvas();
-  window.addEventListener('resize', () => { const h = hasSig; clearSignature(); if(h) {} resizeCanvas(); });
+  window.addEventListener('resize', () => { clearSignature(); resizeCanvas(); });
 
   function getPos(e, el) {
     const r = el.getBoundingClientRect();
@@ -1112,12 +1096,19 @@
 
   // ── GENERATE PDF ──
   async function generatePDF() {
-    document.getElementById('loadingOverlay').classList.add('active');
 
-    // Small delay so overlay renders
+    // Validate invoice number
+    const invoiceNoRaw = document.getElementById('invoiceNo').value.trim();
+    if (!invoiceNoRaw) {
+      alert("Please enter an Invoice Number before generating the PDF.");
+      document.getElementById('invoiceNo').focus();
+      return;
+    }
+
+    document.getElementById('loadingOverlay').classList.add('active');
     await new Promise(r => setTimeout(r, 80));
 
-    const invoiceNo  = getNextInvoiceNo();
+    const invoiceNo  = invoiceNoRaw;
     const toVal      = document.getElementById('to').value.trim()          || "—";
     const dateVal    = document.getElementById('date').value;
     const bookedBy   = document.getElementById('bookedBy').value.trim()    || "—";
@@ -1193,9 +1184,6 @@
       sigBlank.style.display = 'block';
     }
 
-    // Update preview badge
-    document.getElementById('invNoDisplay').textContent = peekInvoiceNo();
-
     // Brief wait for fonts / images to settle
     await new Promise(r => setTimeout(r, 200));
 
@@ -1215,7 +1203,6 @@
         scrollY: 0,
         ignoreElements: (el) => false,
         onclone: (doc) => {
-          // Ensure the cloned invoice is visible and positioned correctly
           const zone = doc.getElementById('invoice-render-zone');
           if (zone) {
             zone.style.position = 'static';
