@@ -913,8 +913,8 @@
     document.getElementById('btnOutstation').classList.toggle('active', type === 'outstation');
     document.getElementById('btnLocal').classList.toggle('active', type === 'local');
 
-    document.getElementById('outstation-fields').style.display = type === 'outstation' ? '' : 'none';
-    document.getElementById('local-fields').style.display     = type === 'local'       ? '' : 'none';
+    document.getElementById('outstation-fields').style.display = type === 'outstation' ? 'block' : 'none';
+    document.getElementById('local-fields').style.display     = type === 'local'       ? 'block' : 'none';
 
     document.getElementById('panelTitle').textContent    = type === 'outstation' ? 'New Outstation Invoice' : 'New Local Invoice';
     document.getElementById('panelSubtitle').textContent = type === 'outstation'
