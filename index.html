@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Asad Travels — Invoice Generator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Barlow:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Condensed:wght@400;600;700;800;900&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
@@ -26,9 +26,9 @@
       --gray-100: #eeeeee;
       --white: #ffffff;
       --shadow: 0 12px 50px rgba(0,0,0,0.22);
-      --font-display: 'Cormorant Garamond', serif;
-      --font-ui: 'Barlow', sans-serif;
-      --font-condensed: 'Barlow Condensed', sans-serif;
+      --font-display: 'Merriweather', serif;
+      --font-ui: 'Inter', sans-serif;
+      --font-condensed: 'Roboto Condensed', sans-serif;
     }
 
     body {
@@ -66,10 +66,10 @@
       border: 1px solid rgba(255,255,255,0.12);
     }
     .page-header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 42px;
+      font-family: var(--font-display);
+      font-size: 38px;
       color: var(--white);
-      letter-spacing: 5px;
+      letter-spacing: 2px;
       font-weight: 900;
       text-shadow: 0 2px 30px rgba(192,0,12,0.5);
       line-height: 1;
@@ -78,9 +78,9 @@
     .page-header .tagline {
       font-family: var(--font-condensed);
       color: rgba(255,255,255,0.35);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: 5px;
+      letter-spacing: 3px;
       text-transform: uppercase;
     }
     .gold-rule {
@@ -97,9 +97,9 @@
     }
     .switcher-label {
       font-family: var(--font-condensed);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       color: rgba(255,255,255,0.5);
       margin-bottom: 12px;
@@ -123,7 +123,7 @@
       font-family: var(--font-condensed);
       font-size: 14px;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
       transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -188,8 +188,8 @@
       color: #fff;
       font-family: var(--font-condensed);
       font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 2px;
+      font-weight: 700;
+      letter-spacing: 1px;
       text-transform: uppercase;
     }
     .panel-head-text p {
@@ -206,8 +206,8 @@
       padding: 6px 14px;
       font-family: var(--font-condensed);
       font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 2px;
+      font-weight: 700;
+      letter-spacing: 1px;
       text-transform: uppercase;
       color: #fff;
       flex-shrink: 0;
@@ -218,10 +218,10 @@
     /* ── SECTION LABEL ── */
     .section-label {
       font-family: var(--font-condensed);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 3px;
+      letter-spacing: 1px;
       color: var(--red);
       margin: 28px 0 16px;
       display: flex;
@@ -255,11 +255,11 @@
 
     .field label {
       font-family: var(--font-condensed);
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
       color: #555;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 0.5px;
       display: flex;
       align-items: center;
       gap: 5px;
@@ -294,7 +294,6 @@
       font-weight: 700;
       font-family: var(--font-condensed);
       font-size: 15px;
-      letter-spacing: 0.5px;
       cursor: default;
     }
 
@@ -303,9 +302,8 @@
       border-color: var(--gold);
       background: var(--gold-light);
       font-family: var(--font-condensed);
-      font-weight: 800;
+      font-weight: 700;
       font-size: 15px;
-      letter-spacing: 1px;
       color: var(--red-dark);
     }
     .field.inv-no-field input:focus {
@@ -320,7 +318,7 @@
       border-color: #fbbcbc;
       background: #fff8f8;
       color: var(--red);
-      font-weight: 700;
+      font-weight: 600;
     }
     .field.deduct-field label { color: var(--red); }
 
@@ -339,9 +337,9 @@
       background: var(--gray-900);
       padding: 12px 20px;
       font-family: var(--font-condensed);
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 3px;
+      letter-spacing: 1px;
       text-transform: uppercase;
       color: #fff;
     }
@@ -356,13 +354,13 @@
     }
     .tp-row:last-child { border-bottom: none; }
     .tp-row .tp-desc { color: var(--gray-700); font-weight: 600; }
-    .tp-row .tp-val { font-family: var(--font-condensed); font-weight: 800; font-size: 15px; color: var(--black); }
+    .tp-row .tp-val { font-family: var(--font-condensed); font-weight: 700; font-size: 15px; color: var(--black); }
     .tp-row.tp-deduct .tp-val { color: var(--red); }
     .tp-row.tp-total {
       background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
       padding: 15px 20px;
     }
-    .tp-row.tp-total .tp-desc { color: #fff; font-weight: 800; font-family: var(--font-condensed); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+    .tp-row.tp-total .tp-desc { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
     .tp-row.tp-total .tp-val { color: #fff; font-size: 22px; font-family: var(--font-condensed); }
 
     /* ── SIGNATURE PAD ── */
@@ -378,9 +376,9 @@
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       font-family: var(--font-condensed);
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 4px;
+      letter-spacing: 2px;
       color: rgba(0,0,0,0.1);
       pointer-events: none;
       white-space: nowrap;
@@ -401,11 +399,11 @@
       border: 1.5px solid #ccc;
       border-radius: 8px;
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.15s;
       font-family: var(--font-condensed);
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
     }
     .btn-sig-clear:hover { background: #eaeaea; border-color: #bbb; }
@@ -420,9 +418,9 @@
       color: #fff;
       border: none;
       border-radius: 12px;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 3px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
       cursor: pointer;
       transition: all 0.22s;
       font-family: var(--font-condensed);
@@ -473,14 +471,13 @@
       color: #fff;
       font-family: var(--font-condensed);
       font-weight: 700;
-      letter-spacing: 3px;
-      font-size: 12px;
+      letter-spacing: 2px;
+      font-size: 13px;
       text-transform: uppercase;
     }
 
     /* ==========================================================
        INVOICE TEMPLATE — A4: 794 × 1123 px 
-       (Colors adjusted for bright, high-contrast print)
        ========================================================== */
     #invoice-render-zone {
       position: absolute; left: -9999px; top: 0;
@@ -489,7 +486,7 @@
     .invoice-box {
       width: 794px; height: 1123px;
       background: #ffffff;
-      font-family: 'Barlow', sans-serif;
+      font-family: var(--font-ui);
       position: relative;
       overflow: hidden;
       display: flex; flex-direction: column;
@@ -513,41 +510,41 @@
       width: 80px; height: 3px; background: var(--red);
     }
     .inv-brand .brand-name {
-      font-family: 'Playfair Display', serif;
-      color: var(--red); font-size: 34px; font-weight: 900;
-      letter-spacing: 2px; line-height: 1;
+      font-family: var(--font-display);
+      color: var(--red); font-size: 32px; font-weight: 900;
+      letter-spacing: 1px; line-height: 1;
     }
     .inv-brand .brand-tag {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px; color: var(--black); font-weight: 800;
-      letter-spacing: 4px; text-transform: uppercase; margin-top: 4px;
+      font-family: var(--font-condensed);
+      font-size: 11px; color: var(--black); font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; margin-top: 6px;
     }
     .inv-brand .brand-contact {
-      margin-top: 10px; font-size: 11.5px; color: var(--black); line-height: 2; font-weight: 600;
+      margin-top: 10px; font-size: 11.5px; color: var(--black); line-height: 2; font-weight: 500;
     }
-    .inv-brand .brand-contact span { color: var(--black); font-weight: 800; }
+    .inv-brand .brand-contact span { color: var(--black); font-weight: 700; }
 
     .inv-doc-block { text-align: right; }
     .inv-doc-block .doc-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 22px; font-weight: 900; color: var(--black);
-      letter-spacing: 5px; text-transform: uppercase; line-height: 1;
+      font-family: var(--font-condensed);
+      font-size: 24px; font-weight: 800; color: var(--black);
+      letter-spacing: 2px; text-transform: uppercase; line-height: 1;
     }
     .inv-doc-block .doc-type-pill {
       display: inline-block;
       margin-top: 8px;
       padding: 4px 14px;
       border-radius: 20px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+      font-family: var(--font-condensed);
+      font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
       border: 1.5px solid;
     }
     .pill-outstation { background: var(--red-light); color: var(--red-dark); border-color: var(--red-dark); }
     .pill-local { background: #e8f4ff; color: #004499; border-color: #004499; }
     .inv-doc-block .doc-rule { width: 40px; height: 3px; background: var(--red); margin: 10px 0 8px auto; border-radius: 2px; }
-    .inv-doc-block .doc-meta { font-size: 12px; color: var(--black); line-height: 2.2; font-weight: 600; }
-    .inv-doc-block .doc-meta strong { color: var(--black); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 14px; }
-    .inv-doc-block .doc-meta .inv-no-val { color: var(--red-dark); font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 17px; letter-spacing: 1px; }
+    .inv-doc-block .doc-meta { font-size: 12px; color: var(--black); line-height: 2.2; font-weight: 500; }
+    .inv-doc-block .doc-meta strong { color: var(--black); font-family: var(--font-condensed); font-weight: 700; font-size: 14px; }
+    .inv-doc-block .doc-meta .inv-no-val { color: var(--red-dark); font-family: var(--font-condensed); font-weight: 800; font-size: 17px; }
 
     /* BILL TO + TRIP META */
     .inv-billtrip-row {
@@ -556,19 +553,19 @@
     }
     .inv-bill-to { flex: 1; padding: 14px 20px; border-right: 2px solid #bbb; background: #fafafa; }
     .inv-bill-to .bt-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px; font-weight: 900; text-transform: uppercase;
-      letter-spacing: 2px; color: var(--red-dark); margin-bottom: 5px;
+      font-family: var(--font-condensed);
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--red-dark); margin-bottom: 5px;
       display: flex; align-items: center; gap: 5px;
     }
     .inv-bill-to .bt-label::before { content: ''; width: 3px; height: 12px; background: var(--red-dark); border-radius: 1px; }
-    .inv-bill-to .bt-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--black); margin-bottom: 3px; }
+    .inv-bill-to .bt-name { font-family: var(--font-condensed); font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: 3px; }
     
     .inv-trip-meta { width: 195px; flex-shrink: 0; padding: 14px 18px; display: flex; flex-direction: column; justify-content: center; }
     .inv-trip-meta .tm-row { display: flex; align-items: baseline; gap: 6px; padding: 5px 0; border-bottom: 1px solid #ddd; font-size: 12px; }
     .inv-trip-meta .tm-row:last-child { border-bottom: none; }
-    .inv-trip-meta .tm-label { color: var(--black); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; width: 60px; flex-shrink: 0; }
-    .inv-trip-meta .tm-val { color: var(--black); font-weight: 800; font-size: 12px; font-family: 'Barlow Condensed', sans-serif; }
+    .inv-trip-meta .tm-label { color: var(--black); font-family: var(--font-condensed); font-weight: 700; font-size: 11px; text-transform: uppercase; width: 60px; flex-shrink: 0; }
+    .inv-trip-meta .tm-val { color: var(--black); font-weight: 600; font-size: 12px; font-family: var(--font-condensed); }
 
     /* VEHICLE STRIP */
     .inv-vehicle-strip {
@@ -578,50 +575,50 @@
     }
     .vs-item { flex: 1; text-align: center; border-right: 2px solid rgba(255,255,255,0.3); }
     .vs-item:last-child { border-right: none; }
-    .vs-item .vs-label { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #fff; opacity: 1; margin-bottom: 3px; }
-    .vs-item .vs-val { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+    .vs-item .vs-label { font-family: var(--font-condensed); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #fff; opacity: 0.9; margin-bottom: 3px; }
+    .vs-item .vs-val { font-family: var(--font-condensed); font-size: 14px; font-weight: 700; color: #fff; }
 
     /* CHARGES TABLE */
     .inv-charges-table { width: 100%; border-collapse: collapse; border: 2px solid #bbb; border-radius: 8px; overflow: hidden; }
     .inv-charges-table thead tr { background: var(--gray-900); }
-    .inv-charges-table thead th { padding: 12px 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
+    .inv-charges-table thead th { padding: 12px 16px; font-family: var(--font-condensed); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #fff; }
     .inv-charges-table thead th:last-child { text-align: right; }
     .inv-charges-table tbody tr { border-bottom: 1.5px solid #ddd; }
     .inv-charges-table tbody tr:last-child { border-bottom: none; }
     .inv-charges-table tbody tr:nth-child(even) { background: #fafafa; }
-    .inv-charges-table tbody td { padding: 14px 16px; font-size: 13.5px; }
-    .inv-charges-table .td-desc { color: var(--black); font-weight: 800; }
-    .inv-charges-table .td-detail { color: var(--black); font-size: 12px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; }
-    .inv-charges-table .td-amt { text-align: right; font-weight: 800; color: var(--black); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; }
+    .inv-charges-table tbody td { padding: 14px 16px; font-size: 13px; }
+    .inv-charges-table .td-desc { color: var(--black); font-weight: 600; }
+    .inv-charges-table .td-detail { color: var(--black); font-size: 12px; text-align: center; font-family: var(--font-condensed); font-weight: 600; }
+    .inv-charges-table .td-amt { text-align: right; font-weight: 700; color: var(--black); font-family: var(--font-condensed); font-size: 14px; }
     .inv-charges-table .td-deduct td { background: #fff8f8; }
     .inv-charges-table .td-deduct .td-amt { color: var(--red-dark); }
-    .inv-charges-table .td-deduct .td-desc { color: var(--red-dark); font-weight: 800; }
+    .inv-charges-table .td-deduct .td-desc { color: var(--red-dark); font-weight: 700; }
 
     /* TOTAL BAR */
     .inv-total-bar { display: flex; border: 2px solid #bbb; border-top: none; border-radius: 0 0 8px 8px; overflow: hidden; margin-bottom: 0; }
     .inv-words-box { flex: 1; padding: 14px 18px; background: var(--gold-light); border-right: 2px solid #bbb; }
-    .inv-words-box .wb-label { font-family: 'Barlow Condensed', sans-serif; font-size: 9.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-dark); margin-bottom: 4px; }
-    .inv-words-box .wb-text { font-style: italic; color: var(--black); font-weight: 700; font-size: 13.5px; line-height: 1.5; }
+    .inv-words-box .wb-label { font-family: var(--font-condensed); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gold-dark); margin-bottom: 4px; }
+    .inv-words-box .wb-text { font-style: italic; color: var(--black); font-weight: 600; font-size: 13px; line-height: 1.5; }
     .inv-grand-total { min-width: 185px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 13px 18px; background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%); }
-    .inv-grand-total .gt-label { font-family: 'Barlow Condensed', sans-serif; font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 2.5px; color: #fff; margin-bottom: 4px; }
-    .inv-grand-total .gt-amt { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 900; color: #fff; letter-spacing: 1px; }
+    .inv-grand-total .gt-label { font-family: var(--font-condensed); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #fff; margin-bottom: 4px; }
+    .inv-grand-total .gt-amt { font-family: var(--font-display); font-size: 26px; font-weight: 900; color: #fff; letter-spacing: 0.5px; }
 
     .inv-spacer { flex: 1; min-height: 6px; }
 
     /* NOTES */
-    .inv-notes-box { margin-top: 12px; font-size: 12px; color: var(--black); font-style: italic; font-weight: 600; padding: 10px 14px; background: #fff; border: 1.5px solid #ccc; border-left: 4px solid var(--red); border-radius: 4px; display: none; }
-    .inv-notes-box strong { font-style: normal; color: var(--black); font-size: 10.5px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 2px; }
+    .inv-notes-box { margin-top: 12px; font-size: 12px; color: var(--black); font-style: italic; font-weight: 500; padding: 10px 14px; background: #fff; border: 1.5px solid #ccc; border-left: 4px solid var(--red); border-radius: 4px; display: none; }
+    .inv-notes-box strong { font-style: normal; color: var(--black); font-size: 11px; font-family: var(--font-condensed); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 2px; }
 
     /* FOOTER */
     .inv-footer { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 16px; margin-top: 14px; border-top: 2px solid #ccc; }
-    .inv-footer-note { font-size: 11.5px; color: var(--black); line-height: 1.8; max-width: 300px; font-weight: 600; }
-    .inv-footer-note strong { color: var(--red-dark); font-weight: 900; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.5px; display: block; margin-bottom: 3px; }
-    .inv-footer-terms { margin-top: 6px; font-size: 10.5px; color: #222; line-height: 1.7; font-weight: 600; }
+    .inv-footer-note { font-size: 11px; color: var(--black); line-height: 1.8; max-width: 300px; font-weight: 500; }
+    .inv-footer-note strong { color: var(--red-dark); font-weight: 700; font-family: var(--font-condensed); font-size: 13px; display: block; margin-bottom: 3px; }
+    .inv-footer-terms { margin-top: 6px; font-size: 10px; color: #222; line-height: 1.7; font-weight: 500; }
     .inv-sig-block { text-align: center; }
     .inv-sig-img { height: 60px; width: 190px; display: block; margin: 0 auto 7px; object-fit: contain; }
     .inv-sig-blank { height: 60px; width: 190px; border-bottom: 2px solid #555; margin: 0 auto 7px; }
-    .inv-sig-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; color: var(--black); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
-    .inv-sig-sublabel { color: var(--black); font-size: 11px; letter-spacing: 0.5px; margin-top: 2px; font-weight: 700; }
+    .inv-sig-label { font-family: var(--font-condensed); font-weight: 700; color: var(--black); font-size: 13px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .inv-sig-sublabel { color: var(--black); font-size: 11px; margin-top: 2px; font-weight: 500; }
 
     .inv-bottombar { width: 100%; height: 10px; background: linear-gradient(90deg, var(--red-dark) 0%, var(--red) 45%, var(--gold) 100%); flex-shrink: 0; margin-top: auto; }
 
@@ -1104,7 +1101,7 @@
     if (project) {
       tableRows += `
         <tr>
-          <td class="td-desc" style="color:var(--black); font-weight:800; font-size: 14.5px;">Project / Purpose:<br><span style="font-weight:700; color:#222; font-size: 13px;">Re: ${project}</span></td>
+          <td class="td-desc" style="color:var(--black); font-weight:700; font-size: 14px;">Project / Purpose:<br><span style="font-weight:600; color:#333; font-size: 13px;">Re: ${project}</span></td>
           <td class="td-detail"></td>
           <td class="td-amt"></td>
         </tr>`;
