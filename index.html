@@ -16,13 +16,14 @@
       --red-mid: #a50009;
       --red-light: #fdf2f2;
       --gold: #C9922A;
+      --gold-dark: #a6761c;
       --gold-light: #f9f0e0;
-      --black: #111;
-      --gray-900: #1a1a1a;
-      --gray-700: #444;
-      --gray-500: #777;
-      --gray-300: #ccc;
-      --gray-100: #f5f5f5;
+      --black: #000000;
+      --gray-900: #111111;
+      --gray-700: #222222;
+      --gray-500: #444444;
+      --gray-300: #888888;
+      --gray-100: #eeeeee;
       --white: #ffffff;
       --shadow: 0 12px 50px rgba(0,0,0,0.22);
       --font-display: 'Cormorant Garamond', serif;
@@ -256,7 +257,7 @@
       font-family: var(--font-condensed);
       font-size: 10px;
       font-weight: 700;
-      color: var(--gray-500);
+      color: #555;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       display: flex;
@@ -312,7 +313,7 @@
       box-shadow: 0 0 0 4px rgba(201,146,42,0.12);
       background: #fff8ee;
     }
-    .field.inv-no-field label { color: var(--gold); }
+    .field.inv-no-field label { color: var(--gold-dark); }
 
     /* Deduction field */
     .field.deduct-field input {
@@ -332,7 +333,7 @@
       margin-top: 24px;
       border-radius: 14px;
       overflow: hidden;
-      border: 1.5px solid #eee;
+      border: 1.5px solid #ddd;
     }
     .total-preview-head {
       background: var(--gray-900);
@@ -342,7 +343,7 @@
       font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
+      color: #fff;
     }
     .total-preview-rows { background: #fafafa; }
     .tp-row {
@@ -350,23 +351,23 @@
       justify-content: space-between;
       align-items: center;
       padding: 11px 20px;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid #ddd;
       font-size: 13.5px;
     }
     .tp-row:last-child { border-bottom: none; }
-    .tp-row .tp-desc { color: var(--gray-700); font-weight: 500; }
-    .tp-row .tp-val { font-family: var(--font-condensed); font-weight: 700; font-size: 15px; color: var(--black); }
+    .tp-row .tp-desc { color: var(--gray-700); font-weight: 600; }
+    .tp-row .tp-val { font-family: var(--font-condensed); font-weight: 800; font-size: 15px; color: var(--black); }
     .tp-row.tp-deduct .tp-val { color: var(--red); }
     .tp-row.tp-total {
       background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
       padding: 15px 20px;
     }
-    .tp-row.tp-total .tp-desc { color: rgba(255,255,255,0.8); font-weight: 700; font-family: var(--font-condensed); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+    .tp-row.tp-total .tp-desc { color: #fff; font-weight: 800; font-family: var(--font-condensed); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
     .tp-row.tp-total .tp-val { color: #fff; font-size: 22px; font-family: var(--font-condensed); }
 
     /* ── SIGNATURE PAD ── */
     .sig-wrapper {
-      border: 1.5px solid #e4e4e4;
+      border: 1.5px solid #ccc;
       border-radius: 12px;
       overflow: hidden;
       background: #fafafa;
@@ -380,7 +381,7 @@
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 4px;
-      color: rgba(0,0,0,0.06);
+      color: rgba(0,0,0,0.1);
       pointer-events: none;
       white-space: nowrap;
       text-transform: uppercase;
@@ -397,18 +398,18 @@
       padding: 9px 18px;
       background: #f5f5f5;
       color: var(--gray-700);
-      border: 1.5px solid #ddd;
+      border: 1.5px solid #ccc;
       border-radius: 8px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       transition: all 0.15s;
       font-family: var(--font-condensed);
       letter-spacing: 1px;
       text-transform: uppercase;
     }
-    .btn-sig-clear:hover { background: #eee; border-color: #ccc; }
-    .sig-hint { font-size: 11.5px; color: var(--gray-500); margin-left: auto; font-style: italic; }
+    .btn-sig-clear:hover { background: #eaeaea; border-color: #bbb; }
+    .sig-hint { font-size: 11.5px; color: var(--gray-500); margin-left: auto; font-style: italic; font-weight: 500; }
 
     /* ── DOWNLOAD BUTTON ── */
     .btn-download {
@@ -478,7 +479,8 @@
     }
 
     /* ==========================================================
-       INVOICE TEMPLATE — A4: 794 × 1123 px
+       INVOICE TEMPLATE — A4: 794 × 1123 px 
+       (Colors adjusted for bright, high-contrast print)
        ========================================================== */
     #invoice-render-zone {
       position: absolute; left: -9999px; top: 0;
@@ -503,12 +505,12 @@
     .inv-header-row {
       display: flex; align-items: flex-start; justify-content: space-between;
       margin-bottom: 18px; padding-bottom: 18px;
-      border-bottom: 2px solid #ddd;
+      border-bottom: 2.5px solid #ccc;
       position: relative;
     }
     .inv-header-row::after {
       content: ''; position: absolute; bottom: -4px; left: 0;
-      width: 80px; height: 2px; background: var(--red);
+      width: 80px; height: 3px; background: var(--red);
     }
     .inv-brand .brand-name {
       font-family: 'Playfair Display', serif;
@@ -517,19 +519,18 @@
     }
     .inv-brand .brand-tag {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 9px; color: #555; font-weight: 700;
+      font-size: 10px; color: var(--black); font-weight: 800;
       letter-spacing: 4px; text-transform: uppercase; margin-top: 4px;
     }
     .inv-brand .brand-contact {
-      /* ▶ DARKENED for print: was var(--gray-700)=#444, now #222 */
-      margin-top: 10px; font-size: 11px; color: #222; line-height: 2;
+      margin-top: 10px; font-size: 11.5px; color: var(--black); line-height: 2; font-weight: 600;
     }
-    .inv-brand .brand-contact span { color: var(--black); font-weight: 700; }
+    .inv-brand .brand-contact span { color: var(--black); font-weight: 800; }
 
     .inv-doc-block { text-align: right; }
     .inv-doc-block .doc-title {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 22px; font-weight: 900; color: #000;
+      font-size: 22px; font-weight: 900; color: var(--black);
       letter-spacing: 5px; text-transform: uppercase; line-height: 1;
     }
     .inv-doc-block .doc-type-pill {
@@ -538,109 +539,89 @@
       padding: 4px 14px;
       border-radius: 20px;
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+      font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
       border: 1.5px solid;
     }
-    .pill-outstation { background: var(--red-light); color: var(--red); border-color: var(--red); }
-    .pill-local { background: #e8f4ff; color: #0055aa; border-color: #0055aa; }
+    .pill-outstation { background: var(--red-light); color: var(--red-dark); border-color: var(--red-dark); }
+    .pill-local { background: #e8f4ff; color: #004499; border-color: #004499; }
     .inv-doc-block .doc-rule { width: 40px; height: 3px; background: var(--red); margin: 10px 0 8px auto; border-radius: 2px; }
-    /* ▶ DARKENED for print: was var(--gray-700)=#444, now #333 */
-    .inv-doc-block .doc-meta { font-size: 11.5px; color: #333; line-height: 2.2; }
-    .inv-doc-block .doc-meta strong { color: #000; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 13px; }
-    .inv-doc-block .doc-meta .inv-no-val { color: var(--red); font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 16px; letter-spacing: 1px; }
+    .inv-doc-block .doc-meta { font-size: 12px; color: var(--black); line-height: 2.2; font-weight: 600; }
+    .inv-doc-block .doc-meta strong { color: var(--black); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 14px; }
+    .inv-doc-block .doc-meta .inv-no-val { color: var(--red-dark); font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 17px; letter-spacing: 1px; }
 
     /* BILL TO + TRIP META */
     .inv-billtrip-row {
       display: flex; gap: 0; margin-bottom: 16px;
-      border: 1.5px solid #d0d0d0; border-radius: 8px; overflow: hidden;
+      border: 2px solid #bbb; border-radius: 8px; overflow: hidden;
     }
-    .inv-bill-to { flex: 1; padding: 14px 20px; border-right: 1.5px solid #d0d0d0; background: #f5f5f5; }
+    .inv-bill-to { flex: 1; padding: 14px 20px; border-right: 2px solid #bbb; background: #fafafa; }
     .inv-bill-to .bt-label {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 9px; font-weight: 800; text-transform: uppercase;
-      letter-spacing: 2px; color: var(--red); margin-bottom: 5px;
+      font-size: 10px; font-weight: 900; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--red-dark); margin-bottom: 5px;
       display: flex; align-items: center; gap: 5px;
     }
-    .inv-bill-to .bt-label::before { content: ''; width: 2px; height: 11px; background: var(--red); border-radius: 1px; }
-    .inv-bill-to .bt-name { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; color: #000; margin-bottom: 3px; }
-    /* ▶ DARKENED for print: was var(--gray-500)=#777, now #444 */
-    .inv-bill-to .bt-sub { font-size: 11px; color: #444; font-style: italic; }
+    .inv-bill-to .bt-label::before { content: ''; width: 3px; height: 12px; background: var(--red-dark); border-radius: 1px; }
+    .inv-bill-to .bt-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--black); margin-bottom: 3px; }
+    
     .inv-trip-meta { width: 195px; flex-shrink: 0; padding: 14px 18px; display: flex; flex-direction: column; justify-content: center; }
-    .inv-trip-meta .tm-row { display: flex; align-items: baseline; gap: 6px; padding: 4px 0; border-bottom: 1px solid #e8e8e8; font-size: 11px; }
+    .inv-trip-meta .tm-row { display: flex; align-items: baseline; gap: 6px; padding: 5px 0; border-bottom: 1px solid #ddd; font-size: 12px; }
     .inv-trip-meta .tm-row:last-child { border-bottom: none; }
-    /* ▶ DARKENED for print: was var(--gray-500)=#777, now #444 */
-    .inv-trip-meta .tm-label { color: #444; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; width: 55px; flex-shrink: 0; }
-    .inv-trip-meta .tm-val { color: #000; font-weight: 700; font-size: 11.5px; font-family: 'Barlow Condensed', sans-serif; }
+    .inv-trip-meta .tm-label { color: var(--black); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; width: 60px; flex-shrink: 0; }
+    .inv-trip-meta .tm-val { color: var(--black); font-weight: 800; font-size: 12px; font-family: 'Barlow Condensed', sans-serif; }
 
-    /* VEHICLE STRIP — Route removed, now shows 3 items */
+    /* VEHICLE STRIP */
     .inv-vehicle-strip {
       background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
       border-radius: 8px; padding: 12px 20px; margin-bottom: 16px;
       display: flex; align-items: center;
     }
-    .vs-item { flex: 1; text-align: center; border-right: 1px solid rgba(255,255,255,0.25); }
+    .vs-item { flex: 1; text-align: center; border-right: 2px solid rgba(255,255,255,0.3); }
     .vs-item:last-child { border-right: none; }
-    /* ▶ DARKENED for print: was rgba(255,255,255,0.6), now 0.95 — fully visible on dark bg */
-    .vs-item .vs-label { font-family: 'Barlow Condensed', sans-serif; font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.95); margin-bottom: 3px; }
-    .vs-item .vs-val { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+    .vs-item .vs-label { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #fff; opacity: 1; margin-bottom: 3px; }
+    .vs-item .vs-val { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
 
     /* CHARGES TABLE */
-    .inv-charges-table { width: 100%; border-collapse: collapse; border: 1.5px solid #ccc; border-radius: 8px; overflow: hidden; }
-    .inv-charges-table thead tr { background: #111; }
-    .inv-charges-table thead th { padding: 10px 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #ffffff; }
+    .inv-charges-table { width: 100%; border-collapse: collapse; border: 2px solid #bbb; border-radius: 8px; overflow: hidden; }
+    .inv-charges-table thead tr { background: var(--gray-900); }
+    .inv-charges-table thead th { padding: 12px 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
     .inv-charges-table thead th:last-child { text-align: right; }
-    .inv-charges-table tbody tr { border-bottom: 1px solid #e8e8e8; }
+    .inv-charges-table tbody tr { border-bottom: 1.5px solid #ddd; }
     .inv-charges-table tbody tr:last-child { border-bottom: none; }
-    .inv-charges-table tbody tr:nth-child(even) { background: #f5f5f5; }
-    /* ▶ DARKENED for print: td-desc was var(--gray-700)=#444, now #111 — fully dark */
-    .inv-charges-table tbody td { padding: 12px 16px; font-size: 12.5px; }
-    .inv-charges-table .td-desc { color: #111; font-weight: 600; }
-    /* ▶ DARKENED for print: td-detail was var(--gray-500)=#777, now #444 */
-    .inv-charges-table .td-detail { color: #333; font-size: 12px; font-weight: 600; text-align: center; font-family: 'Barlow Condensed', sans-serif; }
-    .inv-charges-table .td-amt { text-align: right; font-weight: 700; color: #000; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; }
-    .inv-charges-table .td-deduct td { background: #fff0f0; }
-    .inv-charges-table .td-deduct .td-amt { color: var(--red); }
-    .inv-charges-table .td-deduct .td-desc { color: var(--red); font-weight: 700; }
-
-    /* ▶ Route row — amber highlight, first info row in table */
-    .inv-charges-table .td-route td { background: #fff8ee; border-bottom: 1px solid #e8d9c0 !important; }
-    .inv-charges-table .td-route .td-desc { color: #6a3800; font-weight: 800; font-family: "Barlow Condensed", sans-serif; font-size: 13px; }
-    .inv-charges-table .td-route .td-detail { color: #333; font-size: 12px; font-weight: 700; }
-    .inv-charges-table .td-route .td-route-val { text-align: right; font-family: "Barlow Condensed", sans-serif; font-size: 13px; font-weight: 800; color: #6a3800; }
-    /* ▶ Project/Purpose row — blue highlight, second info row in table */
-    .inv-charges-table .td-project td { background: #f0f5ff; border-bottom: 2px solid #b8caee !important; }
-    .inv-charges-table .td-project .td-desc { color: #002060; font-weight: 800; font-family: "Barlow Condensed", sans-serif; font-size: 13px; }
-    .inv-charges-table .td-project .td-detail { color: #222; font-size: 12px; font-weight: 700; }
-    .inv-charges-table .td-project .td-project-val { text-align: right; font-family: "Barlow Condensed", sans-serif; font-size: 13px; font-weight: 800; color: #002060; }
+    .inv-charges-table tbody tr:nth-child(even) { background: #fafafa; }
+    .inv-charges-table tbody td { padding: 14px 16px; font-size: 13.5px; }
+    .inv-charges-table .td-desc { color: var(--black); font-weight: 800; }
+    .inv-charges-table .td-detail { color: var(--black); font-size: 12px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; }
+    .inv-charges-table .td-amt { text-align: right; font-weight: 800; color: var(--black); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; }
+    .inv-charges-table .td-deduct td { background: #fff8f8; }
+    .inv-charges-table .td-deduct .td-amt { color: var(--red-dark); }
+    .inv-charges-table .td-deduct .td-desc { color: var(--red-dark); font-weight: 800; }
 
     /* TOTAL BAR */
-    .inv-total-bar { display: flex; border: 1.5px solid #ccc; border-top: none; border-radius: 0 0 8px 8px; overflow: hidden; margin-bottom: 0; }
-    .inv-words-box { flex: 1; padding: 13px 18px; background: var(--gold-light); border-right: 1.5px solid #d0c0a0; }
-    .inv-words-box .wb-label { font-family: 'Barlow Condensed', sans-serif; font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #9a6a10; margin-bottom: 4px; }
-    .inv-words-box .wb-text { font-style: italic; color: #000; font-weight: 600; font-size: 12.5px; line-height: 1.5; }
+    .inv-total-bar { display: flex; border: 2px solid #bbb; border-top: none; border-radius: 0 0 8px 8px; overflow: hidden; margin-bottom: 0; }
+    .inv-words-box { flex: 1; padding: 14px 18px; background: var(--gold-light); border-right: 2px solid #bbb; }
+    .inv-words-box .wb-label { font-family: 'Barlow Condensed', sans-serif; font-size: 9.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-dark); margin-bottom: 4px; }
+    .inv-words-box .wb-text { font-style: italic; color: var(--black); font-weight: 700; font-size: 13.5px; line-height: 1.5; }
     .inv-grand-total { min-width: 185px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 13px 18px; background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%); }
-    .inv-grand-total .gt-label { font-family: 'Barlow Condensed', sans-serif; font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: rgba(255,255,255,0.9); margin-bottom: 4px; }
-    .inv-grand-total .gt-amt { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: #fff; letter-spacing: 1px; }
+    .inv-grand-total .gt-label { font-family: 'Barlow Condensed', sans-serif; font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 2.5px; color: #fff; margin-bottom: 4px; }
+    .inv-grand-total .gt-amt { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 900; color: #fff; letter-spacing: 1px; }
 
     .inv-spacer { flex: 1; min-height: 6px; }
 
     /* NOTES */
-    .inv-notes-box { margin-top: 12px; font-size: 11px; color: #444; font-style: italic; padding: 9px 14px; background: #fffbf5; border-left: 3px solid var(--gold); border-radius: 4px; display: none; }
-    .inv-notes-box strong { font-style: normal; color: #666; font-size: 9.5px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 2px; }
+    .inv-notes-box { margin-top: 12px; font-size: 12px; color: var(--black); font-style: italic; font-weight: 600; padding: 10px 14px; background: #fff; border: 1.5px solid #ccc; border-left: 4px solid var(--red); border-radius: 4px; display: none; }
+    .inv-notes-box strong { font-style: normal; color: var(--black); font-size: 10.5px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 2px; }
 
     /* FOOTER */
-    .inv-footer { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 16px; margin-top: 14px; border-top: 1.5px solid #ccc; }
-    /* ▶ DARKENED for print: was var(--gray-500)=#777, now #333 */
-    .inv-footer-note { font-size: 10.5px; color: #333; line-height: 1.8; max-width: 300px; }
-    .inv-footer-note strong { color: var(--red); font-weight: 700; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.5px; display: block; margin-bottom: 3px; }
-    /* ▶ DARKENED for print: was #bbb (very light!), now #555 — much more visible */
-    .inv-footer-terms { margin-top: 6px; font-size: 9.5px; color: #555; line-height: 1.7; }
+    .inv-footer { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 16px; margin-top: 14px; border-top: 2px solid #ccc; }
+    .inv-footer-note { font-size: 11.5px; color: var(--black); line-height: 1.8; max-width: 300px; font-weight: 600; }
+    .inv-footer-note strong { color: var(--red-dark); font-weight: 900; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.5px; display: block; margin-bottom: 3px; }
+    .inv-footer-terms { margin-top: 6px; font-size: 10.5px; color: #222; line-height: 1.7; font-weight: 600; }
     .inv-sig-block { text-align: center; }
     .inv-sig-img { height: 60px; width: 190px; display: block; margin: 0 auto 7px; object-fit: contain; }
-    .inv-sig-blank { height: 60px; width: 190px; border-bottom: 1.5px solid #999; margin: 0 auto 7px; }
-    .inv-sig-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; color: #000; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
-    /* ▶ DARKENED for print: was var(--gray-500)=#777, now #444 */
-    .inv-sig-sublabel { color: #444; font-size: 10px; letter-spacing: 0.5px; margin-top: 2px; }
+    .inv-sig-blank { height: 60px; width: 190px; border-bottom: 2px solid #555; margin: 0 auto 7px; }
+    .inv-sig-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; color: var(--black); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+    .inv-sig-sublabel { color: var(--black); font-size: 11px; letter-spacing: 0.5px; margin-top: 2px; font-weight: 700; }
 
     .inv-bottombar { width: 100%; height: 10px; background: linear-gradient(90deg, var(--red-dark) 0%, var(--red) 45%, var(--gold) 100%); flex-shrink: 0; margin-top: auto; }
 
@@ -658,13 +639,11 @@
 </head>
 <body>
 
-<!-- Loading Overlay -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
   <p>Generating PDF…</p>
 </div>
 
-<!-- Page Header -->
 <div class="page-header">
   <div class="logo-emblem">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -674,7 +653,6 @@
   <div class="gold-rule"></div>
 </div>
 
-<!-- Trip Type Toggle -->
 <div class="trip-switcher-wrap">
   <div class="switcher-label">Select Trip Type</div>
   <div class="trip-type-toggle">
@@ -687,7 +665,6 @@
   </div>
 </div>
 
-<!-- Form Panel -->
 <div class="panel">
   <div class="panel-head">
     <div class="panel-head-icon">
@@ -702,7 +679,6 @@
 
   <div class="panel-body">
 
-    <!-- ── INVOICE INFO ── -->
     <div class="section-label">Invoice Info</div>
     <div class="grid grid-3">
       <div class="field inv-no-field">
@@ -719,14 +695,12 @@
       </div>
     </div>
 
-    <!-- ── CLIENT DETAILS ── -->
     <div class="section-label">Client Details</div>
     <div class="grid grid-2">
       <div class="field"><label>Bill To (Client / Company)</label><input id="to" placeholder="e.g. ABC Pvt. Ltd."></div>
-      <div class="field"><label>Project / Purpose</label><input id="project" placeholder="e.g. Site Visit — Andheri to Pune"></div>
+      <div class="field"><label>Project / Purpose</label><input id="project" placeholder="e.g. Andheri to Pune"></div>
     </div>
 
-    <!-- ── VEHICLE DETAILS ── -->
     <div class="section-label">Vehicle Details</div>
     <div class="grid grid-3">
       <div class="field"><label>Route</label><input id="hire" placeholder="e.g. Mumbai – Pune"></div>
@@ -734,7 +708,6 @@
       <div class="field"><label>Car Registration No.</label><input id="carNo" placeholder="e.g. MH01 AB 1234"></div>
     </div>
 
-    <!-- ── TRIP PERIOD ── -->
     <div class="section-label">Trip Period</div>
     <div class="grid grid-3">
       <div class="field"><label>From Date</label><input id="fromDate" type="date"></div>
@@ -742,9 +715,6 @@
       <div class="field"><label>Number of Days</label><input id="days" type="number" placeholder="e.g. 2" min="0" oninput="recalc()"></div>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         OUTSTATION-ONLY FIELDS
-    ══════════════════════════════════════════ -->
     <div class="conditional-outstation" id="outstation-fields">
       <div class="section-label">Charges Breakdown — Outstation</div>
       <div class="grid grid-4">
@@ -759,9 +729,6 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         LOCAL-ONLY FIELDS
-    ══════════════════════════════════════════ -->
     <div class="conditional-local" id="local-fields">
       <div class="section-label">Charges Breakdown — Local</div>
       <div class="grid grid-3">
@@ -780,15 +747,12 @@
       </div>
     </div>
 
-    <!-- ── LIVE TOTAL PREVIEW ── -->
     <div class="total-preview" style="margin-top:26px;">
       <div class="total-preview-head">⟨ Live Calculation Preview ⟩</div>
       <div class="total-preview-rows" id="previewRows">
-        <!-- filled by JS -->
-      </div>
+        </div>
     </div>
 
-    <!-- ── SIGNATURE ── -->
     <div class="section-label" style="margin-top:28px;">Authorised Signature</div>
     <div class="sig-wrapper">
       <div class="sig-watermark">Draw Signature Here</div>
@@ -807,7 +771,6 @@
   </div>
 </div>
 
-<!-- ===================== HIDDEN INVOICE TEMPLATE ===================== -->
 <div id="invoice-render-zone">
   <div class="invoice-box" id="invoice">
 
@@ -815,7 +778,6 @@
 
     <div class="inv-inner">
 
-      <!-- HEADER -->
       <div class="inv-header-row">
         <div class="inv-brand">
           <div class="brand-name">ASAD TRAVELS</div>
@@ -837,27 +799,26 @@
         </div>
       </div>
 
-      <!-- BILL TO + TRIP META -->
       <div class="inv-billtrip-row">
         <div class="inv-bill-to">
           <div class="bt-label">Bill To</div>
           <div class="bt-name" id="t_to">—</div>
         </div>
         <div class="inv-trip-meta">
+          <div class="tm-row"><span class="tm-label">Route</span><span class="tm-val" id="t_hire2">—</span></div>
           <div class="tm-row"><span class="tm-label">Car</span><span class="tm-val" id="t_carType2">—</span></div>
           <div class="tm-row"><span class="tm-label">Reg. No</span><span class="tm-val" id="t_carNo2">—</span></div>
           <div class="tm-row"><span class="tm-label">Period</span><span class="tm-val" id="t_dateRange2">—</span></div>
         </div>
       </div>
 
-      <!-- VEHICLE STRIP — Route removed; now 3 items: Vehicle · Registration · Trip Period -->
       <div class="inv-vehicle-strip">
+        <div class="vs-item"><div class="vs-label">Route</div><div class="vs-val" id="t_hire">—</div></div>
         <div class="vs-item"><div class="vs-label">Vehicle</div><div class="vs-val" id="t_carType">—</div></div>
         <div class="vs-item"><div class="vs-label">Registration</div><div class="vs-val" id="t_carNo">—</div></div>
         <div class="vs-item"><div class="vs-label">Trip Period</div><div class="vs-val" id="t_dateRange">—</div></div>
       </div>
 
-      <!-- CHARGES TABLE — Route appears as first row in Description column -->
       <table class="inv-charges-table">
         <thead>
           <tr>
@@ -867,11 +828,9 @@
           </tr>
         </thead>
         <tbody id="t_table_body">
-          <!-- filled by JS — Route row is injected first -->
-        </tbody>
+          </tbody>
       </table>
 
-      <!-- TOTAL BAR -->
       <div class="inv-total-bar">
         <div class="inv-words-box">
           <div class="wb-label">Amount in Words</div>
@@ -883,7 +842,6 @@
         </div>
       </div>
 
-      <!-- NOTES -->
       <div class="inv-notes-box" id="t_notes_wrap">
         <strong>Note</strong>
         <span id="t_notes"></span>
@@ -891,7 +849,6 @@
 
       <div class="inv-spacer"></div>
 
-      <!-- FOOTER -->
       <div class="inv-footer">
         <div class="inv-footer-left">
           <div class="inv-footer-note">
@@ -1124,7 +1081,7 @@
     set('t_date',     formatDate(dateVal));
     set('t_to',       toVal);
     set('t_bookedBy', bookedBy);
-    // project field is now shown in the charges table Description column
+    set('t_hire',     hireVal); set('t_hire2',     hireVal);
     set('t_carType',  carType); set('t_carType2',  carType);
     set('t_carNo',    carNo);   set('t_carNo2',    carNo);
     set('t_dateRange', dateRangeText); set('t_dateRange2', dateRangeText);
@@ -1143,21 +1100,15 @@
     let tableRows = '';
     let notesVal  = '';
 
-    // ── INFO ROWS — Route (amber) and Project/Purpose (blue) at top of Description column ──
-    const routeRow = `
-      <tr class="td-route">
-        <td class="td-desc">Route</td>
-        <td class="td-detail">${hireVal}</td>
-        <td class="td-route-val">—</td>
-      </tr>`;
-    // Project row: only shown if project/purpose was entered
-    const projectRow = project ? `
-      <tr class="td-project">
-        <td class="td-desc">Purpose / Project</td>
-        <td class="td-detail">${project}</td>
-        <td class="td-project-val">—</td>
-      </tr>` : '';
-    const infoRows = routeRow + projectRow;
+    // Shift the Project Info into the top of the description column
+    if (project) {
+      tableRows += `
+        <tr>
+          <td class="td-desc" style="color:var(--black); font-weight:800; font-size: 14.5px;">Project / Purpose:<br><span style="font-weight:700; color:#222; font-size: 13px;">Re: ${project}</span></td>
+          <td class="td-detail"></td>
+          <td class="td-amt"></td>
+        </tr>`;
+    }
 
     if (tripType === 'outstation') {
       const km      = parseFloat(document.getElementById('km').value)         || 0;
@@ -1171,7 +1122,7 @@
       const driverAmt = driver * daysVal;
       total = kmAmt + driverAmt + toll - advance;
 
-      tableRows = infoRows + `
+      tableRows += `
         <tr>
           <td class="td-desc">KM Charges</td>
           <td class="td-detail">${km} KM &nbsp;×&nbsp; ₹${rate} /KM</td>
@@ -1208,7 +1159,7 @@
       const addHrsAmt = addHrs * hrsCharge;
       total = dayAmt + addKmAmt + addHrsAmt + toll - advance;
 
-      tableRows = infoRows + `
+      tableRows += `
         <tr>
           <td class="td-desc">Day Charges</td>
           <td class="td-detail">₹${rateDay}/Day &nbsp;×&nbsp; ${daysVal} Day(s)</td>
