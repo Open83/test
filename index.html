@@ -587,7 +587,7 @@
     /* CHARGES TABLE */
     .inv-charges-table { width: 100%; border-collapse: collapse; border: 1.5px solid #ccc; border-radius: 8px; overflow: hidden; }
     .inv-charges-table thead tr { background: #111; }
-    .inv-charges-table thead th { padding: 10px 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
+    .inv-charges-table thead th { padding: 10px 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #ffffff; }
     .inv-charges-table thead th:last-child { text-align: right; }
     .inv-charges-table tbody tr { border-bottom: 1px solid #e8e8e8; }
     .inv-charges-table tbody tr:last-child { border-bottom: none; }
@@ -596,24 +596,22 @@
     .inv-charges-table tbody td { padding: 12px 16px; font-size: 12.5px; }
     .inv-charges-table .td-desc { color: #111; font-weight: 600; }
     /* ▶ DARKENED for print: td-detail was var(--gray-500)=#777, now #444 */
-    .inv-charges-table .td-detail { color: #444; font-size: 11px; text-align: center; font-family: 'Barlow Condensed', sans-serif; }
+    .inv-charges-table .td-detail { color: #333; font-size: 12px; font-weight: 600; text-align: center; font-family: 'Barlow Condensed', sans-serif; }
     .inv-charges-table .td-amt { text-align: right; font-weight: 700; color: #000; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; }
     .inv-charges-table .td-deduct td { background: #fff0f0; }
     .inv-charges-table .td-deduct .td-amt { color: var(--red); }
     .inv-charges-table .td-deduct .td-desc { color: var(--red); font-weight: 700; }
 
-    /* ▶ NEW: Route row style — top of table, highlighted */
-    .inv-charges-table .td-route td { background: #fff8ee; border-bottom: 2px solid #e8d9c0 !important; }
-    .inv-charges-table .td-route .td-desc { color: #7a4a00; font-weight: 800; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.3px; }
-    .inv-charges-table .td-route .td-detail { color: #555; font-size: 11.5px; font-style: italic; }
-    .inv-charges-table .td-route .td-route-val {
-      text-align: right;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--red-dark);
-      letter-spacing: 0.5px;
-    }
+    /* ▶ Route row — amber highlight, first info row in table */
+    .inv-charges-table .td-route td { background: #fff8ee; border-bottom: 1px solid #e8d9c0 !important; }
+    .inv-charges-table .td-route .td-desc { color: #6a3800; font-weight: 800; font-family: "Barlow Condensed", sans-serif; font-size: 13px; }
+    .inv-charges-table .td-route .td-detail { color: #333; font-size: 12px; font-weight: 700; }
+    .inv-charges-table .td-route .td-route-val { text-align: right; font-family: "Barlow Condensed", sans-serif; font-size: 13px; font-weight: 800; color: #6a3800; }
+    /* ▶ Project/Purpose row — blue highlight, second info row in table */
+    .inv-charges-table .td-project td { background: #f0f5ff; border-bottom: 2px solid #b8caee !important; }
+    .inv-charges-table .td-project .td-desc { color: #002060; font-weight: 800; font-family: "Barlow Condensed", sans-serif; font-size: 13px; }
+    .inv-charges-table .td-project .td-detail { color: #222; font-size: 12px; font-weight: 700; }
+    .inv-charges-table .td-project .td-project-val { text-align: right; font-family: "Barlow Condensed", sans-serif; font-size: 13px; font-weight: 800; color: #002060; }
 
     /* TOTAL BAR */
     .inv-total-bar { display: flex; border: 1.5px solid #ccc; border-top: none; border-radius: 0 0 8px 8px; overflow: hidden; margin-bottom: 0; }
@@ -844,7 +842,6 @@
         <div class="inv-bill-to">
           <div class="bt-label">Bill To</div>
           <div class="bt-name" id="t_to">—</div>
-          <div class="bt-sub" id="t_project_info"></div>
         </div>
         <div class="inv-trip-meta">
           <div class="tm-row"><span class="tm-label">Car</span><span class="tm-val" id="t_carType2">—</span></div>
@@ -1127,7 +1124,7 @@
     set('t_date',     formatDate(dateVal));
     set('t_to',       toVal);
     set('t_bookedBy', bookedBy);
-    document.getElementById('t_project_info').innerText = project ? "Re: " + project : "";
+    // project field is now shown in the charges table Description column
     set('t_carType',  carType); set('t_carType2',  carType);
     set('t_carNo',    carNo);   set('t_carNo2',    carNo);
     set('t_dateRange', dateRangeText); set('t_dateRange2', dateRangeText);
@@ -1146,13 +1143,21 @@
     let tableRows = '';
     let notesVal  = '';
 
-    // ── ROUTE ROW — always first row in Description column ──
+    // ── INFO ROWS — Route (amber) and Project/Purpose (blue) at top of Description column ──
     const routeRow = `
       <tr class="td-route">
         <td class="td-desc">Route</td>
         <td class="td-detail">${hireVal}</td>
         <td class="td-route-val">—</td>
       </tr>`;
+    // Project row: only shown if project/purpose was entered
+    const projectRow = project ? `
+      <tr class="td-project">
+        <td class="td-desc">Purpose / Project</td>
+        <td class="td-detail">${project}</td>
+        <td class="td-project-val">—</td>
+      </tr>` : '';
+    const infoRows = routeRow + projectRow;
 
     if (tripType === 'outstation') {
       const km      = parseFloat(document.getElementById('km').value)         || 0;
@@ -1166,7 +1171,7 @@
       const driverAmt = driver * daysVal;
       total = kmAmt + driverAmt + toll - advance;
 
-      tableRows = routeRow + `
+      tableRows = infoRows + `
         <tr>
           <td class="td-desc">KM Charges</td>
           <td class="td-detail">${km} KM &nbsp;×&nbsp; ₹${rate} /KM</td>
@@ -1203,7 +1208,7 @@
       const addHrsAmt = addHrs * hrsCharge;
       total = dayAmt + addKmAmt + addHrsAmt + toll - advance;
 
-      tableRows = routeRow + `
+      tableRows = infoRows + `
         <tr>
           <td class="td-desc">Day Charges</td>
           <td class="td-detail">₹${rateDay}/Day &nbsp;×&nbsp; ${daysVal} Day(s)</td>
