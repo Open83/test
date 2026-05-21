@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Asad Travels — Invoice Generator</title>
+  <title>Shaan Travels — Invoice Generator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Condensed:wght@400;600;700;800;900&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Barlow:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
@@ -16,19 +16,18 @@
       --red-mid: #a50009;
       --red-light: #fdf2f2;
       --gold: #C9922A;
-      --gold-dark: #a6761c;
       --gold-light: #f9f0e0;
-      --black: #000000;
-      --gray-900: #111111;
-      --gray-700: #222222;
-      --gray-500: #444444;
-      --gray-300: #888888;
-      --gray-100: #eeeeee;
+      --black: #111;
+      --gray-900: #1a1a1a;
+      --gray-700: #444;
+      --gray-500: #777;
+      --gray-300: #ccc;
+      --gray-100: #f5f5f5;
       --white: #ffffff;
       --shadow: 0 12px 50px rgba(0,0,0,0.22);
-      --font-display: 'Merriweather', serif;
-      --font-ui: 'Inter', sans-serif;
-      --font-condensed: 'Roboto Condensed', sans-serif;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-ui: 'Barlow', sans-serif;
+      --font-condensed: 'Barlow Condensed', sans-serif;
     }
 
     body {
@@ -66,10 +65,10 @@
       border: 1px solid rgba(255,255,255,0.12);
     }
     .page-header h1 {
-      font-family: var(--font-display);
-      font-size: 38px;
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
       color: var(--white);
-      letter-spacing: 2px;
+      letter-spacing: 5px;
       font-weight: 900;
       text-shadow: 0 2px 30px rgba(192,0,12,0.5);
       line-height: 1;
@@ -78,9 +77,9 @@
     .page-header .tagline {
       font-family: var(--font-condensed);
       color: rgba(255,255,255,0.35);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
-      letter-spacing: 3px;
+      letter-spacing: 5px;
       text-transform: uppercase;
     }
     .gold-rule {
@@ -97,9 +96,9 @@
     }
     .switcher-label {
       font-family: var(--font-condensed);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       text-transform: uppercase;
       color: rgba(255,255,255,0.5);
       margin-bottom: 12px;
@@ -123,7 +122,7 @@
       font-family: var(--font-condensed);
       font-size: 14px;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
       transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -188,8 +187,8 @@
       color: #fff;
       font-family: var(--font-condensed);
       font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 1px;
+      font-weight: 800;
+      letter-spacing: 2px;
       text-transform: uppercase;
     }
     .panel-head-text p {
@@ -206,8 +205,8 @@
       padding: 6px 14px;
       font-family: var(--font-condensed);
       font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1px;
+      font-weight: 800;
+      letter-spacing: 2px;
       text-transform: uppercase;
       color: #fff;
       flex-shrink: 0;
@@ -218,10 +217,10 @@
     /* ── SECTION LABEL ── */
     .section-label {
       font-family: var(--font-condensed);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 3px;
       color: var(--red);
       margin: 28px 0 16px;
       display: flex;
@@ -255,11 +254,11 @@
 
     .field label {
       font-family: var(--font-condensed);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      color: #555;
+      color: var(--gray-500);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1.5px;
       display: flex;
       align-items: center;
       gap: 5px;
@@ -294,6 +293,7 @@
       font-weight: 700;
       font-family: var(--font-condensed);
       font-size: 15px;
+      letter-spacing: 0.5px;
       cursor: default;
     }
 
@@ -302,8 +302,9 @@
       border-color: var(--gold);
       background: var(--gold-light);
       font-family: var(--font-condensed);
-      font-weight: 700;
+      font-weight: 800;
       font-size: 15px;
+      letter-spacing: 1px;
       color: var(--red-dark);
     }
     .field.inv-no-field input:focus {
@@ -311,14 +312,14 @@
       box-shadow: 0 0 0 4px rgba(201,146,42,0.12);
       background: #fff8ee;
     }
-    .field.inv-no-field label { color: var(--gold-dark); }
+    .field.inv-no-field label { color: var(--gold); }
 
     /* Deduction field */
     .field.deduct-field input {
       border-color: #fbbcbc;
       background: #fff8f8;
       color: var(--red);
-      font-weight: 600;
+      font-weight: 700;
     }
     .field.deduct-field label { color: var(--red); }
 
@@ -331,17 +332,17 @@
       margin-top: 24px;
       border-radius: 14px;
       overflow: hidden;
-      border: 1.5px solid #ddd;
+      border: 1.5px solid #eee;
     }
     .total-preview-head {
       background: var(--gray-900);
       padding: 12px 20px;
       font-family: var(--font-condensed);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      color: #fff;
+      color: rgba(255,255,255,0.6);
     }
     .total-preview-rows { background: #fafafa; }
     .tp-row {
@@ -349,23 +350,23 @@
       justify-content: space-between;
       align-items: center;
       padding: 11px 20px;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #f0f0f0;
       font-size: 13.5px;
     }
     .tp-row:last-child { border-bottom: none; }
-    .tp-row .tp-desc { color: var(--gray-700); font-weight: 600; }
+    .tp-row .tp-desc { color: var(--gray-700); font-weight: 500; }
     .tp-row .tp-val { font-family: var(--font-condensed); font-weight: 700; font-size: 15px; color: var(--black); }
     .tp-row.tp-deduct .tp-val { color: var(--red); }
     .tp-row.tp-total {
       background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
       padding: 15px 20px;
     }
-    .tp-row.tp-total .tp-desc { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+    .tp-row.tp-total .tp-desc { color: rgba(255,255,255,0.8); font-weight: 700; font-family: var(--font-condensed); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
     .tp-row.tp-total .tp-val { color: #fff; font-size: 22px; font-family: var(--font-condensed); }
 
     /* ── SIGNATURE PAD ── */
     .sig-wrapper {
-      border: 1.5px solid #ccc;
+      border: 1.5px solid #e4e4e4;
       border-radius: 12px;
       overflow: hidden;
       background: #fafafa;
@@ -376,10 +377,10 @@
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       font-family: var(--font-condensed);
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 2px;
-      color: rgba(0,0,0,0.1);
+      letter-spacing: 4px;
+      color: rgba(0,0,0,0.06);
       pointer-events: none;
       white-space: nowrap;
       text-transform: uppercase;
@@ -396,18 +397,18 @@
       padding: 9px 18px;
       background: #f5f5f5;
       color: var(--gray-700);
-      border: 1.5px solid #ccc;
+      border: 1.5px solid #ddd;
       border-radius: 8px;
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.15s;
       font-family: var(--font-condensed);
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
       text-transform: uppercase;
     }
-    .btn-sig-clear:hover { background: #eaeaea; border-color: #bbb; }
-    .sig-hint { font-size: 11.5px; color: var(--gray-500); margin-left: auto; font-style: italic; font-weight: 500; }
+    .btn-sig-clear:hover { background: #eee; border-color: #ccc; }
+    .sig-hint { font-size: 11.5px; color: var(--gray-500); margin-left: auto; font-style: italic; }
 
     /* ── DOWNLOAD BUTTON ── */
     .btn-download {
@@ -418,9 +419,9 @@
       color: #fff;
       border: none;
       border-radius: 12px;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 1px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 3px;
       cursor: pointer;
       transition: all 0.22s;
       font-family: var(--font-condensed);
@@ -471,13 +472,13 @@
       color: #fff;
       font-family: var(--font-condensed);
       font-weight: 700;
-      letter-spacing: 2px;
-      font-size: 13px;
+      letter-spacing: 3px;
+      font-size: 12px;
       text-transform: uppercase;
     }
 
     /* ==========================================================
-       INVOICE TEMPLATE — A4: 794 × 1123 px 
+       INVOICE TEMPLATE — A4: 794 × 1123 px
        ========================================================== */
     #invoice-render-zone {
       position: absolute; left: -9999px; top: 0;
@@ -486,7 +487,7 @@
     .invoice-box {
       width: 794px; height: 1123px;
       background: #ffffff;
-      font-family: var(--font-ui);
+      font-family: 'Barlow', sans-serif;
       position: relative;
       overflow: hidden;
       display: flex; flex-direction: column;
@@ -502,70 +503,70 @@
     .inv-header-row {
       display: flex; align-items: flex-start; justify-content: space-between;
       margin-bottom: 18px; padding-bottom: 18px;
-      border-bottom: 2.5px solid #ccc;
+      border-bottom: 2px solid #eee;
       position: relative;
     }
     .inv-header-row::after {
       content: ''; position: absolute; bottom: -4px; left: 0;
-      width: 80px; height: 3px; background: var(--red);
+      width: 80px; height: 2px; background: var(--red);
     }
     .inv-brand .brand-name {
-      font-family: var(--font-display);
-      color: var(--red); font-size: 32px; font-weight: 900;
-      letter-spacing: 1px; line-height: 1;
+      font-family: 'Playfair Display', serif;
+      color: var(--red); font-size: 34px; font-weight: 900;
+      letter-spacing: 2px; line-height: 1;
     }
     .inv-brand .brand-tag {
-      font-family: var(--font-condensed);
-      font-size: 11px; color: var(--black); font-weight: 700;
-      letter-spacing: 2px; text-transform: uppercase; margin-top: 6px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px; color: var(--gray-500); font-weight: 700;
+      letter-spacing: 4px; text-transform: uppercase; margin-top: 4px;
     }
     .inv-brand .brand-contact {
-      margin-top: 10px; font-size: 11.5px; color: var(--black); line-height: 2; font-weight: 500;
+      margin-top: 10px; font-size: 11px; color: var(--gray-700); line-height: 2;
     }
     .inv-brand .brand-contact span { color: var(--black); font-weight: 700; }
 
     .inv-doc-block { text-align: right; }
     .inv-doc-block .doc-title {
-      font-family: var(--font-condensed);
-      font-size: 24px; font-weight: 800; color: var(--black);
-      letter-spacing: 2px; text-transform: uppercase; line-height: 1;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 900; color: var(--black);
+      letter-spacing: 5px; text-transform: uppercase; line-height: 1;
     }
     .inv-doc-block .doc-type-pill {
       display: inline-block;
       margin-top: 8px;
       padding: 4px 14px;
       border-radius: 20px;
-      font-family: var(--font-condensed);
-      font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
       border: 1.5px solid;
     }
-    .pill-outstation { background: var(--red-light); color: var(--red-dark); border-color: var(--red-dark); }
-    .pill-local { background: #e8f4ff; color: #004499; border-color: #004499; }
+    .pill-outstation { background: var(--red-light); color: var(--red); border-color: var(--red); }
+    .pill-local { background: #e8f4ff; color: #0066cc; border-color: #0066cc; }
     .inv-doc-block .doc-rule { width: 40px; height: 3px; background: var(--red); margin: 10px 0 8px auto; border-radius: 2px; }
-    .inv-doc-block .doc-meta { font-size: 12px; color: var(--black); line-height: 2.2; font-weight: 500; }
-    .inv-doc-block .doc-meta strong { color: var(--black); font-family: var(--font-condensed); font-weight: 700; font-size: 14px; }
-    .inv-doc-block .doc-meta .inv-no-val { color: var(--red-dark); font-family: var(--font-condensed); font-weight: 800; font-size: 17px; }
+    .inv-doc-block .doc-meta { font-size: 11.5px; color: var(--gray-700); line-height: 2.2; }
+    .inv-doc-block .doc-meta strong { color: var(--black); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 13px; }
+    .inv-doc-block .doc-meta .inv-no-val { color: var(--red); font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 16px; letter-spacing: 1px; }
 
     /* BILL TO + TRIP META */
     .inv-billtrip-row {
       display: flex; gap: 0; margin-bottom: 16px;
-      border: 2px solid #bbb; border-radius: 8px; overflow: hidden;
+      border: 1.5px solid #e8e8e8; border-radius: 8px; overflow: hidden;
     }
-    .inv-bill-to { flex: 1; padding: 14px 20px; border-right: 2px solid #bbb; background: #fafafa; }
+    .inv-bill-to { flex: 1; padding: 14px 20px; border-right: 1.5px solid #e8e8e8; background: #fafafa; }
     .inv-bill-to .bt-label {
-      font-family: var(--font-condensed);
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1px; color: var(--red-dark); margin-bottom: 5px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--red); margin-bottom: 5px;
       display: flex; align-items: center; gap: 5px;
     }
-    .inv-bill-to .bt-label::before { content: ''; width: 3px; height: 12px; background: var(--red-dark); border-radius: 1px; }
-    .inv-bill-to .bt-name { font-family: var(--font-condensed); font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: 3px; }
-    
+    .inv-bill-to .bt-label::before { content: ''; width: 2px; height: 11px; background: var(--red); border-radius: 1px; }
+    .inv-bill-to .bt-name { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; color: var(--black); margin-bottom: 3px; }
+    .inv-bill-to .bt-sub { font-size: 11px; color: var(--gray-500); font-style: italic; }
     .inv-trip-meta { width: 195px; flex-shrink: 0; padding: 14px 18px; display: flex; flex-direction: column; justify-content: center; }
-    .inv-trip-meta .tm-row { display: flex; align-items: baseline; gap: 6px; padding: 5px 0; border-bottom: 1px solid #ddd; font-size: 12px; }
+    .inv-trip-meta .tm-row { display: flex; align-items: baseline; gap: 6px; padding: 4px 0; border-bottom: 1px solid #f0f0f0; font-size: 11px; }
     .inv-trip-meta .tm-row:last-child { border-bottom: none; }
-    .inv-trip-meta .tm-label { color: var(--black); font-family: var(--font-condensed); font-weight: 700; font-size: 11px; text-transform: uppercase; width: 60px; flex-shrink: 0; }
-    .inv-trip-meta .tm-val { color: var(--black); font-weight: 600; font-size: 12px; font-family: var(--font-condensed); }
+    .inv-trip-meta .tm-label { color: var(--gray-500); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; width: 55px; flex-shrink: 0; }
+    .inv-trip-meta .tm-val { color: var(--black); font-weight: 700; font-size: 11.5px; font-family: 'Barlow Condensed', sans-serif; }
 
     /* VEHICLE STRIP */
     .inv-vehicle-strip {
@@ -573,52 +574,52 @@
       border-radius: 8px; padding: 12px 20px; margin-bottom: 16px;
       display: flex; align-items: center;
     }
-    .vs-item { flex: 1; text-align: center; border-right: 2px solid rgba(255,255,255,0.3); }
+    .vs-item { flex: 1; text-align: center; border-right: 1px solid rgba(255,255,255,0.18); }
     .vs-item:last-child { border-right: none; }
-    .vs-item .vs-label { font-family: var(--font-condensed); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #fff; opacity: 0.9; margin-bottom: 3px; }
-    .vs-item .vs-val { font-family: var(--font-condensed); font-size: 14px; font-weight: 700; color: #fff; }
+    .vs-item .vs-label { font-family: 'Barlow Condensed', sans-serif; font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); margin-bottom: 3px; }
+    .vs-item .vs-val { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
 
     /* CHARGES TABLE */
-    .inv-charges-table { width: 100%; border-collapse: collapse; border: 2px solid #bbb; border-radius: 8px; overflow: hidden; }
+    .inv-charges-table { width: 100%; border-collapse: collapse; border: 1.5px solid #e8e8e8; border-radius: 8px; overflow: hidden; }
     .inv-charges-table thead tr { background: var(--gray-900); }
-    .inv-charges-table thead th { padding: 12px 16px; font-family: var(--font-condensed); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #fff; }
+    .inv-charges-table thead th { padding: 10px 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.75); }
     .inv-charges-table thead th:last-child { text-align: right; }
-    .inv-charges-table tbody tr { border-bottom: 1.5px solid #ddd; }
+    .inv-charges-table tbody tr { border-bottom: 1px solid #f0f0f0; }
     .inv-charges-table tbody tr:last-child { border-bottom: none; }
     .inv-charges-table tbody tr:nth-child(even) { background: #fafafa; }
-    .inv-charges-table tbody td { padding: 14px 16px; font-size: 13px; }
-    .inv-charges-table .td-desc { color: var(--black); font-weight: 600; }
-    .inv-charges-table .td-detail { color: var(--black); font-size: 12px; text-align: center; font-family: var(--font-condensed); font-weight: 600; }
-    .inv-charges-table .td-amt { text-align: right; font-weight: 700; color: var(--black); font-family: var(--font-condensed); font-size: 14px; }
+    .inv-charges-table tbody td { padding: 12px 16px; font-size: 12.5px; }
+    .inv-charges-table .td-desc { color: var(--gray-700); font-weight: 500; }
+    .inv-charges-table .td-detail { color: var(--gray-500); font-size: 11px; text-align: center; font-family: 'Barlow Condensed', sans-serif; }
+    .inv-charges-table .td-amt { text-align: right; font-weight: 700; color: var(--black); font-family: 'Barlow Condensed', sans-serif; font-size: 14px; }
     .inv-charges-table .td-deduct td { background: #fff8f8; }
-    .inv-charges-table .td-deduct .td-amt { color: var(--red-dark); }
-    .inv-charges-table .td-deduct .td-desc { color: var(--red-dark); font-weight: 700; }
+    .inv-charges-table .td-deduct .td-amt { color: var(--red); }
+    .inv-charges-table .td-deduct .td-desc { color: var(--red); font-weight: 700; }
 
     /* TOTAL BAR */
-    .inv-total-bar { display: flex; border: 2px solid #bbb; border-top: none; border-radius: 0 0 8px 8px; overflow: hidden; margin-bottom: 0; }
-    .inv-words-box { flex: 1; padding: 14px 18px; background: var(--gold-light); border-right: 2px solid #bbb; }
-    .inv-words-box .wb-label { font-family: var(--font-condensed); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gold-dark); margin-bottom: 4px; }
-    .inv-words-box .wb-text { font-style: italic; color: var(--black); font-weight: 600; font-size: 13px; line-height: 1.5; }
+    .inv-total-bar { display: flex; border: 1.5px solid #e8e8e8; border-top: none; border-radius: 0 0 8px 8px; overflow: hidden; margin-bottom: 0; }
+    .inv-words-box { flex: 1; padding: 13px 18px; background: var(--gold-light); border-right: 1.5px solid #e8e8e8; }
+    .inv-words-box .wb-label { font-family: 'Barlow Condensed', sans-serif; font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 4px; }
+    .inv-words-box .wb-text { font-style: italic; color: var(--black); font-weight: 600; font-size: 12.5px; line-height: 1.5; }
     .inv-grand-total { min-width: 185px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 13px 18px; background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%); }
-    .inv-grand-total .gt-label { font-family: var(--font-condensed); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #fff; margin-bottom: 4px; }
-    .inv-grand-total .gt-amt { font-family: var(--font-display); font-size: 26px; font-weight: 900; color: #fff; letter-spacing: 0.5px; }
+    .inv-grand-total .gt-label { font-family: 'Barlow Condensed', sans-serif; font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
+    .inv-grand-total .gt-amt { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: #fff; letter-spacing: 1px; }
 
     .inv-spacer { flex: 1; min-height: 6px; }
 
     /* NOTES */
-    .inv-notes-box { margin-top: 12px; font-size: 12px; color: var(--black); font-style: italic; font-weight: 500; padding: 10px 14px; background: #fff; border: 1.5px solid #ccc; border-left: 4px solid var(--red); border-radius: 4px; display: none; }
-    .inv-notes-box strong { font-style: normal; color: var(--black); font-size: 11px; font-family: var(--font-condensed); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 2px; }
+    .inv-notes-box { margin-top: 12px; font-size: 11px; color: #666; font-style: italic; padding: 9px 14px; background: #fffbf5; border-left: 3px solid var(--gold); border-radius: 4px; display: none; }
+    .inv-notes-box strong { font-style: normal; color: #888; font-size: 9.5px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 2px; }
 
     /* FOOTER */
-    .inv-footer { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 16px; margin-top: 14px; border-top: 2px solid #ccc; }
-    .inv-footer-note { font-size: 11px; color: var(--black); line-height: 1.8; max-width: 300px; font-weight: 500; }
-    .inv-footer-note strong { color: var(--red-dark); font-weight: 700; font-family: var(--font-condensed); font-size: 13px; display: block; margin-bottom: 3px; }
-    .inv-footer-terms { margin-top: 6px; font-size: 10px; color: #222; line-height: 1.7; font-weight: 500; }
+    .inv-footer { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 16px; margin-top: 14px; border-top: 1.5px solid #eee; }
+    .inv-footer-note { font-size: 10.5px; color: var(--gray-500); line-height: 1.8; max-width: 300px; }
+    .inv-footer-note strong { color: var(--red); font-weight: 700; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.5px; display: block; margin-bottom: 3px; }
+    .inv-footer-terms { margin-top: 6px; font-size: 9.5px; color: #bbb; line-height: 1.7; }
     .inv-sig-block { text-align: center; }
     .inv-sig-img { height: 60px; width: 190px; display: block; margin: 0 auto 7px; object-fit: contain; }
-    .inv-sig-blank { height: 60px; width: 190px; border-bottom: 2px solid #555; margin: 0 auto 7px; }
-    .inv-sig-label { font-family: var(--font-condensed); font-weight: 700; color: var(--black); font-size: 13px; letter-spacing: 0.5px; text-transform: uppercase; }
-    .inv-sig-sublabel { color: var(--black); font-size: 11px; margin-top: 2px; font-weight: 500; }
+    .inv-sig-blank { height: 60px; width: 190px; border-bottom: 1.5px solid #bbb; margin: 0 auto 7px; }
+    .inv-sig-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; color: var(--black); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
+    .inv-sig-sublabel { color: var(--gray-500); font-size: 10px; letter-spacing: 0.5px; margin-top: 2px; }
 
     .inv-bottombar { width: 100%; height: 10px; background: linear-gradient(90deg, var(--red-dark) 0%, var(--red) 45%, var(--gold) 100%); flex-shrink: 0; margin-top: auto; }
 
@@ -645,7 +646,7 @@
   <div class="logo-emblem">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
   </div>
-  <h1>ASAD TRAVELS</h1>
+  <h1>SHAAN TRAVELS</h1>
   <p class="tagline">Professional Invoice Generator</p>
   <div class="gold-rule"></div>
 </div>
@@ -695,7 +696,7 @@
     <div class="section-label">Client Details</div>
     <div class="grid grid-2">
       <div class="field"><label>Bill To (Client / Company)</label><input id="to" placeholder="e.g. ABC Pvt. Ltd."></div>
-      <div class="field"><label>Project / Purpose</label><input id="project" placeholder="e.g. Andheri to Pune"></div>
+      <div class="field"><label>Project / Purpose</label><input id="project" placeholder="e.g. Site Visit — Andheri to Pune"></div>
     </div>
 
     <div class="section-label">Vehicle Details</div>
@@ -777,11 +778,12 @@
 
       <div class="inv-header-row">
         <div class="inv-brand">
-          <div class="brand-name">ASAD TRAVELS</div>
+          <div class="brand-name">SHAAN TRAVELS</div>
           <div class="brand-tag">Car Rental Solution</div>
           <div class="brand-contact">
-            <span>Email:</span> Javeedkazi75@gmail.com<br>
-            <span>Mobile:</span> 9869310609 &nbsp;/&nbsp; 9167166825
+            <span>Email:</span> Shaantravels786@gmail.com<br>
+            <span>Mobile:</span> 9820189788 &nbsp;/&nbsp; 9820788785<br>
+            <span>Address:</span> Marol Andheri West Mumbai 59
           </div>
         </div>
         <div class="inv-doc-block">
@@ -800,6 +802,7 @@
         <div class="inv-bill-to">
           <div class="bt-label">Bill To</div>
           <div class="bt-name" id="t_to">—</div>
+          <div class="bt-sub" id="t_project_info"></div>
         </div>
         <div class="inv-trip-meta">
           <div class="tm-row"><span class="tm-label">Route</span><span class="tm-val" id="t_hire2">—</span></div>
@@ -849,18 +852,18 @@
       <div class="inv-footer">
         <div class="inv-footer-left">
           <div class="inv-footer-note">
-            <strong>Thank you for choosing Asad Travels!</strong>
-            This is a computer-generated invoice.
+            <strong>Thank you for choosing Shaan Travels!</strong>
+            This is a computer-generated invoice. No signature is required unless stamped and signed by an authorised representative.
           </div>
           <div class="inv-footer-terms">
-            Payment is due upon receipt. Cheques to be drawn in favour of <em>Asad Travels</em>.<br>
+            Payment is due upon receipt. Cheques to be drawn in favour of <em>Shaan Travels</em>.<br>
             For queries, please contact us on the numbers listed above.
           </div>
         </div>
         <div class="inv-sig-block">
           <img id="t_sig" class="inv-sig-img" src="" alt="signature" style="display:none;">
           <div id="t_sig_blank" class="inv-sig-blank"></div>
-          <div class="inv-sig-label">For Asad Travels</div>
+          <div class="inv-sig-label">For Shaan Travels</div>
           <div class="inv-sig-sublabel">Authorised Signatory</div>
         </div>
       </div>
@@ -1078,6 +1081,7 @@
     set('t_date',     formatDate(dateVal));
     set('t_to',       toVal);
     set('t_bookedBy', bookedBy);
+    document.getElementById('t_project_info').innerText = project ? "Re: " + project : "";
     set('t_hire',     hireVal); set('t_hire2',     hireVal);
     set('t_carType',  carType); set('t_carType2',  carType);
     set('t_carNo',    carNo);   set('t_carNo2',    carNo);
@@ -1097,16 +1101,6 @@
     let tableRows = '';
     let notesVal  = '';
 
-    // Shift the Project Info into the top of the description column
-    if (project) {
-      tableRows += `
-        <tr>
-          <td class="td-desc" style="color:var(--black); font-weight:700; font-size: 14px;">Project / Purpose:<br><span style="font-weight:600; color:#333; font-size: 13px;">Re: ${project}</span></td>
-          <td class="td-detail"></td>
-          <td class="td-amt"></td>
-        </tr>`;
-    }
-
     if (tripType === 'outstation') {
       const km      = parseFloat(document.getElementById('km').value)         || 0;
       const rate    = parseFloat(document.getElementById('rate').value)       || 0;
@@ -1119,7 +1113,7 @@
       const driverAmt = driver * daysVal;
       total = kmAmt + driverAmt + toll - advance;
 
-      tableRows += `
+      tableRows = `
         <tr>
           <td class="td-desc">KM Charges</td>
           <td class="td-detail">${km} KM &nbsp;×&nbsp; ₹${rate} /KM</td>
@@ -1156,7 +1150,7 @@
       const addHrsAmt = addHrs * hrsCharge;
       total = dayAmt + addKmAmt + addHrsAmt + toll - advance;
 
-      tableRows += `
+      tableRows = `
         <tr>
           <td class="td-desc">Day Charges</td>
           <td class="td-detail">₹${rateDay}/Day &nbsp;×&nbsp; ${daysVal} Day(s)</td>
@@ -1229,7 +1223,7 @@
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
       pdf.addImage(imgData, "PNG", 0, 0, 210, 297, undefined, 'FAST');
-      pdf.save("AsadTravels_" + invoiceNo + ".pdf");
+      pdf.save("ShaanTravels_" + invoiceNo + ".pdf");
     } catch (err) {
       alert("Error generating PDF: " + err.message);
     }
